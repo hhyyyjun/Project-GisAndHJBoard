@@ -1,0 +1,48 @@
+@charset "EUC-KR";
+
+*{
+	margin : 0;
+	padding : 0;
+	box-sizing: border-box;
+}
+
+/*header css*/
+#header {
+	width: 100%;
+	height: 50px;
+	margin: 0 auto;
+	border: 1px solid black;
+	background-color: lightgreen;
+}
+#nav {
+	width: 500px;
+	height : 100%;
+	margin: 0 auto; 
+	display : flex;
+	justify-content: space-around;
+	align-items: center;
+	font-weight: bold;
+	list-style: none;
+	display: flex
+}
+#nav > li a{
+	text-decoration: none;
+}
+
+/*leaflet2 css*/
+#map {
+	width: 900px;
+	height: 700px;
+	margin : 0 auto;
+	display: flex;
+}
+#apps{
+	width: 900px;
+	margin : 0 auto;
+}
+#buttons, #apps > div {
+	width : 100%;
+	margin-top : 5px;
+	display: flex;
+	justify-content: space-between;
+}
