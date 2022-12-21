@@ -38,7 +38,7 @@
 			<div>검색하기</div>
 			<div>
 				<form action="search" method="get">
-					주소 검색 : <input type="text" name="query"> <input
+					주소 검색해 : <input type="text" name="query"> <input
 						id="searchbtn" type="submit" value="검색">
 				</form>
 			</div>
