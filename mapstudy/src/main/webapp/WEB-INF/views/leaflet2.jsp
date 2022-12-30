@@ -84,23 +84,31 @@
 	<script src="js/common.js"></script>
 
 	<script>
-		var map = L.map("map").setView([ NHLat, NHLng ], 18);
-		L
-				.tileLayer(
-						'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-						{
+		var map = L.map("map",{
+			center : [NHLat, NHLng],
+			zoom : 18,
+			//더블 클릭을 통한 줌 기능 해제
+			doubleClickZoom : false
+		});
+		L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{
 							maxZoom : 19,
 							attribution : '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 						}).addTo(map);
-		console.log("초기화dd");
+		console.log("초기화");
 		
 		// 그리기 도구 추가
+		//생성된 레이어들을 저장할 곳
 		var drawnItems = new L.FeatureGroup();
 		map.addLayer(drawnItems);
+		//그리기 컨트롤러 초기화 및 추가
 		var drawControl = new L.Control.Draw({
+			//컨트롤러 위치
+			position : 'topright',
 			draw : true,
 			edit : {
 				featureGroup : drawnItems
+				//편집 도구 비활성화
+				//edit : false
 			}
 		});
 		map.addControl(drawControl);
@@ -113,10 +121,12 @@
 			       layer = e.layer;
 			   // Do whatever else you need to. (save to db; add to map etc)
 			   if(type === 'marker'){
+				   //마커가 생성된 경우 해당 마커에 팝업창 추가
 				   layer.bindPopup("hihi");
 			   }
-			   drawnItems.addLayer(layer);
+			   map.addLayer(layer);
 			});
+		
 		
 		
 		//내 위치 찾기
@@ -224,24 +234,27 @@
 		}
 
 		// 맵 상 안내 & 마커 추가
+		//팝업 추가
 		var popup = L.popup();
+		//좌표값들 저장할 배열
 		var polyLatlng = [];
 
 		function addPin() {
 			//맵 클릭 시 해당 위도경도 값 출력
 			map.on('click', onMapClick);
 			function onMapClick(e) {
-				popup.setLatLng(e.latlng).setContent(
-						"클릭한 곳<br>" + e.latlng.toString()
+				popup.setLatLng(e.latlng).setContent("클릭한 곳<br>" + e.latlng.toString()
 								+ "<br><button id='addMarker'>마커추가</button>")
 						.openOn(map);
 
 				//마커추가 버튼 클릭 시 해당 위도경도 값으로 마커 추가
 				$('#addMarker').click(function() {
+					//버튼 클릭 시 해당 좌표에 마커 추가
 					var marker = L.marker(e.latlng).addTo(map);
+					//배열에 좌표 추가
 					polyLatlng.push(e.latlng);
-					console.log("좌표 " + e.latlng);
-					console.log(polyLatlng);
+					console.log("좌표 : " + e.latlng);
+					console.log("좌표값들 : " + polyLatlng);
 					//맵 클릭 끄기
 					map.off('click', onMapClick);
 				});
@@ -251,20 +264,21 @@
 		//추가된 마커끼리 폴리곤 생성
 		function addpolygon() {
 			//option태그의 선택 값
-			var colorsel = document.getElementById("colorsel").value;
-			var polygonW = document.getElementById("polygonW").value;
+			var colorsel = document.getElementById("colorsel").value; //색깔
+			var polygonW = document.getElementById("polygonW").value; //선 두께
 			console.log(colorsel + " / " + polygonW);
 
 			//마커가 3개 이상일 때 폴리곤 생성 가능
 			if(polyLatlng.length >= 3){
-			//if (myset.size >= 3) {
 				console.log(polyLatlng.length);
+				//추가한 마커들의 좌표값들을 통해 폴리곤 생성
 				var addpoly = L.polygon(polyLatlng, {
 					color : colorsel,
 					weight : polygonW,
 					opacity : 0.7
 				}).addTo(map);
 				map.fitBounds(addpoly.getBounds());
+				console.log(addpoly.getBounds());
 
 				//추가 폴리곤 bindpopup 생성 시 폴리곤 위 클릭이 안됨
 				//addpoly.bindPopup("추가된 폴리곤");
