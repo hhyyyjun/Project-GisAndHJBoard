@@ -23,6 +23,11 @@
 <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.css" />
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script>
+
 </head>
 <body>
 	<div>
@@ -37,6 +42,9 @@
 					주소 검색 : <input type="text" name="query" id="searchadd"> <input
 						id="searchBtn" type="button" value="검색">
 				</div>
+			</div>
+			<div>
+				<button onclick="addPin()">핀 추가하기</button>
 			</div>
 			<div>
 				<button onclick="addpolygon()">추가한 마커 폴리곤 생성하기</button>
@@ -65,15 +73,18 @@
 			<button onclick="pinchk()" id="pinchk">핀 확인</button>
 			<button onclick='pindel()' id="pindel" disabled>핀 삭제</button>
 			<button onclick="polygon()" id="polygon" disabled>폴리곤 연결</button>
-			<button onclick="circle()" id="circle" disabled>회사 주변 확인</button>
+			<button onclick="circle()" id="circle" disabled>nh 주변 확인</button>
+		</div>
+		<div>
+			<button onclick="delLayer()">레이어 전부 지우기</button>
 		</div>
 	</div>
 
 
 	<script src="js/common.js"></script>
-	
+
 	<script>
-		var map = L.map("map").setView([ openmateLat, openmateLng ], 18);
+		var map = L.map("map").setView([ NHLat, NHLng ], 18);
 		L
 				.tileLayer(
 						'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -81,18 +92,43 @@
 							maxZoom : 19,
 							attribution : '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 						}).addTo(map);
-		console.log("초기화")
-
+		console.log("초기화dd");
+		
+		// 그리기 도구 추가
+		var drawnItems = new L.FeatureGroup();
+		map.addLayer(drawnItems);
+		var drawControl = new L.Control.Draw({
+			draw : true,
+			edit : {
+				featureGroup : drawnItems
+			}
+		});
+		map.addControl(drawControl);
+		
+		
+		//도형 유지
+		//map.on(L.Draw.Event.CREATED, function (e) {
+		map.on('draw:created', function (e) {
+			   var type = e.layerType,
+			       layer = e.layer;
+			   // Do whatever else you need to. (save to db; add to map etc)
+			   if(type === 'marker'){
+				   layer.bindPopup("hihi");
+			   }
+			   drawnItems.addLayer(layer);
+			});
+		
+		
 		//내 위치 찾기
 		function me() {
 			map.on('locationfound', function(e) {
 				console.log(e);
 				var radius = e.accuracy / 2;
 				var locationMarker = L.marker(e.latlng).addTo(map).bindPopup(
-						'당신의 반경 ' + radius.toFixed(6) + '미터 안에 계시겠군요.')
+						'당신의 반경 ' + radius.toFixed(6) * 50 + '미터 안에 계시겠군요.')
 						.openPopup();
-				var locationCircle = L.circle(e.latlng, radius).addTo(map);
-				console.log(radius);
+				var locationCircle = L.circle(e.latlng, radius * 50).addTo(map);
+				console.log(radius.toFixed(6));
 			});
 			map.on('locationerror', function(e) {
 				console.log(e.message)
@@ -100,7 +136,7 @@
 
 			map.locate({
 				setView : true,
-				maxZoom : 11
+				maxZoom : 16
 			});
 		}
 
@@ -115,21 +151,22 @@
 		function pinchk() {
 			console.log("핀 생성");
 			//핀 클릭 시 해당 좌표로 이동 및 줌레벨 15
-			map.panTo(new L.LatLng(moveToPinCenterLat, moveToPinCenterLng)).locate({
-				setView : true,
-				maxZoom : 15
-			});
+			map.panTo(new L.LatLng(moveToPinCenterLat, moveToPinCenterLng))
+					.locate({
+						setView : true,
+						maxZoom : 15
+					});
 
 			cityhall = L.marker([ cityhallLat, cityhallLng ], {
 				//핀 드래그 사용 가능 여부
 				draggable : true
 			}).addTo(map);
-			openmate = L.marker([ openmateLat, openmateLng ]).addTo(map);
+			NH = L.marker([ NHLat, NHLng ]).addTo(map);
 			seoulstation = L.marker([ seoulstationLat, seoulstationLng ])
 					.addTo(map);
 
 			cityhall.bindPopup("<b>시시청청역역</b>");
-			openmate.bindPopup("<b>오픈메이트</b>");
+			NH.bindPopup("<b>농협생명</b>");
 			seoulstation.bindPopup("<b>서서울울역역</b>");
 
 			//삭제버튼 show
@@ -146,20 +183,19 @@
 		function pindel() {
 			console.log("판 삭제");
 			map.removeLayer(cityhall);
-			map.removeLayer(openmate);
+			map.removeLayer(NH);
 			map.removeLayer(seoulstation);
 			$("#pindel").attr("disabled", "disabled")
 			$("#polygon").attr("disabled", "disabled")
 			$("#circle").attr("disabled", "disabled")
 			$("#pinchk").removeAttr("disabled");
-
 		}
 
 		//폴리곤 연결
 		function polygon() {
 			console.log("폴리곤 생성");
 			var latlngs = [ [ cityhallLat, cityhallLng ],
-					[ openmateLat, openmateLng ],
+					[ NHLat, NHLng ],
 					[ seoulstationLat, seoulstationLng ] ];
 			var polygon = L.polygon(latlngs, {
 				color : 'yellow'
@@ -174,7 +210,7 @@
 		//동그라미 도형맵 표현
 		function circle() {
 			console.log("원 생성");
-			var circle = L.circle([ openmateLat, openmateLng ], {
+			var circle = L.circle([ NHLat, NHLng ], {
 				//선
 				color : 'red',
 				//채우기
@@ -183,29 +219,34 @@
 				radius : 500
 			}).addTo(map);
 
-			circle.bindPopup("오픈메이트 반경 500m");
+			circle.bindPopup("농협생명 반경 500m");
 			$("#circle").attr("disabled", "disabled")
 		}
 
 		// 맵 상 안내 & 마커 추가
 		var popup = L.popup();
 		var polyLatlng = [];
-		//맵 클릭 시 해당 위도경도 값 출력
-		function onMapClick(e) {
-			popup.setLatLng(e.latlng).setContent(
-					"클릭한 곳<br>" + e.latlng.toString()
-							+ "<br><button id='addMarker'>마커추가</button>")
-					.openOn(map);
 
-			//마커추가 버튼 클릭 시 해당 위도경도 값으로 마커 추가
-			$('#addMarker').click(function() {
-				var marker = L.marker(e.latlng).addTo(map);
-				polyLatlng.push(e.latlng);
-				console.log("좌표 " + e.latlng);
-				console.log(polyLatlng);
-			});
-		}
-		map.on('click', onMapClick);
+		function addPin() {
+			//맵 클릭 시 해당 위도경도 값 출력
+			map.on('click', onMapClick);
+			function onMapClick(e) {
+				popup.setLatLng(e.latlng).setContent(
+						"클릭한 곳<br>" + e.latlng.toString()
+								+ "<br><button id='addMarker'>마커추가</button>")
+						.openOn(map);
+
+				//마커추가 버튼 클릭 시 해당 위도경도 값으로 마커 추가
+				$('#addMarker').click(function() {
+					var marker = L.marker(e.latlng).addTo(map);
+					polyLatlng.push(e.latlng);
+					console.log("좌표 " + e.latlng);
+					console.log(polyLatlng);
+					//맵 클릭 끄기
+					map.off('click', onMapClick);
+				});
+			}
+		};
 
 		//추가된 마커끼리 폴리곤 생성
 		function addpolygon() {
@@ -214,12 +255,10 @@
 			var polygonW = document.getElementById("polygonW").value;
 			console.log(colorsel + " / " + polygonW);
 
-			//폴리곤이 제대로 생성이 안되어 순서 상관없는 set배열로 변환해봄 근데 안됨
-			const myset = new Set(polyLatlng);
 			//마커가 3개 이상일 때 폴리곤 생성 가능
-			//if(polyLatlng.length >= 3){
-			if (myset.size >= 3) {
-				console.log(myset.size);
+			if(polyLatlng.length >= 3){
+			//if (myset.size >= 3) {
+				console.log(polyLatlng.length);
 				var addpoly = L.polygon(polyLatlng, {
 					color : colorsel,
 					weight : polygonW,
@@ -242,6 +281,14 @@
 		// }
 
 		// map.on('click', onMapClick);
+	</script>
+
+	<script>
+	//거리재기
+	var measure = map.distance([NHLat, NHLng], [seoulstationLat, seoulstationLng]);
+	$("#buttons").after("<div>"+measure+"</div>");
+	console.log("measure : "+measure);
+	
 	</script>
 
 	<script>

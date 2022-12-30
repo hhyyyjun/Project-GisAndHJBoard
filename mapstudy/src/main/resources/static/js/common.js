@@ -6,9 +6,9 @@
 		var cityhallLat = 37.5657037;
 		var cityhallLng = 126.9768616;
 
-		var openmate = "";
-		var openmateLat = 37.56249213;
-		var openmateLng = 126.96849315;
+		var NH = "";
+		var NHLat = 37.56249213;
+		var NHLng = 126.96849315;
 
 		var seoulstation = "";
 		var seoulstationLat = 37.55236577;
@@ -16,3 +16,4 @@
 		
 		var moveToPinCenterLat = 37.559071;
 		var moveToPinCenterLng = 126.973772;
+		

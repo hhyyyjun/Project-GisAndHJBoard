@@ -198,9 +198,9 @@
 
 		//////////////////////////////////////////////////////////////////////////////////////////////
 		//핀 추가하기
-		var flag = true;
 		var latLng = "";
 		var infowindow = "";
+		var flag = false;
 		function addPin() {
 			// 지도에 마커 추가여부 버튼 생성
 			var makeMarker = "<button style='padding : 5px;' onclick='plusPin()'>마커추가</button>";

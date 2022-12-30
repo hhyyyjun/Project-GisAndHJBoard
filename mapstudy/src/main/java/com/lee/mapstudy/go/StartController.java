@@ -32,6 +32,18 @@ public class StartController {
 		
 		return "kakaomap";
 	}
+	@GetMapping("/openDistance")
+	public String openDistance() {
+		System.out.println("openDistance");
+		
+		return "opendistance";
+	}
+	@GetMapping("/openfreedraw")
+	public String openfreedraw() {
+		System.out.println("openfreedraw");
+		
+		return "openfreedraw";
+	}
 	
 	
 	
