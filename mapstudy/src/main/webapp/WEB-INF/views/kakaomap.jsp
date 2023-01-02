@@ -79,7 +79,7 @@
 		//////////////////Áöµµ ¶ç¿ì±â
 		var container = document.getElementById('map');
 		var options = {
-			center : new kakao.maps.LatLng(openmateLat, openmateLng),
+			center : new kakao.maps.LatLng(NHLat, NHLng),
 			level : 3
 		};
 		var map = new kakao.maps.Map(container, options);

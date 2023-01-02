@@ -27,7 +27,7 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.css" />
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script>
-
+	
 </head>
 <body>
 	<div>
@@ -96,6 +96,7 @@
 						}).addTo(map);
 		console.log("초기화");
 		
+		
 		// 그리기 도구 추가
 		//생성된 레이어들을 저장할 곳
 		var drawnItems = new L.FeatureGroup();
@@ -124,9 +125,28 @@
 				   //마커가 생성된 경우 해당 마커에 팝업창 추가
 				   layer.bindPopup("hihi");
 			   }
-			   map.addLayer(layer);
+			   drawnItems.addLayer(layer);
 			});
+
+		//거리재기
+		//클릭한 곳의 좌표값들이 들어갈 배열
+		var clicks = [];
+		//포인트 지점 사이의 
+		var clicksDistance = [];
+		var totalDistance = 0;
+		map.on('click', function(e){
+			var measure = map.distance
+		});
 		
+		
+		
+		
+		//거리재기
+		var measure = map.distance([NHLat, NHLng], [seoulstationLat, seoulstationLng]);
+		$("#buttons").after("<div>"+measure+"</div>");
+		console.log("measure : "+measure);
+		
+
 		
 		
 		//내 위치 찾기
@@ -155,6 +175,7 @@
 			map.panTo(new L.LatLng(seoulstationLat, seoulstationLng));
 		}
 	</script>
+	
 
 	<script>
 		//시청역, 서울역, 오픈메이트 핀 표현
@@ -297,13 +318,6 @@
 		// map.on('click', onMapClick);
 	</script>
 
-	<script>
-	//거리재기
-	var measure = map.distance([NHLat, NHLng], [seoulstationLat, seoulstationLng]);
-	$("#buttons").after("<div>"+measure+"</div>");
-	console.log("measure : "+measure);
-	
-	</script>
 
 	<script>
 		var x = "";

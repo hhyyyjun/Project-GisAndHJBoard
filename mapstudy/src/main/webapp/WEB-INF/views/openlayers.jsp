@@ -148,8 +148,7 @@ a.skiplink:focus {
 					view : new ol.View(
 							{
 								//오픈레이어스는 위경도를 다른 api와 반대로 넣어야 함
-								center : new ol.geom.Point([ openmateLng,
-										openmateLat ]).transform('EPSG:4326',
+								center : new ol.geom.Point([ NHLng, NHLat ]).transform('EPSG:4326',
 										'EPSG:3857').getCoordinates(),
 								maxZoon : 20,
 								minZoon : 3,
