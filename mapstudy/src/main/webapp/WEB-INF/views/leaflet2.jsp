@@ -148,19 +148,19 @@
 		map.on('draw:created', function (e) {
 			   var type = e.layerType,
 			       layer = e.layer;
+			   
+			   //타입이 마커인 경우
 			   if(type === 'marker'){
-				   //마커가 생성된 경우 해당 마커에 팝업창 추가
-				   layer.bindPopup("hihi");
 			   }
 			   
-			   
+			   //타입이 원인 경우
 			   if(type === 'circle'){
 				   //원의 중심 좌표
 				   var circleLatlng = layer.getLatLng();
-			       console.log(circleLatlng);
+			       console.log("중심 좌표 : "+circleLatlng);
 			       //원의 중심에 마커 생성
 			       var circleMarker = L.marker(circleLatlng).addTo(map);
-			       console.log(circleMarker);
+			       console.log("중심 좌표의 마커 정보 : "+circleMarker);
 			       //마커 클릭 시 해당 좌표 출력
 			       circleMarker.bindPopup("이곳은 "+circleLatlng+" 입니다.").addTo(map);
 			       //원의 반지름
@@ -168,6 +168,34 @@
 			       //원 내부 클릭 시 반지름 안내
 			       layer.bindPopup("반경은 "+theRadius.toFixed(3)+"m 입니다.").addTo(map);
 			    }
+			   
+				//그리기 도구가 사각형이라면
+				if(type === 'rectangle'){
+					//사각형 경로의 점을 배열로 저장(2차 배열로 저장된다.)
+					var rect = layer.getLatLngs();
+					console.log("좌표값 : "+rect);
+					//가로 길이 계산
+					var width = map.distance(rect[0][1], rect[0][2]);
+					//세로 길이 계산
+					var height = map.distance(rect[0][2], rect[0][3]);
+					console.log(width, height);
+					//넓이 계산
+					var area = width * height;
+					console.log(area);
+					//사각형 내부 클릭 시 넓이를 팝업으로 출력
+					layer.bindPopup("사각형의 넓이는 <br>"+area.toFixed(2)+"m 입니다.").addTo(map); 
+				}
+				//그리기 도구가 폴리곤이라면
+				if(type === 'polygon'){
+					
+				}
+				//그리기 도구가 마커라면
+				if(type === 'marker'){
+					
+				}
+			   
+			   
+			   
 				drawnItems.addLayer(layer);
 			});
 		
@@ -231,33 +259,6 @@
 						console.log("총 거리 : "+totalDistance.toFixed(3));
 					}
 				});
-			}
-			
-			
-			//그리기 도구가 원이라면
-			/* if(type === 'circle'){
-				//원의 반지름 값
-				var circleRadius = 0;
-				//원의 중앙지점 마커
-				var circleMarker;
-				map.on('mousedown', function(e){
-					circleMarker = L.marker(e.latlng).addTo(map);
-					circleMarker.bindPopup("이곳은 "+e.latlng+"입니다.").addTo(map);
-					circleRadius = e._startLatLng.distanceTo(latlng);
-					console.log(circleRadius);
-				})
-			} */
-			//그리기 도구가 사각형이라면
-			if(type === 'rectangle'){
-				
-			}
-			//그리기 도구가 폴리곤이라면
-			if(type === 'polygon'){
-				
-			}
-			//그리기 도구가 마커라면
-			if(type === 'marker'){
-				
 			}
 		})
 		
