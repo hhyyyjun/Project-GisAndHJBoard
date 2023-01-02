@@ -130,6 +130,18 @@
 						color : '#FFE400',
 						fillColor : '#8041D9'
 					}
+				},
+				//사각형 옵션
+				rectangle : {
+					shapeOptions : {
+						color : '#2F9D27',
+						fillColor : '#86E57F'
+					}
+				},
+				//폴리곤 옵션
+				polygon : {
+					showArea : true,
+					showLength : true
 				}
 			},
 			//편집 옵션
@@ -187,7 +199,13 @@
 				}
 				//그리기 도구가 폴리곤이라면
 				if(type === 'polygon'){
+					//폴리곤 중심 좌표
+					//var polyCenter = layer.getCenter();
+					//폴리곤 중심에 마커 생성
+					//polyCenter = L.marker(polyCenter).addTo(map);
 					
+					//폴리곤 내부 클릭 시 면적을 팝업으로 출력
+					layer.bindPopup("폴리곤의 면적은 "+"m 입니다.").addTo(map);
 				}
 				//그리기 도구가 마커라면
 				if(type === 'marker'){
@@ -201,9 +219,20 @@
 		
 		//그리기 종료 시
 		map.on('draw:drawstop',function(e){
+			var type = e.layerType;
+			var layer = e.layer;
 			//클릭 이벤트 해제
 			map.off('click');
 			map.off('mousedown');
+			
+			//그리기 도구가 폴리곤이라면
+			if(type === 'polygon'){
+				//폴리곤 중심 좌표
+				//var polyCenter = layer.getCenter();
+				//폴리곤 중심에 마커 생성
+				//polyCenter = L.marker(polyCenter).addTo(map);
+				
+			}
 		});
 
 		
@@ -217,7 +246,7 @@
 			//그리기 도구가 폴리라인 이라면
 			if(type === 'polyline'){
 				//클릭한 곳의 좌표값들이 들어갈 배열
-				var clicks = [];
+				var linePoint = [];
 				//총 거리
 				var totalDistance = 0;
 				//마커
@@ -226,21 +255,21 @@
 				var polylineMarkers = [];
 				//지도 클릭하면 포인트 사이의 거리를 바인드 팝업으로 생성
 				map.on('click', function(e){
-					clicks.push(e.latlng);
-					console.log("마커의 좌표 값 : "+clicks);
+					linePoint.push(e.latlng);
+					console.log("마커의 좌표 값 : "+linePoint);
 					//지도에 마커 추가
 					polylineMarker = L.marker(e.latlng).addTo(map);
 					//마커정보를 배열에 추가
 					polylineMarkers.push(polylineMarker);
 					console.log(polylineMarkers);
 					//만약 clicks의 길이가 2이상이면
-					if(clicks.length >= 2){
+					if(linePoint.length >= 2){
 						//배열의 길이
-						var i = clicks.length;
+						var i = linePoint.length;
 						//이전 마커의 좌표
-						var distance1 = clicks[i-2];
+						var distance1 = linePoint[i-2];
 						//이후 마커의 좌표
-						var distance2 = clicks[i-1];
+						var distance2 = linePoint[i-1];
 						//거리 계산
 						var measure = map.distance(distance1, distance2);
 						//거리 값
@@ -259,6 +288,18 @@
 						console.log("총 거리 : "+totalDistance.toFixed(3));
 					}
 				});
+			}
+			//그리기 도구가 폴리곤이라면
+			if(type === 'polygon'){
+				//폴리곤 꼭지점들의 좌표를 저장할 배열
+				var polygonPoint = [];				
+				map.on('click', function(e){
+					polygonPoint.push(e.latlng);
+					console.log("폴리곤 꼭지점 좌표 값 : "+polygonPoint);
+				});
+				
+				//폴리곤 내부 클릭 시 면적을 팝업으로 출력
+				//layer.bindPopup("폴리곤의 면적은 "+dd+"m 입니다.").addTo(map);
 			}
 		})
 		
