@@ -27,7 +27,7 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.css" />
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script>
-	
+
 </head>
 <body>
 	<div>
@@ -78,6 +78,9 @@
 		<div>
 			<button onclick="delLayer()">레이어 전부 지우기</button>
 		</div>
+		<div>
+			<button onclick="lineDraw()">선그리기</button>
+		</div>
 	</div>
 
 
@@ -95,8 +98,9 @@
 							attribution : '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 						}).addTo(map);
 		console.log("초기화");
+	</script>
 		
-		
+	<script>
 		// 그리기 도구 추가
 		//생성된 레이어들을 저장할 곳
 		var drawnItems = new L.FeatureGroup();
@@ -105,50 +109,222 @@
 		var drawControl = new L.Control.Draw({
 			//컨트롤러 위치
 			position : 'topright',
-			draw : true,
+			//그리기 옵션
+			draw : {
+				//폴리라인 옵션
+				polyline : {
+					shapeOptions: {
+						stroke: true,
+						color: '#6799FF',
+						weight: 7,
+						opacity: 0.5,
+						fill: false,
+						clickable: true
+					},
+					showLength : true,
+					metric : true
+				},
+				//원 옵션
+				circle : {
+					shapeOptions : {
+						color : '#FFE400',
+						fillColor : '#8041D9'
+					}
+				}
+			},
+			//편집 옵션
 			edit : {
 				featureGroup : drawnItems
 				//편집 도구 비활성화
 				//edit : false
 			}
 		});
+		console.log(drawControl);
 		map.addControl(drawControl);
 		
 		
-		//도형 유지
+		//도형이 생성되었을 때
 		//map.on(L.Draw.Event.CREATED, function (e) {
 		map.on('draw:created', function (e) {
 			   var type = e.layerType,
 			       layer = e.layer;
-			   // Do whatever else you need to. (save to db; add to map etc)
 			   if(type === 'marker'){
 				   //마커가 생성된 경우 해당 마커에 팝업창 추가
 				   layer.bindPopup("hihi");
 			   }
-			   drawnItems.addLayer(layer);
+			   
+			   
+			   if(type === 'circle'){
+				   //원의 중심 좌표
+				   var circleLatlng = layer.getLatLng();
+			       console.log(circleLatlng);
+			       //원의 중심에 마커 생성
+			       var circleMarker = L.marker(circleLatlng).addTo(map);
+			       console.log(circleMarker);
+			       //마커 클릭 시 해당 좌표 출력
+			       circleMarker.bindPopup("이곳은 "+circleLatlng+" 입니다.").addTo(map);
+			       //원의 반지름
+			       var theRadius = layer.getRadius();
+			       //원 내부 클릭 시 반지름 안내
+			       layer.bindPopup("반경은 "+theRadius.toFixed(3)+"m 입니다.").addTo(map);
+			    }
+				drawnItems.addLayer(layer);
 			});
-
-		//거리재기
-		//클릭한 곳의 좌표값들이 들어갈 배열
-		var clicks = [];
-		//포인트 지점 사이의 
-		var clicksDistance = [];
-		var totalDistance = 0;
-		map.on('click', function(e){
-			var measure = map.distance
+		
+		//그리기 종료 시
+		map.on('draw:drawstop',function(e){
+			//클릭 이벤트 해제
+			map.off('click');
+			map.off('mousedown');
 		});
-		
-		
-		
-		
-		//거리재기
-		var measure = map.distance([NHLat, NHLng], [seoulstationLat, seoulstationLng]);
-		$("#buttons").after("<div>"+measure+"</div>");
-		console.log("measure : "+measure);
-		
 
 		
+		//그리기 시작 시
+		map.on('draw:drawstart',function(e){
+			//그리기 도구의 타입체크			
+			var type = e.layerType;
+			//그리기 타입 체크
+			console.log(type);
+			
+			//그리기 도구가 폴리라인 이라면
+			if(type === 'polyline'){
+				//클릭한 곳의 좌표값들이 들어갈 배열
+				var clicks = [];
+				//총 거리
+				var totalDistance = 0;
+				//마커
+				var polylineMarker;
+				//마커들
+				var polylineMarkers = [];
+				//지도 클릭하면 포인트 사이의 거리를 바인드 팝업으로 생성
+				map.on('click', function(e){
+					clicks.push(e.latlng);
+					console.log("마커의 좌표 값 : "+clicks);
+					//지도에 마커 추가
+					polylineMarker = L.marker(e.latlng).addTo(map);
+					//마커정보를 배열에 추가
+					polylineMarkers.push(polylineMarker);
+					console.log(polylineMarkers);
+					//만약 clicks의 길이가 2이상이면
+					if(clicks.length >= 2){
+						//배열의 길이
+						var i = clicks.length;
+						//이전 마커의 좌표
+						var distance1 = clicks[i-2];
+						//이후 마커의 좌표
+						var distance2 = clicks[i-1];
+						//거리 계산
+						var measure = map.distance(distance1, distance2);
+						//거리 값
+						console.log("마커 사이 거리 : "+measure.toFixed(3));
+						//마커 사이의 거리를 툴팁으로 출력
+						polylineMarker.bindTooltip(("거리 : "+measure.toFixed(3)+"m"),{
+							permanent : true
+						}).addTo(map).openTooltip();
+						//총 거리 계산
+						totalDistance += measure;
+						console.log("현재까지 총 거리 : "+totalDistance.toFixed(3));
+						//마커 배열의 마지막 인덱스의 마커 정보를 가져와
+						var lastMarker = polylineMarkers[polylineMarkers.length-1];
+						//마지막 마커에 총 거리 출력
+						lastMarker.bindPopup("<div style='font-weight : bold; color : green;'>총 거리 : "+totalDistance.toFixed(3)+"m</div>");
+						console.log("총 거리 : "+totalDistance.toFixed(3));
+					}
+				});
+			}
+			
+			
+			//그리기 도구가 원이라면
+			/* if(type === 'circle'){
+				//원의 반지름 값
+				var circleRadius = 0;
+				//원의 중앙지점 마커
+				var circleMarker;
+				map.on('mousedown', function(e){
+					circleMarker = L.marker(e.latlng).addTo(map);
+					circleMarker.bindPopup("이곳은 "+e.latlng+"입니다.").addTo(map);
+					circleRadius = e._startLatLng.distanceTo(latlng);
+					console.log(circleRadius);
+				})
+			} */
+			//그리기 도구가 사각형이라면
+			if(type === 'rectangle'){
+				
+			}
+			//그리기 도구가 폴리곤이라면
+			if(type === 'polygon'){
+				
+			}
+			//그리기 도구가 마커라면
+			if(type === 'marker'){
+				
+			}
+		})
 		
+		//선 그리며 거리재기(그리기 도구 사용 x)
+		function lineDraw(){
+			//클릭한 곳의 좌표값들이 들어갈 배열
+			var clicks = [];
+			//총 거리
+			var totalDistance = 0;
+			//마커
+			var distanceMarker;
+			//마커들
+			var distanceMarkers = [];
+			//지도 클릭하면 포인트 사이의 거리를 바인드 팝업으로 생성
+			map.on('click', function(e){
+				clicks.push(e.latlng);
+				console.log("마커의 좌표 값 : "+clicks);
+				//지도에 마커 추가
+				distanceMarker = L.marker(e.latlng).addTo(map);
+				//마커정보를 배열에 추가
+				distanceMarkers.push(distanceMarker);
+				console.log(distanceMarkers);
+				//만약 clicks의 길이가 2이상이면
+				if(clicks.length >= 2){
+					var i = clicks.length;
+					//이전 마커의 좌표
+					var distance1 = clicks[i-2];
+					//이후 마커의 좌표
+					var distance2 = clicks[i-1];
+					//거리 계산
+					var measure = map.distance(distance1, distance2);
+					//선 그리기
+					var polyline = L.polyline([distance1, distance2], {
+						color: 'red'
+					}).addTo(map);
+					//거리 값
+					console.log("마커 사이 거리 : "+measure.toFixed(3));
+					//마커 사이의 거리를 툴팁으로 출력
+					distanceMarker.bindTooltip(("거리 : "+measure.toFixed(3)+"m"),{
+						permanent : true
+					}).addTo(map).openTooltip();
+					//총 거리 계산
+					totalDistance += measure;
+					console.log("현재까지 총 거리 : "+totalDistance.toFixed(3));
+				}
+			});
+			//선 그리기 도중 더블 클릭 시
+			map.on('dblclick', function(){
+				//클릭 이벤트 해제
+				map.off('click');
+				map.off('dblclick');
+				//마커 배열의 마지막 인덱스의 마커 정보를 가져와
+				var lastMarker = distanceMarkers[distanceMarkers.length-1];
+				//마지막 인덱스 값의 마커 정보 삭제
+				lastMarker.remove();
+				//마지막 인덱스 값 제거
+				distanceMarkers.pop();
+				//마지막 마커에 총 거리 출력(위에 줄에서 삭제한 마지막 마커와 다른 마커임 => 마지막 지운 후의 마지막 마커)
+				distanceMarkers[distanceMarkers.length-1].bindPopup("총 거리 : "+totalDistance.toFixed(3)+"m").openPopup();
+				console.log("총 거리 : "+totalDistance.toFixed(3));
+			});
+		};
+		
+	</script>
+
+		
+	<script>
 		//내 위치 찾기
 		function me() {
 			map.on('locationfound', function(e) {
@@ -175,7 +351,7 @@
 			map.panTo(new L.LatLng(seoulstationLat, seoulstationLng));
 		}
 	</script>
-	
+
 
 	<script>
 		//시청역, 서울역, 오픈메이트 핀 표현
