@@ -28,6 +28,44 @@
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script>
 
+<style>
+#btn{
+	width : 120px;
+	height : 100px;
+	display : flex;
+	justify-content: space-between;
+}
+#start{
+	background-color : green;
+}
+#stop{
+	background-color : red;
+}
+.rightBtn{
+	width : 50px;
+	height : 30px;
+	color : #fff;
+	border : 1px solid #fff;
+	border-radius: 10%;
+	font-weight : 800;
+	font-size : 12px;
+	cursor : pointer;
+}
+.rightBtn:hover{
+	opacity : 0.7;
+}
+.rightMenu{
+}
+.info{
+	width : 50px;
+	background-color : black;
+	color : #fff;
+	border : 1px solid black;
+	border-radius: 10%;
+	display : none;
+}
+</style>
+
 </head>
 <body>
 	<div>
@@ -82,7 +120,7 @@
 			<button onclick="lineDraw()">선그리기</button>
 		</div>
 	</div>
-
+	<div class="info">안녕하세요</div>
 
 	<script src="js/common.js"></script>
 
@@ -97,7 +135,7 @@
 							maxZoom : 19,
 							attribution : '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 						}).addTo(map);
-		console.log("초기화");
+		console.log("지도 초기화");
 	</script>
 		
 	<script>
@@ -140,8 +178,7 @@
 				},
 				//폴리곤 옵션
 				polygon : {
-					showArea : true,
-					showLength : true
+					showArea : true
 				}
 			},
 			//편집 옵션
@@ -154,94 +191,16 @@
 		console.log(drawControl);
 		map.addControl(drawControl);
 		
-		
-		//도형이 생성되었을 때
-		//map.on(L.Draw.Event.CREATED, function (e) {
-		map.on('draw:created', function (e) {
-			   var type = e.layerType,
-			       layer = e.layer;
-			   
-			   //타입이 마커인 경우
-			   if(type === 'marker'){
-			   }
-			   
-			   //타입이 원인 경우
-			   if(type === 'circle'){
-				   //원의 중심 좌표
-				   var circleLatlng = layer.getLatLng();
-			       console.log("중심 좌표 : "+circleLatlng);
-			       //원의 중심에 마커 생성
-			       var circleMarker = L.marker(circleLatlng).addTo(map);
-			       console.log("중심 좌표의 마커 정보 : "+circleMarker);
-			       //마커 클릭 시 해당 좌표 출력
-			       circleMarker.bindPopup("이곳은 "+circleLatlng+" 입니다.").addTo(map);
-			       //원의 반지름
-			       var theRadius = layer.getRadius();
-			       //원 내부 클릭 시 반지름 안내
-			       layer.bindPopup("반경은 "+theRadius.toFixed(3)+"m 입니다.").addTo(map);
-			    }
-			   
-				//그리기 도구가 사각형이라면
-				if(type === 'rectangle'){
-					//사각형 경로의 점을 배열로 저장(2차 배열로 저장된다.)
-					var rect = layer.getLatLngs();
-					console.log("좌표값 : "+rect);
-					//가로 길이 계산
-					var width = map.distance(rect[0][1], rect[0][2]);
-					//세로 길이 계산
-					var height = map.distance(rect[0][2], rect[0][3]);
-					console.log(width, height);
-					//넓이 계산
-					var area = width * height;
-					console.log(area);
-					//사각형 내부 클릭 시 넓이를 팝업으로 출력
-					layer.bindPopup("사각형의 넓이는 <br>"+area.toFixed(2)+"m 입니다.").addTo(map); 
-				}
-				//그리기 도구가 폴리곤이라면
-				if(type === 'polygon'){
-					//폴리곤 중심 좌표
-					//var polyCenter = layer.getCenter();
-					//폴리곤 중심에 마커 생성
-					//polyCenter = L.marker(polyCenter).addTo(map);
-					
-					//폴리곤 내부 클릭 시 면적을 팝업으로 출력
-					layer.bindPopup("폴리곤의 면적은 "+"m 입니다.").addTo(map);
-				}
-				//그리기 도구가 마커라면
-				if(type === 'marker'){
-					
-				}
-			   
-			   
-			   
-				drawnItems.addLayer(layer);
-			});
-		
-		//그리기 종료 시
-		map.on('draw:drawstop',function(e){
-			var type = e.layerType;
-			var layer = e.layer;
-			//클릭 이벤트 해제
-			map.off('click');
-			map.off('mousedown');
-			
-			//그리기 도구가 폴리곤이라면
-			if(type === 'polygon'){
-				//폴리곤 중심 좌표
-				//var polyCenter = layer.getCenter();
-				//폴리곤 중심에 마커 생성
-				//polyCenter = L.marker(polyCenter).addTo(map);
-				
-			}
-		});
-
+		//레이어의 타입 초기화
+		var type = "";
+		//레이어 정보
+		var layer = "";
 		
 		//그리기 시작 시
 		map.on('draw:drawstart',function(e){
-			//그리기 도구의 타입체크			
-			var type = e.layerType;
-			//그리기 타입 체크
-			console.log(type);
+			type = e.layerType;
+			layer = e.layer;
+			console.log("선택한 도구 : "+type);
 			
 			//그리기 도구가 폴리라인 이라면
 			if(type === 'polyline'){
@@ -255,6 +214,7 @@
 				var polylineMarkers = [];
 				//지도 클릭하면 포인트 사이의 거리를 바인드 팝업으로 생성
 				map.on('click', function(e){
+					//클릭한 곳의 좌표값을 배열에 저장
 					linePoint.push(e.latlng);
 					console.log("마커의 좌표 값 : "+linePoint);
 					//지도에 마커 추가
@@ -297,12 +257,142 @@
 					polygonPoint.push(e.latlng);
 					console.log("폴리곤 꼭지점 좌표 값 : "+polygonPoint);
 				});
-				
-				//폴리곤 내부 클릭 시 면적을 팝업으로 출력
-				//layer.bindPopup("폴리곤의 면적은 "+dd+"m 입니다.").addTo(map);
 			}
 		})
 		
+		
+		//그리기 종료 시(종료 시점이 도형 생성 시점보다 나중임)
+		map.on('draw:drawstop',function(e){
+			//layer = e.layer;			
+			
+			//클릭 이벤트 해제
+			map.off('click');
+			map.off('mousedown');
+			
+			//그리기 도구가 폴리곤이라면
+			if(type === 'polygon'){
+				console.log("stop 이후 폴리곤");
+				//폴리곤 중심 좌표
+				var polyCenter = layer.getCenter();
+				//폴리곤 중심에 마커 생성
+				polyCenter = L.marker(polyCenter).addTo(map);
+				//중심 좌표에 팝업 생성
+				polyCenter.bindPopup("폴리곤의 면적은 "+"m 입니다.").addTo(map);
+				//좌표 
+				console.log(layer.getLatLng);
+			}
+		});
+		
+		
+		//도형이 생성되었을 때
+		//map.on(L.Draw.Event.CREATED, function (e) {
+		map.on('draw:created', function (e) {
+			   layer = e.layer;
+			   //타입이 마커인 경우
+			   if(type === 'marker'){
+			   }
+			   
+			   //타입이 원인 경우
+			   if(type === 'circle'){
+				   console.log("생성완료 : "+type);	
+				   //원의 중심 좌표
+				   var circleLatlng = layer.getLatLng();
+			       console.log("중심 좌표 : "+circleLatlng);
+			       //원의 중심에 마커 생성
+			       var circleMarker = L.marker(circleLatlng).addTo(map);
+			       //마커 클릭 시 해당 좌표 출력
+			       circleMarker.bindPopup("중심좌표는 "+circleLatlng+" 입니다.").addTo(map);
+			       console.log("중심 좌표의 마커 정보 : "+circleLatlng);
+			       //원의 반지름
+			       var theRadius = layer.getRadius();
+			       //원 내부 클릭 시 반지름 안내
+			       layer.bindPopup("반경은 "+theRadius.toFixed(3)+"m 입니다.").addTo(map);
+			    }
+			   
+				//그리기 도구가 사각형이라면
+				if(type === 'rectangle'){
+					console.log("생성완료 : "+type);	
+					//사각형 경로의 점을 배열로 저장(2차 배열로 저장된다.)
+					var rect = layer.getLatLngs();
+					console.log("좌표값 : "+rect);
+					//가로 길이 계산
+					var width = map.distance(rect[0][1], rect[0][2]);
+					//세로 길이 계산
+					var height = map.distance(rect[0][2], rect[0][3]);
+					console.log("가로 : "+width+", 세로 : "+height);
+					//넓이 계산
+					var area = width * height;
+					console.log("넓이 : "+area);
+					//사각형 내부 클릭 시 넓이를 팝업으로 출력
+					layer.bindPopup("사각형의 넓이는 <br>"+area.toFixed(2)+"m 입니다.").addTo(map); 
+				}
+				//그리기 도구가 폴리곤이라면
+				if(type === 'polygon'){
+					console.log("created 이후 폴리곤");					
+				}
+				//그리기 도구가 마커라면
+				if(type === 'marker'){
+					
+				}
+				drawnItems.addLayer(layer);
+			});
+		
+		
+		//편집도구 사용하고 저장 시
+		map.on('draw:edited', function(e){
+			console.log(type);
+			if(type === 'circle'){
+				//이전에 찍었던 마커 삭제해야 함 >> 전역으로 빼놓기
+				console.log("편집 완료 : "+type);		
+				//원의 중심 좌표
+				var circleLatlng = layer.getLatLng();
+			    console.log("중심 좌표 : "+circleLatlng);
+			    //원의 중심에 마커 생성
+			    var circleMarker = L.marker(circleLatlng).addTo(map);
+			    //마커 클릭 시 해당 좌표 출력
+			    circleMarker.bindPopup("중심좌표는 "+circleLatlng+" 입니다.").addTo(map);
+			    console.log("중심 좌표의 마커 정보 : "+circleLatlng);
+			    //원의 반지름
+			    var theRadius = layer.getRadius();
+			    //원 내부 클릭 시 반지름 안내
+			    layer.bindPopup("반경은 "+theRadius.toFixed(3)+"m 입니다.").addTo(map);
+			}
+			if(type === 'rectangle'){
+				console.log("편집 완료 : "+type);				
+				//사각형 경로의 점을 배열로 저장(2차 배열로 저장된다.)
+				var rect = layer.getLatLngs();
+				console.log("좌표값 : "+rect);
+				//가로 길이 계산
+				var width = map.distance(rect[0][1], rect[0][2]);
+				//세로 길이 계산
+				var height = map.distance(rect[0][2], rect[0][3]);
+				console.log("가로 : "+width+", 세로 : "+height);
+				//넓이 계산
+				var area = width * height;
+				console.log("넓이 : "+area);
+				//사각형 내부 클릭 시 넓이를 팝업으로 출력
+				layer.bindPopup("사각형의 넓이는 <br>"+area.toFixed(2)+"m 입니다.").addTo(map); 
+			}
+		})
+	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<!--
 		//선 그리며 거리재기(그리기 도구 사용 x)
 		function lineDraw(){
 			//클릭한 곳의 좌표값들이 들어갈 배열
@@ -362,10 +452,82 @@
 				console.log("총 거리 : "+totalDistance.toFixed(3));
 			});
 		};
+		 -->
+	</script>
+	
+	<script>
+	var startMarker = "";
+	var stopMarker = "";
+	var rightClick = "";
+	map.on('contextmenu', function(e){
+		var mouseLat = e.latlng.lat;	
+		var mouseLng = e.latlng.lng;
 		
+		var latlng = e.latlng;
+		rightClick = L.popup(e.latlng,{
+// 			content : "<div id='btn'><button class='rightBtn' id='start' onclick='startBtn("+mouseLat+", "+mouseLng+")'>출발</button><button class='rightBtn' id='stop' onclick='stopBtn("+mouseLat+", "+mouseLng+")'>도착</button></div>",
+			content : "<div id='btn'><button class='rightBtn' id='start' onclick='startBtn(this)' data-lat="+mouseLat+" data-lng="+mouseLng+">출발</button><button class='rightBtn' id='stop' onclick='stopBtn(this)' data-lat="+mouseLat+" data-lng="+mouseLng+">도착</button></div>",
+			className : 'rightMenu'
+		}).openOn(map);
+		
+	})
+	
+// 		function startBtn(lat, lng){
+// 			alert(lat, lng);			
+// 			var startMarker = L.marker([lat, lng]).addTo(map);
+// 		}
+	
+		function startBtn(target){
+			if(startMarker){
+				startMarker.remove();
+			}
+			var lat = $(target).attr("data-lat");
+			var lng = $(target).attr("data-lng");
+			
+			var startIcon = L.icon({
+			    iconUrl: '/images/start.png',
+			    iconSize:     [45, 35], // size of the icon
+			    iconAnchor:   [22, 35], // point of the icon which will correspond to marker's location
+			    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+			});
+			
+			startMarker = L.marker([lat, lng], {
+				icon: startIcon,
+				draggable : true,
+				autoPan : true
+			}).addTo(map);
+			map.closePopup();
+			
+			startMarker.bindTooltip("끌어서 이동", {
+				direction : 'top',
+				offset : [0,-30]
+			}).openTooptip();
+		}
+	
+		function stopBtn(target){
+			if(stopMarker){
+				stopMarker.remove();
+			}
+			var lat = $(target).attr("data-lat");
+			var lng = $(target).attr("data-lng");
+			
+			var stopIcon = L.icon({
+			    iconUrl: '/images/stop.png',
+			    iconSize:     [45, 35], // size of the icon
+			    iconAnchor:   [22, 35], // point of the icon which will correspond to marker's location
+			    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+			});
+			stopMarker = L.marker([lat, lng], {
+				icon: stopIcon,
+				draggable : true,
+				autoPan : true
+			}).addTo(map);
+			map.closePopup();
+		}
+	
 	</script>
 
-		
+	<!-- 
 	<script>
 		//내 위치 찾기
 		function me() {
@@ -629,5 +791,7 @@
 			map.panTo(new L.LatLng(lon, lat), 10);
 		}
 	</script>
+	
+	 -->
 </body>
 </html>
