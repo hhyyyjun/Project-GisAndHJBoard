@@ -198,6 +198,7 @@
 		
 		//그리기 시작 시
 		map.on('draw:drawstart',function(e){
+			alert(e.layerType);
 			type = e.layerType;
 			layer = e.layer;
 			console.log("선택한 도구 : "+type);
@@ -455,7 +456,10 @@
 		 -->
 	</script>
 	
+	
+	
 	<script>
+	//지도에 우클릭 시 팝업
 	var startMarker = "";
 	var stopMarker = "";
 	var rightClick = "";

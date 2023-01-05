@@ -118,20 +118,20 @@
 
 	<script>
 		
-		map.on('click', function(e){
-			//getZoom 줌레벨 확인
-			console.log("ZoomLevel : "+map.getZoom());
-			//getCenter 현재 지도의 지리적 중심 위경도값
-			console.log("CenterLatLng : "+map.getCenter());
-			//지도의 현재 크기(css로 설정한 값)
-			console.log("mapSize : "+map.getSize());
-			//getPixelOrigin 픽셀좌표 반환
-			console.log("PixelCRS : "+map.getPixelOrigin());
-			//클릭한 위치의 위경도값
-			console.log("LatLngVal : "+e.latlng);
-			//좌표 사이 거리
-			console.log("좌표사이거리 : "+map.distance(e.latlng,[openmateLat, openmateLng]));
-		});
+// 		map.on('click', function(e){
+// 			//getZoom 줌레벨 확인
+// 			console.log("ZoomLevel : "+map.getZoom());
+// 			//getCenter 현재 지도의 지리적 중심 위경도값
+// 			console.log("CenterLatLng : "+map.getCenter());
+// 			//지도의 현재 크기(css로 설정한 값)
+// 			console.log("mapSize : "+map.getSize());
+// 			//getPixelOrigin 픽셀좌표 반환
+// 			console.log("PixelCRS : "+map.getPixelOrigin());
+// 			//클릭한 위치의 위경도값
+// 			console.log("LatLngVal : "+e.latlng);
+// 			//좌표 사이 거리
+// 			console.log("좌표사이거리 : "+map.distance(e.latlng,[openmateLat, openmateLng]));
+// 		});
 		
 		
 		//툴팁이 열릴 때 이벤트
