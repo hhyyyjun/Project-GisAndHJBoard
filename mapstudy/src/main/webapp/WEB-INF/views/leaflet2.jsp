@@ -23,10 +23,41 @@
 <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.css" />
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script>
+	<script src="https://leaflet.github.io/Leaflet.draw/libs/leaflet-src.js"></script>
+    <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.draw/libs/leaflet.css"/>
+
+    <script src="https://leaflet.github.io/Leaflet.draw/src/Leaflet.draw.js"></script>
+    <script src="https://leaflet.github.io/Leaflet.draw/src/Leaflet.Draw.Event.js"></script>
+    <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.draw/src/leaflet.draw.css"/>
+
+    <script src="https://leaflet.github.io/Leaflet.draw/src/Toolbar.js"></script>
+    <script src="https://leaflet.github.io/Leaflet.draw/src/Tooltip.js"></script>
+
+    <script src="https://leaflet.github.io/Leaflet.draw/src/ext/GeometryUtil.js"></script>
+    <script src="https://leaflet.github.io/Leaflet.draw/src/ext/LatLngUtil.js"></script>
+    <script src="https://leaflet.github.io/Leaflet.draw/src/ext/LineUtil.Intersect.js"></script>
+    <script src="https://leaflet.github.io/Leaflet.draw/src/ext/Polygon.Intersect.js"></script>
+    <script src="https://leaflet.github.io/Leaflet.draw/src/ext/Polyline.Intersect.js"></script>
+    <script src="https://leaflet.github.io/Leaflet.draw/src/ext/TouchEvents.js"></script>
+    <script src="https://leaflet.github.io/Leaflet.draw/src/draw/DrawToolbar.js"></script>
+    <script src="https://leaflet.github.io/Leaflet.draw/src/draw/handler/Draw.Feature.js"></script>
+    <script src="https://leaflet.github.io/Leaflet.draw/src/draw/handler/Draw.SimpleShape.js"></script>
+    <script src="https://leaflet.github.io/Leaflet.draw/src/draw/handler/Draw.Polyline.js"></script>
+    <script src="https://leaflet.github.io/Leaflet.draw/src/draw/handler/Draw.Marker.js"></script>
+    <script src="https://leaflet.github.io/Leaflet.draw/src/draw/handler/Draw.Circle.js"></script>
+    <script src="https://leaflet.github.io/Leaflet.draw/src/draw/handler/Draw.CircleMarker.js"></script>
+    <script src="https://leaflet.github.io/Leaflet.draw/src/draw/handler/Draw.Polygon.js"></script>
+    <script src="https://leaflet.github.io/Leaflet.draw/src/draw/handler/Draw.Rectangle.js"></script>
+    <script src="https://leaflet.github.io/Leaflet.draw/src/edit/EditToolbar.js"></script>
+    <script src="https://leaflet.github.io/Leaflet.draw/src/edit/handler/EditToolbar.Edit.js"></script>
+    <script src="https://leaflet.github.io/Leaflet.draw/src/edit/handler/EditToolbar.Delete.js"></script>
+    <script src="https://leaflet.github.io/Leaflet.draw/src/Control.Draw.js"></script>
+    <script src="https://leaflet.github.io/Leaflet.draw/src/edit/handler/Edit.Poly.js"></script>
+    <script src="https://leaflet.github.io/Leaflet.draw/src/edit/handler/Edit.SimpleShape.js"></script>
+    <script src="https://leaflet.github.io/Leaflet.draw/src/edit/handler/Edit.Rectangle.js"></script>
+    <script src="https://leaflet.github.io/Leaflet.draw/src/edit/handler/Edit.Marker.js"></script>
+    <script src="https://leaflet.github.io/Leaflet.draw/src/edit/handler/Edit.CircleMarker.js"></script>
+    <script src="https://leaflet.github.io/Leaflet.draw/src/edit/handler/Edit.Circle.js"></script>
 
 <style>
 #btn{
@@ -63,6 +94,23 @@
 	border : 1px solid black;
 	border-radius: 10%;
 	display : none;
+}
+#lastDistanceBtn{
+	border: 1px solid green; 
+	color: green;
+	border-radius: 10px;
+	width: 130px;
+	height: 30px;
+	display: block;
+	margin: 5px auto;
+	cursor: pointer;
+	background-color: #fff;
+}
+#lastDistanceInfo{
+	font-weight: bold;
+    color: green;
+    display: block;
+    margin : 0 auto;
 }
 </style>
 
@@ -195,10 +243,17 @@
 		var type = "";
 		//레이어 정보
 		var layer = "";
+		//단위변환하여 출력할 값
+		var output;
+		var Totaloutput;
+		//원의 중심 좌표
+		var circleLatlng
+		//원의 중심 좌표에 생성될 마커
+		var circleMarker
 		
 		//그리기 시작 시
 		map.on('draw:drawstart',function(e){
-			alert(e.layerType);
+// 			alert(e.layerType);
 			type = e.layerType;
 			layer = e.layer;
 			console.log("선택한 도구 : "+type);
@@ -233,20 +288,30 @@
 						var distance2 = linePoint[i-1];
 						//거리 계산
 						var measure = map.distance(distance1, distance2);
+						if(measure > 1000){
+							output = (Math.round(measure / 1000 * 100) / 100) + ' km';
+						} else{
+							output = (Math.round(measure * 100) / 100) + ' m'
+						}
 						//거리 값
-						console.log("마커 사이 거리 : "+measure.toFixed(3));
+						console.log("마커 사이 거리 : "+output);
 						//마커 사이의 거리를 툴팁으로 출력
-						polylineMarker.bindTooltip(("거리 : "+measure.toFixed(3)+"m"),{
-							permanent : true
+						polylineMarker.bindTooltip(("거리 : "+output),{
+							permanent : true //지도에 영구적으로 띄워놓을건지?
 						}).addTo(map).openTooltip();
 						//총 거리 계산
 						totalDistance += measure;
-						console.log("현재까지 총 거리 : "+totalDistance.toFixed(3));
+						if(totalDistance > 1000){
+							Totaloutput = (Math.round(totalDistance / 1000 * 100) / 100) + ' km';
+						} else{
+							Totaloutput = (Math.round(totalDistance * 100) / 100) + ' m'
+						}
 						//마커 배열의 마지막 인덱스의 마커 정보를 가져와
 						var lastMarker = polylineMarkers[polylineMarkers.length-1];
 						//마지막 마커에 총 거리 출력
-						lastMarker.bindPopup("<div style='font-weight : bold; color : green;'>총 거리 : "+totalDistance.toFixed(3)+"m</div>");
-						console.log("총 거리 : "+totalDistance.toFixed(3));
+						lastMarker.bindPopup("<div id='lastDistanceInfo'>총 거리 : "+Totaloutput+"</div>"
+											 +"<button id='lastDistanceBtn'>지우기</button>");
+						console.log("총 거리 : "+Totaloutput);
 					}
 				});
 			}
@@ -264,24 +329,10 @@
 		
 		//그리기 종료 시(종료 시점이 도형 생성 시점보다 나중임)
 		map.on('draw:drawstop',function(e){
-			//layer = e.layer;			
 			
 			//클릭 이벤트 해제
 			map.off('click');
 			map.off('mousedown');
-			
-			//그리기 도구가 폴리곤이라면
-			if(type === 'polygon'){
-				console.log("stop 이후 폴리곤");
-				//폴리곤 중심 좌표
-				var polyCenter = layer.getCenter();
-				//폴리곤 중심에 마커 생성
-				polyCenter = L.marker(polyCenter).addTo(map);
-				//중심 좌표에 팝업 생성
-				polyCenter.bindPopup("폴리곤의 면적은 "+"m 입니다.").addTo(map);
-				//좌표 
-				console.log(layer.getLatLng);
-			}
 		});
 		
 		
@@ -289,18 +340,15 @@
 		//map.on(L.Draw.Event.CREATED, function (e) {
 		map.on('draw:created', function (e) {
 			   layer = e.layer;
-			   //타입이 마커인 경우
-			   if(type === 'marker'){
-			   }
-			   
+			   drawnItems.addLayer(layer);
 			   //타입이 원인 경우
 			   if(type === 'circle'){
 				   console.log("생성완료 : "+type);	
 				   //원의 중심 좌표
-				   var circleLatlng = layer.getLatLng();
+				   circleLatlng = layer.getLatLng();
 			       console.log("중심 좌표 : "+circleLatlng);
 			       //원의 중심에 마커 생성
-			       var circleMarker = L.marker(circleLatlng).addTo(map);
+			       circleMarker = L.marker(circleLatlng).addTo(map);
 			       //마커 클릭 시 해당 좌표 출력
 			       circleMarker.bindPopup("중심좌표는 "+circleLatlng+" 입니다.").addTo(map);
 			       console.log("중심 좌표의 마커 정보 : "+circleLatlng);
@@ -325,17 +373,17 @@
 					var area = width * height;
 					console.log("넓이 : "+area);
 					//사각형 내부 클릭 시 넓이를 팝업으로 출력
-					layer.bindPopup("사각형의 넓이는 <br>"+area.toFixed(2)+"m 입니다.").addTo(map); 
+					layer.bindPopup("사각형의 넓이는 <br>"+area.toFixed(2)+"m<sup>2</sup> 입니다.").addTo(map); 
 				}
 				//그리기 도구가 폴리곤이라면
 				if(type === 'polygon'){
-					console.log("created 이후 폴리곤");					
+					console.log("created 이후 폴리곤");
+					var area = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0]);
+					var readableArea = L.GeometryUtil.readableArea(area, true);
+
+					layer.bindTooltip(readableArea, {permanent: true, direction: 'center'}).openTooltip();
+// 					createAreaTooltip(layer);
 				}
-				//그리기 도구가 마커라면
-				if(type === 'marker'){
-					
-				}
-				drawnItems.addLayer(layer);
 			});
 		
 		
@@ -343,13 +391,16 @@
 		map.on('draw:edited', function(e){
 			console.log(type);
 			if(type === 'circle'){
+				if(circleMarker){
+					circleMarker.remove();
+				}
 				//이전에 찍었던 마커 삭제해야 함 >> 전역으로 빼놓기
 				console.log("편집 완료 : "+type);		
 				//원의 중심 좌표
-				var circleLatlng = layer.getLatLng();
+				circleLatlng = layer.getLatLng();
 			    console.log("중심 좌표 : "+circleLatlng);
 			    //원의 중심에 마커 생성
-			    var circleMarker = L.marker(circleLatlng).addTo(map);
+			    circleMarker = L.marker(circleLatlng).addTo(map);
 			    //마커 클릭 시 해당 좌표 출력
 			    circleMarker.bindPopup("중심좌표는 "+circleLatlng+" 입니다.").addTo(map);
 			    console.log("중심 좌표의 마커 정보 : "+circleLatlng);
@@ -372,17 +423,68 @@
 				var area = width * height;
 				console.log("넓이 : "+area);
 				//사각형 내부 클릭 시 넓이를 팝업으로 출력
-				layer.bindPopup("사각형의 넓이는 <br>"+area.toFixed(2)+"m 입니다.").addTo(map); 
+				layer.bindPopup("사각형의 넓이는 <br>"+area.toFixed(2)+"m<sup>2</sup> 입니다.").addTo(map); 
 			}
 		})
 	
+		//레이어가 삭제된 경우
+// 		map.on('draw:deleted', function(e){
+// 			if(type === 'polyline'){
+// 				for(var i=0; i<polylineMarkers.length;i++){
+// 					polylineMarkers[i].remove();
+// 				}
+// 				polylineMarkers = [];
+// 			}
+// 			if(type === 'rectangle'){
+// 			}
+// 			if(type === 'circle'){
+// 			}
+// 			if(type === 'polygon'){
+// 			}
+// 		})
 		
 		
+		map.on('click', function(e){
+			console.log(e.latlng);
+		})
 		
 		
-		
-		
-		
+		function createAreaTooltip(layer) {
+            if(layer.areaTooltip) {
+                return;
+            }
+
+            layer.areaTooltip = L.tooltip({
+                permanent: true,
+                direction: 'center',
+                className: 'area-tooltip'
+            });
+
+            layer.on('remove', function(event) {
+                layer.areaTooltip.remove();
+            });
+
+            layer.on('add', function(event) {
+                updateAreaTooltip(layer);
+                layer.areaTooltip.addTo(map);
+            });
+
+            if(map.hasLayer(layer)) {
+                updateAreaTooltip(layer);
+                layer.areaTooltip.addTo(map);
+            }
+        }
+
+        function updateAreaTooltip(layer) {
+            var area = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0]);
+            var readableArea = L.GeometryUtil.readableArea(area, true);
+//             readableArea = readableArea.split(" ")[0]+"㎡";
+            var latlng = layer.getCenter();
+
+            layer.areaTooltip
+                .setContent(readableArea)
+                .setLatLng(latlng);
+        }
 		
 		
 		

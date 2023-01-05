@@ -300,6 +300,8 @@
 		var stroke = document.getElementById('stroke');
 		//선 색깔
 		var strokeColor = document.getElementById('strokeColor');
+		//클릭한 부분의 좌표값 배열
+		var point = [];
 		////////////////////////////////////////그리기 도구 시작
 		function addInteractions() {
 			draw = new ol.interaction.Draw({
@@ -356,6 +358,18 @@
 	                } else if (geom instanceof ol.geom.LineString) {
 	                  output = formatLength(geom);
 	                  tooltipCoord = geom.getLastCoordinate();
+		              
+	                  point.push(tooltipCoord);
+	                  if(point.length >=2){
+		                //배열의 길이
+						var i = point.length;
+						//이전 마커의 좌표
+						var distance1 = point[i-2];
+						//이후 마커의 좌표
+						var distance2 = point[i-1];
+						//거리 계산
+						var measure = geom.getLength(distance1, distance2);
+	                  }
 	                } else if (geom instanceof ol.geom.Circle){
 	                  output = formatCircle(geom);
 	                  tooltipCoord = geom.getCenter();
