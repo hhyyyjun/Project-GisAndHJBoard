@@ -251,6 +251,9 @@
 		//원의 중심 좌표에 생성될 마커
 		var circleMarker
 		
+		//마커들
+		var polylineMarkers = [];
+		
 		//그리기 시작 시
 		map.on('draw:drawstart',function(e){
 // 			alert(e.layerType);
@@ -266,15 +269,17 @@
 				var totalDistance = 0;
 				//마커
 				var polylineMarker;
-				//마커들
-				var polylineMarkers = [];
+// 				//마커들
+// 				var polylineMarkers = [];
 				//지도 클릭하면 포인트 사이의 거리를 바인드 팝업으로 생성
 				map.on('click', function(e){
 					//클릭한 곳의 좌표값을 배열에 저장
 					linePoint.push(e.latlng);
 					console.log("마커의 좌표 값 : "+linePoint);
 					//지도에 마커 추가
-					polylineMarker = L.marker(e.latlng).addTo(map);
+					polylineMarker = L.marker(e.latlng,{
+						riseOnHover : true
+					}).addTo(map);
 					//마커정보를 배열에 추가
 					polylineMarkers.push(polylineMarker);
 					console.log(polylineMarkers);
@@ -324,8 +329,12 @@
 					console.log("폴리곤 꼭지점 좌표 값 : "+polygonPoint);
 				});
 			}
+			//원이라면
+			if(type === 'circle'){
+				console.log("원 그리는 중");
+			}
 		})
-		
+
 		
 		//그리기 종료 시(종료 시점이 도형 생성 시점보다 나중임)
 		map.on('draw:drawstop',function(e){
@@ -378,10 +387,18 @@
 				//그리기 도구가 폴리곤이라면
 				if(type === 'polygon'){
 					console.log("created 이후 폴리곤");
-					var area = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0]);
-					var readableArea = L.GeometryUtil.readableArea(area, true);
+					//폴리곤의 면적 계산하며, 소수점 3번째 자리까지 출력
+					var area = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0]).toFixed(1);
+					console.log("area : "+area);
+					console.log(typeof area)
+					//미터 제곱으로 단위 붙여준다.
+					area += " m<sup>2</sup>";
+					//헥타르 단위로 변환함
+// 					var readableArea = L.GeometryUtil.readableArea(area, true);
+// 					console.log("readableArea : "+ readableArea);
+// 					console.log(typeof readableArea)
 
-					layer.bindTooltip(readableArea, {permanent: true, direction: 'center'}).openTooltip();
+					layer.bindTooltip("면적 " + area, {permanent: true, direction: 'center'}).openTooltip();
 // 					createAreaTooltip(layer);
 				}
 			});
@@ -425,27 +442,33 @@
 				//사각형 내부 클릭 시 넓이를 팝업으로 출력
 				layer.bindPopup("사각형의 넓이는 <br>"+area.toFixed(2)+"m<sup>2</sup> 입니다.").addTo(map); 
 			}
+			if(type === 'polygon'){
+				console.log("편집 완료 : "+type);	
+				//폴리곤의 면적 계산하며, 소수점 3번째 자리까지 출력
+				var area = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0]).toFixed(1);
+				console.log("area : "+area);
+				console.log(typeof area)
+				//미터 제곱으로 단위 붙여준다.
+				area += " m<sup>2</sup>";
+
+				layer.bindTooltip("면적 " + area, {permanent: true, direction: 'center'}).openTooltip();
+			}
 		})
 	
 		//레이어가 삭제된 경우
-// 		map.on('draw:deleted', function(e){
-// 			if(type === 'polyline'){
-// 				for(var i=0; i<polylineMarkers.length;i++){
-// 					polylineMarkers[i].remove();
-// 				}
-// 				polylineMarkers = [];
-// 			}
-// 			if(type === 'rectangle'){
-// 			}
-// 			if(type === 'circle'){
-// 			}
-// 			if(type === 'polygon'){
-// 			}
-// 		})
+		map.on('draw:deleted', function(e){
+			if(type === 'polyline'){
+				for(var i=0; i<polylineMarkers.length;i++){
+					polylineMarkers[i].remove();
+				}
+				polylineMarkers = [];
+			}
+		})
 		
 		
 		map.on('click', function(e){
 			console.log(e.latlng);
+			
 		})
 		
 		
@@ -606,7 +629,7 @@
 			
 			startMarker.bindTooltip("끌어서 이동", {
 				direction : 'top',
-				offset : [0,-30]
+				offset : [0,-35]
 			}).openTooptip();
 		}
 	
@@ -629,6 +652,11 @@
 				autoPan : true
 			}).addTo(map);
 			map.closePopup();
+			
+			stopMarker.bindTooltip("끌어서 이동", {
+				direction : 'top',
+				offset : [0,-35]
+			}).openTooptip();
 		}
 	
 	</script>

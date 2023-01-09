@@ -44,6 +44,12 @@ public class StartController {
 		
 		return "openfreedraw";
 	}
+	@GetMapping("/leafletexample")
+	public String leafletexample() {
+		System.out.println("leafletexample");
+		
+		return "leafletexample";
+	}
 	
 	
 	
