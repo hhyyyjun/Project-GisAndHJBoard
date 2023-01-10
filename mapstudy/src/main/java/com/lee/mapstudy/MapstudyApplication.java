@@ -1,9 +1,8 @@
 package com.lee.mapstudy;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 //외장톰캣 설정 시 springbootservletinitializer 상속
 // gradle dependency에 추가
@@ -30,6 +29,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 
 
 @SpringBootApplication
+@MapperScan(basePackages = "com.lee.mapstudy")
 public class MapstudyApplication {
 	
 	public static void main(String[] args) {

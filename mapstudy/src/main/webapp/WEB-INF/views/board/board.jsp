@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+<div>보드입니다.</div>
 </body>
 </html>

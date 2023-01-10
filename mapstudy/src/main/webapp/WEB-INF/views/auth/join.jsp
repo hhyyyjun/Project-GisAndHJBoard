@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-<form>
+<form id="joinForm">
   <div class="mb-3">
     <label for="joinId" class="form-label">아이디 입력</label>
     <input type="text" class="form-control" id="joinId" aria-describedby="emailHelp">
@@ -20,11 +20,19 @@
     <label for="joinNickname" class="form-label">닉네임</label>
     <input type="text" class="form-control" id="joinNickname">
   </div>
+  <div class="mb-3">
+    <label for="joinNickname" class="form-label">권한</label>
+<!--     <input type="text" class="form-control" id="mrole"> -->
+    <select id="mrole">
+    	<option>일반회원</option>
+    	<option>관리자</option>
+    </select>
+  </div>
   <!--<div class="mb-3 form-check">
     <!--<input type="checkbox" class="form-check-input" id="exampleCheck1">
      <label class="form-check-label" for="exampleCheck1">Check me out</label>
   </div>-->
-  <button onclick="joinMember()" class="btn btn-primary">회원가입</button>
+  <button type="button" onclick="joinMember()" class="btn btn-primary">회원가입</button>
 </form>
 
 </body>

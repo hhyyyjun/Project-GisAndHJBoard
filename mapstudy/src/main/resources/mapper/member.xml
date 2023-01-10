@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
                         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="MemberDto">
+<mapper namespace="com.lee.mapstudy.boardDao.MemberDao">
 
-<select id="insertMember" resultMap="memberDao">
-INSERT INTO MEMBER VALUES(#{mnum}, #{mpw}, #{mnick}, #{mrole})
+<insert id="insertM" parameterType="CustomMap">
+INSERT INTO TB_MEMBER VALUES(#{id}, #{pw}, #{nick}, #{role})
+</insert>
 
+<select id="selectOne" parameterType="CustomMap" resultType="com.lee.mapstudy.boardDao.MemberDao">
+SELECT FROM TB_MEMBER WHERE MID = #{id} AND MPW = #{pw}
 </select>
+
 </mapper>
