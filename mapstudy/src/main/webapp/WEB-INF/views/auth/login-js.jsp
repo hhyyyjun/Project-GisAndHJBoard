@@ -24,10 +24,11 @@
 				dataType : "json",
 				contentType : "application/json;charset=UTF-8",
 				success : function(data) {
-					if (data == false) {
-						console.log('로그인 실패');
-					} else {
+					if (data.result == "success") {
 						console.log('로그인 성공');
+						location.href="/board";
+					} else {
+						console.log('로그인 실패');
 					}
 				},
 				error : function() {

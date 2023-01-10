@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-<form id="joinForm">
+<form id="joinForm" class="boardContent">
   <div class="mb-3">
     <label for="joinId" class="form-label">아이디 입력</label>
     <input type="text" class="form-control" id="joinId" aria-describedby="emailHelp">

@@ -27,6 +27,15 @@ public class MemberService {
 	}
 	//로그인
 	public Map<String, Object> selectOne(Map<String, Object> params) {
-		return memberDao.selectOne(params);
+		Map<String, Object> map = new HashMap<String, Object>();
+//		System.out.println(memberDao.selectOne(params));
+		try {
+			memberDao.selectOne(params);
+			map.put("result", "success");
+		}catch (Exception e) {
+			map.put("result", "fail");
+			e.printStackTrace();
+		}
+		return map; 
 	}
 }

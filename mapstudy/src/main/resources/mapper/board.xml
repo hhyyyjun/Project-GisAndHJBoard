@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+                        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lee.mapstudy.boardDao.BoardDao">
+
+<insert id="insertB" parameterType="CustomMap">
+INSERT INTO TB_BOARD VALUES()
+</insert>
+
+<select id="selectOne" parameterType="CustomMap" resultType="com.lee.mapstudy.boardDto.MemberDto">
+SELECT * FROM TB_BOARD WHERE MID=#{bnum}
+</select>
+
+<select id="selectAll" resultType="list">
+SELECT * FROM TB_BOARD
+</select>
+
+<delete id="deleteB" parameterType="CustomMap">
+DELETE FROM TB_BOARD WHERE BNUM=#{bnum}
+</delete>
+
+<update id="updateB" parameterType="CustomMap">
+UPDATE BOARD SET BTITLE=#{btitle}, BCONTENT=#{bcontent}, BIMAGE=#{bimage}
+</update>
+</mapper>

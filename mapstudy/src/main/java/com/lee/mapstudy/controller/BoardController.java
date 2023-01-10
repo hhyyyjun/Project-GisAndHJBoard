@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.lee.mapstudy.boardDto.BoardDto;
 import com.lee.mapstudy.boardDto.MemberDto;
 import com.lee.mapstudy.service.MemberService;
 
@@ -28,13 +29,15 @@ public class BoardController {
 	}
 	//로그인 클릭 시
 	@PostMapping("/loginMember")
-	public String loginMember(@RequestBody Map<String, Object> params, MemberDto mdto, Model model) {
+	@ResponseBody
+	public Map<String, Object> loginMember(@RequestBody Map<String, Object> params, MemberDto mdto, Model model) {
 		System.out.println("loginMember");
-		memberService.selectOne(params);
+		System.out.println(params);
+		System.out.println(memberService.selectOne(params));
 		
 		model.addAttribute("userId", mdto.getMid());
 		model.addAttribute("userRole", mdto.getMrole());
-		return "/tiles/view/auth/board";
+		return memberService.selectOne(params);
 	}
 	//회원가입 화면
 	@GetMapping("/join")
@@ -59,19 +62,26 @@ public class BoardController {
 	
 	
 	
-	@RequestMapping("/board")
-	public String board() {
+	@GetMapping("/board")
+	public String board(BoardDto boardDto, Model model) {
+		
+		
 		System.out.println("board");
 		return "/tiles/view/board/board";
 	}
-	@RequestMapping("/content")
-	public String boardedit() {
-		System.out.println("boardedit");
-		return "/tiles/view/board/boardedit";
+	@GetMapping("/insertB")
+	public String insertB() {
+		System.out.println("insertB");
+		return "/tiles/view/board/board";
 	}
-	@RequestMapping("/contentedit")
-	public String contentedit() {
-		System.out.println("contentedit");
-		return "/tiles/view/board/contentedit";
+	@GetMapping("/deleteB")
+	public String deleteB() {
+		System.out.println("deleteB");
+		return "/tiles/view/board/board";
+	}
+	@RequestMapping("/updateB")
+	public String updateB() {
+		System.out.println("updateB");
+		return "/tiles/view/board/boardedit";
 	}
 }

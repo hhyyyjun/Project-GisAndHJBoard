@@ -7,8 +7,10 @@
 INSERT INTO TB_MEMBER VALUES(#{id}, #{pw}, #{nick}, #{role})
 </insert>
 
-<select id="selectOne" parameterType="CustomMap" resultType="com.lee.mapstudy.boardDao.MemberDao">
-SELECT FROM TB_MEMBER WHERE MID = #{id} AND MPW = #{pw}
+<select id="selectOne" parameterType="CustomMap" resultType="com.lee.mapstudy.boardDto.MemberDto">
+SELECT * FROM TB_MEMBER WHERE MID=#{id} AND MPW=#{pw}
 </select>
+
+
 
 </mapper>
