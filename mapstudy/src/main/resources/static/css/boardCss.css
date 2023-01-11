@@ -27,6 +27,7 @@
 	font-size : 20px;
 	font-weight : bold;
 }
+/* 회원가입 화면 */
 #idBox{
 	display : flex;
 }
@@ -49,3 +50,14 @@
     font-size: 1rem;
     font-weight: 400;
 }
+
+/* 게시판화면 */
+#boardTop{
+	display : flex;
+}
+#selectType{
+	width : 80px;
+	text-align: center;
+}
+
+

@@ -2,9 +2,14 @@ package com.lee.mapstudy.service;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.lee.mapstudy.boardDao.MemberDao;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -26,15 +31,17 @@ public class MemberService {
 		return map; 
 	}
 	//로그인
-	public Map<String, Object> selectOne(Map<String, Object> params) {
+	public Map<String, Object> selectOne(Map<String, Object> params, HttpSession session) {
 		Map<String, Object> map = new HashMap<String, Object>();
-//		System.out.println(memberDao.selectOne(params));
+		System.out.println("서비스"+params);
 		try {
-			memberDao.selectOne(params);
+			Map<String, Object> result = memberDao.selectOne(params);
 			map.put("result", "success");
+			session.setAttribute("userId", result.get("mid"));
+			session.setAttribute("userNick", result.get("mnick"));
+			session.setAttribute("userRole", result.get("mrole"));
 		}catch (Exception e) {
 			map.put("result", "fail");
-			e.printStackTrace();
 		}
 		return map; 
 	}

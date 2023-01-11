@@ -4,30 +4,51 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Insert title here ${sessionScope.userId}</title>
 </head>
 <body>
 <div class="boardContent">
-	<div>
-		<select>
+	<div id="boardTop">
+		<select id="selectType" class="mb-3">
 			<option>글</option>
 			<option>댓글</option>
 		</select>
-		
+		<div class="input-group mb-3">
+		  <input type="text" class="form-control" placeholder="검색어를 입력하세요." aria-label="Recipient's username" aria-describedby="basic-addon2">
+		  <button class="btn btn-outline-secondary" type="button" id="button-addon2">검색</button>
+		</div>
 	</div>
-	<table border="1">
-		<tr>
-			<th>제목</th>
-			<th>내용</th>
-			<th>?</th>
-		</tr>
-		<tr>
-			<td><a href="#">1</a></td>
-			<td>메론</td>
-			<td>3</td>
-		</tr>
-	</table>
-
+	
+	<table class="table table-hover">
+	 <thead>
+	   <tr>
+	     <th scope="col">#</th>
+	     <th scope="col">제목</th>
+	     <th scope="col">내용</th>
+	     <th scope="col">작성자</th>
+	   </tr>
+	 </thead>
+	 <tbody>
+	   <tr>
+	     <th scope="row"><a href=#>d</a></th>
+	     <td>Mark</td>
+	     <td>Otto</td>
+	     <td>@mdo</td>
+	   </tr>
+	   <tr>
+	     <th scope="row">2</th>
+	     <td>Jacob</td>
+	     <td>Thornton</td>
+	     <td>@fat</td>
+	   </tr>
+	   <tr>
+	     <th scope="row">3</th>
+	     <td>Larry the Bird</td>
+	     <td>Larry the Bird</td>
+	     <td>@twitter</td>
+	   </tr>
+	 </tbody>
+</table>
 
 
 </div>

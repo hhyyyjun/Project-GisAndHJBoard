@@ -31,6 +31,7 @@ function login() {
 				console.log('로그인 성공');
 				location.href="/board";
 			} else {
+				alert("아이디 혹은 비밀번호가 일치하지 않습니다.");
 				console.log('로그인 실패');
 			}
 		},

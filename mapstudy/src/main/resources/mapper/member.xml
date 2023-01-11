@@ -4,16 +4,32 @@
 <mapper namespace="com.lee.mapstudy.boardDao.MemberDao">
 
 <insert id="insertM" parameterType="CustomMap">
-INSERT INTO TB_MEMBER VALUES(#{id}, #{pw}, #{nick}, #{role})
+	INSERT INTO TB_MEMBER(MID, MPW, MNICK, MROLE)
+	VALUES(#{id}, #{pw}, #{nick}, #{role})
 </insert>
 
-<select id="selectOne" parameterType="CustomMap" resultType="com.lee.mapstudy.boardDto.MemberDto">
-SELECT * FROM TB_MEMBER WHERE MID=#{id} AND MPW=#{pw}
+<select id="selectOne" parameterType="CustomMap" resultType="CustomMap">
+	SELECT MID 
+	      ,MPW <!--  -->
+	      ,MNICK
+	      ,MROLE
+	  FROM TB_MEMBER 
+	 WHERE 1 = 1
+	   
+	   AND MID = #{id}
+	    
+	   AND MPW = #{pw}
 </select>
 
+
 <select id="checkId" parameterType="String" resultType="int">
-	SELECT COUNT(*) FROM TB_MEMBER WHERE MID=#{id}
+	SELECT COUNT(*) as cmt 
+	  FROM TB_MEMBER 
+	 WHERE 1 = 1
+	 
+	   AND MID = #{id}
 </select>
+
 
 
 </mapper>

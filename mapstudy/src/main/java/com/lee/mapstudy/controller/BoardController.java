@@ -2,6 +2,8 @@ package com.lee.mapstudy.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,14 +32,9 @@ public class BoardController {
 	//로그인 클릭 시
 	@PostMapping("/loginMember")
 	@ResponseBody
-	public Map<String, Object> loginMember(@RequestBody Map<String, Object> params, MemberDto mdto, Model model) {
+	public Map<String, Object> loginMember(@RequestBody Map<String, Object> params, HttpSession session) {
 		System.out.println("loginMember");
-		System.out.println(params);
-		System.out.println(memberService.selectOne(params));
-		
-		model.addAttribute("userId", mdto.getMid());
-		model.addAttribute("userRole", mdto.getMrole());
-		return memberService.selectOne(params);
+		return memberService.selectOne(params, session);
 	}
 	//회원가입 화면
 	@GetMapping("/join")
@@ -68,27 +65,40 @@ public class BoardController {
 	}
 	
 	
-	
+	//게시판
 	@GetMapping("/board")
 	public String board(BoardDto boardDto, Model model) {
-		
-		
 		System.out.println("board");
 		return "/tiles/view/board/board";
 	}
-	@GetMapping("/insertB")
+	//글 상세보기
+	@GetMapping("/boardContent")
+	public String boardContent(BoardDto boardDto, Model model) {
+		System.out.println("board");
+		return "/tiles/view/board/boardContent";
+	}
+	//글 작성화면
+	@GetMapping("/boardWrite")
+	public String boardWrite(BoardDto boardDto, Model model) {
+		System.out.println("board");
+		return "/tiles/view/board/boardWrite";
+	}
+	//글 작성
+	@PostMapping("/insertB")
 	public String insertB() {
 		System.out.println("insertB");
 		return "/tiles/view/board/board";
 	}
+	//글 삭제
 	@GetMapping("/deleteB")
 	public String deleteB() {
 		System.out.println("deleteB");
 		return "/tiles/view/board/board";
 	}
-	@RequestMapping("/updateB")
+	//글 수정
+	@PostMapping("/updateB")
 	public String updateB() {
 		System.out.println("updateB");
-		return "/tiles/view/board/boardedit";
+		return "/tiles/view/board/boardEdit";
 	}
 }
