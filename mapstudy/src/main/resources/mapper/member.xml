@@ -11,6 +11,9 @@ INSERT INTO TB_MEMBER VALUES(#{id}, #{pw}, #{nick}, #{role})
 SELECT * FROM TB_MEMBER WHERE MID=#{id} AND MPW=#{pw}
 </select>
 
+<select id="checkId" parameterType="String" resultType="int">
+	SELECT COUNT(*) FROM TB_MEMBER WHERE MID=#{id}
+</select>
 
 
 </mapper>

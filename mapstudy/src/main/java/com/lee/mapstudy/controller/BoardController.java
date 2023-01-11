@@ -45,6 +45,13 @@ public class BoardController {
 		System.out.println("join");
 		return "/tiles/view/auth/join";
 	}
+	//아이디 중복검사
+	@PostMapping("/checkId")
+	@ResponseBody
+	public int checkId(@RequestBody Map<String, Object> param) {
+		System.out.println("checkId");
+		return memberService.checkId((String)param.get("id"));
+	}
 	//회원가입 클릭 시
 	@PostMapping("/joinMember")
 	@ResponseBody

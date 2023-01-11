@@ -1,4 +1,4 @@
-package com.lee.mapstudy.go;
+package com.lee.mapstudy.gis;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

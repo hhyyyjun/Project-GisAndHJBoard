@@ -38,4 +38,8 @@ public class MemberService {
 		}
 		return map; 
 	}
+	//아이디 중복체크
+	public int checkId(String id) {
+		return memberDao.checkId(id);
+	}
 }

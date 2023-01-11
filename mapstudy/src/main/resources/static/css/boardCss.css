@@ -27,3 +27,25 @@
 	font-size : 20px;
 	font-weight : bold;
 }
+#idBox{
+	display : flex;
+}
+#checkId{
+	width : 15%;
+	border : 1px solid #0b5ed7;
+	background-color : #0b5ed7;
+	border-radius : 5px;
+	color : #fff;
+	font-family: var(--bs-font-sans-serif);
+    font-size: 1rem;
+    font-weight: 400;
+}
+#mrole{
+	border : none;
+	background-color : #0b5ed7;
+	border-radius : 5px;
+	color : #fff;
+	font-family: var(--bs-font-sans-serif);
+    font-size: 1rem;
+    font-weight: 400;
+}

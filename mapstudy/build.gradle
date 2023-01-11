@@ -23,9 +23,9 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	
 	runtimeOnly 'com.oracle.database.jdbc:ojdbc8'
-	//implementation group: 'com.oracle.ojdbc', name: 'orai18n', version: '19.3.0.0'
+	implementation group: 'com.oracle.ojdbc', name: 'orai18n', version: '19.3.0.0'
 	
-	implementation 'org.springframework.boot:spring-boot-starter-security'
+	//implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
 	implementation 'javax.servlet:jstl'
 	implementation 'org.springframework.boot:spring-boot-devtools'

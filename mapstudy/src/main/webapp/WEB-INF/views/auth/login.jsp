@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 
 <body>
-<form class="boardContent">
+<div class="boardContent">
   <div class="mb-3">
     <label for="loginId" class="form-label">아이디 입력</label>
     <input type="text" class="form-control" id="loginId" aria-describedby="emailHelp">
@@ -16,8 +16,8 @@
     <!--<input type="checkbox" class="form-check-input" id="exampleCheck1">
      <label class="form-check-label" for="exampleCheck1">Check me out</label>
   </div>-->
-  <button id="loginBtn" type="button" class="btn btn-primary">로그인하기</button>
-  <button type="button" onclick="join()" class="btn btn-primary">회원가입</button>
-</form>
+  <button id="loginBtn" onclick="login()" class="btn btn-primary">로그인하기</button>
+  <button onclick="join()" class="btn btn-primary">회원가입</button>
+</div>
 
 </body>

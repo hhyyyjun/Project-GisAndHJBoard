@@ -1,4 +1,4 @@
-package com.lee.mapstudy.go;
+package com.lee.mapstudy.gis;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
