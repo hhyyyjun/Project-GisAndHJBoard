@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lee.mapstudy.boardDto.BoardDto;
 import com.lee.mapstudy.boardDto.MemberDto;
+import com.lee.mapstudy.service.BoardService;
 import com.lee.mapstudy.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class BoardController {
 	
 	private final MemberService memberService;
+	private final BoardService boardService;
 	//로그인 화면
 	@GetMapping("/login")
 	public String login(MemberDto mdto, Model model) {
@@ -67,27 +69,29 @@ public class BoardController {
 	
 	//게시판
 	@GetMapping("/board")
-	public String board(BoardDto boardDto, Model model) {
+	public String board() {
 		System.out.println("board");
 		return "/tiles/view/board/board";
+	}
+	//글 작성화면
+	@GetMapping("/boardWrite")
+	public String boardWrite() {
+		System.out.println("board");
+		return "/tiles/view/board/boardWrite";
+	}
+	//글 작성
+	@PostMapping("/insertB")
+	@ResponseBody
+	public Map<String, Object> insertB(@RequestBody Map<String, Object> params) {
+		System.out.println("insertB");
+		System.out.println(params);
+		return boardService.insertB(params);
 	}
 	//글 상세보기
 	@GetMapping("/boardContent")
 	public String boardContent(BoardDto boardDto, Model model) {
 		System.out.println("board");
 		return "/tiles/view/board/boardContent";
-	}
-	//글 작성화면
-	@GetMapping("/boardWrite")
-	public String boardWrite(BoardDto boardDto, Model model) {
-		System.out.println("board");
-		return "/tiles/view/board/boardWrite";
-	}
-	//글 작성
-	@PostMapping("/insertB")
-	public String insertB() {
-		System.out.println("insertB");
-		return "/tiles/view/board/board";
 	}
 	//글 삭제
 	@GetMapping("/deleteB")

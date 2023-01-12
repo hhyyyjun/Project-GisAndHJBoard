@@ -4,19 +4,22 @@
 <mapper namespace="com.lee.mapstudy.boardDao.BoardDao">
 
 <insert id="insertB" parameterType="CustomMap">
-INSERT INTO TB_BOARD VALUES()
+	INSERT INTO TB_BOARD(BNUM, BTITLE, BCONTENT)
+	VALUES(TB_BOARD_SEQ.NEXTVAL, #{btitle}, #{bcontent})
 </insert>
 
 <select id="selectOne" parameterType="CustomMap" resultType="com.lee.mapstudy.boardDto.MemberDto">
-SELECT * FROM TB_BOARD WHERE MID=#{bnum}
+	SELECT * FROM TB_BOARD WHERE MID=#{bnum}
 </select>
 
 <select id="selectAll" resultType="list">
-SELECT * FROM TB_BOARD
+	SELECT * FROM TB_BOARD
 </select>
 
 <delete id="deleteB" parameterType="CustomMap">
-DELETE FROM TB_BOARD WHERE BNUM=#{bnum}
+	DELETE FROM TB_BOARD 
+	WHERE 1 = 1
+	AND BNUM = #{bnum}
 </delete>
 
 <update id="updateB" parameterType="CustomMap">

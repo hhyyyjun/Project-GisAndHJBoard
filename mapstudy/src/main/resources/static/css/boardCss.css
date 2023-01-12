@@ -50,14 +50,34 @@
     font-size: 1rem;
     font-weight: 400;
 }
+.nickdiv{
+	
+}
 
 /* 게시판화면 */
 #boardTop{
+	display : flex;
+	justify-content: space-between;
+}
+#boardTop > div {
 	display : flex;
 }
 #selectType{
 	width : 80px;
 	text-align: center;
 }
-
-
+/* 게시판 메인 화면 */
+#searchBox{
+	width : 400px;
+}
+/* 글 작성 화겸ㄴ */
+#editorTxt{
+	width : 99.8%;
+}
+#boardWrite{
+	display : flex;
+	justify-content: space-between;
+}
+#clearBtn{
+	width : 80px;
+}

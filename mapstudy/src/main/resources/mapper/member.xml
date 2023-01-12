@@ -23,7 +23,7 @@
 
 
 <select id="checkId" parameterType="String" resultType="int">
-	SELECT COUNT(*) as cmt 
+	SELECT COUNT(*) as cnt 
 	  FROM TB_MEMBER 
 	 WHERE 1 = 1
 	 
