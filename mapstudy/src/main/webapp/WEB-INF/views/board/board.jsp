@@ -1,12 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here ${sessionScope.userId}</title>
-</head>
-<body>
+
 <div class="boardContent">
 	<div id="boardTop">
 		<div>
@@ -21,39 +15,5 @@
 		</div>
 		<button onclick="boardWrite()" class="btn btn-outline-secondary mb-3">글쓰기</button>
 	</div>
-	
-	<table class="table table-hover">
-	 <thead>
-	   <tr>
-	     <th scope="col">#</th>
-	     <th scope="col">제목</th>
-	     <th scope="col">내용</th>
-	     <th scope="col">작성자</th>
-	   </tr>
-	 </thead>
-	 <tbody>
-	   <tr>
-	     <th scope="row"><a href=#>d</a></th>
-	     <td>Mark</td>
-	     <td>Otto</td>
-	     <td>@mdo</td>
-	   </tr>
-	   <tr>
-	     <th scope="row">2</th>
-	     <td>Jacob</td>
-	     <td>Thornton</td>
-	     <td>@fat</td>
-	   </tr>
-	   <tr>
-	     <th scope="row">3</th>
-	     <td>Larry the Bird</td>
-	     <td>Larry the Bird</td>
-	     <td>@twitter</td>
-	   </tr>
-	 </tbody>
-</table>
-
-
+	<div id="target"></div>
 </div>
-</body>
-</html>

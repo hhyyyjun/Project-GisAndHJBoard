@@ -1,5 +1,6 @@
 package com.lee.mapstudy.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lee.mapstudy.boardDto.BoardDto;
-import com.lee.mapstudy.boardDto.MemberDto;
 import com.lee.mapstudy.service.BoardService;
 import com.lee.mapstudy.service.MemberService;
 
@@ -27,8 +27,15 @@ public class BoardController {
 	private final BoardService boardService;
 	//로그인 화면
 	@GetMapping("/login")
-	public String login(MemberDto mdto, Model model) {
+	public String login() {
 		System.out.println("login");
+		return "/tiles/view/auth/login";
+	}
+	//로그아웃
+	@GetMapping("/logout")
+	public String logout(HttpSession session) {
+		session.invalidate();
+		System.out.println("logout");
 		return "/tiles/view/auth/login";
 	}
 	//로그인 클릭 시
@@ -65,14 +72,21 @@ public class BoardController {
 		System.out.println("useredit");
 		return "/tiles/view/auth/useredit";
 	}
-	
-	
 	//게시판
 	@GetMapping("/board")
 	public String board() {
 		System.out.println("board");
 		return "/tiles/view/board/board";
 	}
+	//게시판
+	@GetMapping("/boardAjax")
+	public String boardAjax(Model model) {
+		System.out.println("board");
+		model.addAttribute("list", boardService.selectAll());
+		return "/tiles/ajax/ajax/ajax-board";
+	}
+	
+	
 	//글 작성화면
 	@GetMapping("/boardWrite")
 	public String boardWrite() {

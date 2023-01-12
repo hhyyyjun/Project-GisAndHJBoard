@@ -1,12 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
 <div id="joinForm" class="boardContent">
   <div class="mb-3">
     <label for="joinId" class="form-label">아이디 입력</label>
@@ -41,6 +34,3 @@
   <button style="border:none; cursor:no-drop; background-color:#dee5ec; color:#ffffff;" disabled onclick="joinMember()" id="joinBtn" class="btn">회원가입</button>
   <button onclick="goBack()" class="btn btn-primary">로그인화면으로 돌아가기</button>
 </div>
-
-</body>
-</html>

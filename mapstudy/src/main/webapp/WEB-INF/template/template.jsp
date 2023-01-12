@@ -8,7 +8,6 @@
 <title>index</title>
 	<tiles:insertAttribute name="styles"/>
 	<tiles:insertAttribute name="scripts"/>
-	<tiles:insertAttribute name="contents-js"/>
 </head>
 <body>
 	
@@ -17,5 +16,6 @@
 		<tiles:insertAttribute name="contents"/>
 	</div>
 	<tiles:insertAttribute name="footer"/>
+	<tiles:insertAttribute name="contents-js"/>
 </body>
 </html>

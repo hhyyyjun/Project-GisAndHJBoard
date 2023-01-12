@@ -1,8 +1,7 @@
 package com.lee.mapstudy.boardDao;
 
+import java.util.List;
 import java.util.Map;
-
-import com.lee.mapstudy.boardDto.BoardDto;
 
 public interface BoardDao {
 	//글작성
@@ -12,5 +11,5 @@ public interface BoardDao {
 	//글수정
 	public int updateB(BoardDao boardDao);
 	//게시판 목록
-	public BoardDto selectAll(BoardDto bdto);
+	public List<Map<String, Object>> selectAll();
 }

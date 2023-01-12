@@ -1,18 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <script>
-var oEditors = []
+// var oEditors = []
 
 //스마트 에디어 설정
-function smartEditor() {
-  console.log("Naver SmartEditor")
-  nhn.husky.EZCreator.createInIFrame({
-    oAppRef: oEditors,
-    elPlaceHolder: "editorTxt",
-    sSkinURI: "/smarteditor/SmartEditor2Skin.html",
-    fCreator: "createSEditor2"
-  })
-}
+// function smartEditor() {
+//   console.log("Naver SmartEditor")
+//   nhn.husky.EZCreator.createInIFrame({
+//     oAppRef: oEditors,
+//     elPlaceHolder: "editorTxt",
+//     sSkinURI: "/smarteditor/SmartEditor2Skin.html",
+//     fCreator: "createSEditor2"
+//   })
+// }
+
+//글 작성하기
 function insertB() {
 	//네이버 스마트 에디터
 // 	  oEditors.getById["editorTxt"].exec("UPDATE_CONTENTS_FIELD", []);
@@ -29,10 +31,12 @@ function insertB() {
 	//써머노트 입력 값
 	var bcontent = $('#summernote').summernote('code');
 	var boardTitle = $("#boardTitle").val();
+	var userNick = $("#userNick").val();
 	console.log(bcontent);
 	var userData = {
 			"btitle" : boardTitle,
-			"bcontent" : bcontent
+			"bcontent" : bcontent,
+			"userNick" : userNick
 	};
 	
 	$.ajax({
@@ -57,7 +61,7 @@ function insertB() {
 	
 $(function() {
 //   smartEditor();
-	//서머노트
+	//서머노트 에디터 출력
 	$('#summernote').summernote({
 		  height: 300,                 // 에디터 높이
 		  minHeight: null,             // 최소 높이

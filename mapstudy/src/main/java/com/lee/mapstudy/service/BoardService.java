@@ -1,6 +1,7 @@
 package com.lee.mapstudy.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ public class BoardService {
 			map.put("result", "success");
 		}catch (Exception e) {
 			map.put("result", "fail");
+//			e.printStackTrace();
 		}
 		return map; 
 	}
@@ -38,7 +40,8 @@ public class BoardService {
 		return boardDao.updateB(boardDao);
 	}
 	//게시판 전체 글
-	public BoardDto selectAll(BoardDto boardDto) {
-		return boardDao.selectAll(boardDto);
+	public List<Map<String, Object>> selectAll() {
+		List<Map<String, Object>> boardList = boardDao.selectAll();
+		return boardList;
 	}
 }

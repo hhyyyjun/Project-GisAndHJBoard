@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<body>
 <div class="boardContent">
   <div class="mb-3">
     <label for="loginId" class="form-label">아이디 입력</label>
@@ -19,5 +18,3 @@
   <button id="loginBtn" onclick="login()" class="btn btn-primary">로그인하기</button>
   <button onclick="join()" class="btn btn-primary">회원가입</button>
 </div>
-
-</body>
