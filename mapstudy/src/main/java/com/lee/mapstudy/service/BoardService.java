@@ -18,12 +18,17 @@ public class BoardService {
 	
 	private final BoardDao boardDao;
 	
+	//게시판 목록
+	public List<Map<String, Object>> selectAllBoard() {
+		List<Map<String, Object>> boardList = boardDao.selectAllBoard();
+		return boardList;
+	}
 	//글 작성
 	@Transactional
-	public Map<String, Object> insertB(Map<String, Object> params) {
+	public Map<String, Object> insertBoard(Map<String, Object> params) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
-			boardDao.insertB(params);
+			boardDao.insertBoard(params);
 			map.put("result", "success");
 		}catch (Exception e) {
 			map.put("result", "fail");
@@ -32,16 +37,15 @@ public class BoardService {
 		return map; 
 	}
 	//글 삭제
-	public int deleteB(BoardDto boardDto) {
-		return boardDao.deleteB(boardDao);
+	public int deleteBoard(BoardDto boardDto) {
+		return boardDao.deleteBoard(boardDao);
 	}
 	//글 수정
-	public int updateB(BoardDto boardDto) {
-		return boardDao.updateB(boardDao);
+	public int updaupdateBoardteB(BoardDto boardDto) {
+		return boardDao.updateBoard(boardDao);
 	}
-	//게시판 전체 글
-	public List<Map<String, Object>> selectAll() {
-		List<Map<String, Object>> boardList = boardDao.selectAll();
-		return boardList;
+	//게시글 상세페이지
+	public Map<String, Object> selectBoardInfo(String bnum){
+		return boardDao.selectBoardInfo(bnum);
 	}
 }

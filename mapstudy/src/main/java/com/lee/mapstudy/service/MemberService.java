@@ -20,10 +20,10 @@ public class MemberService {
 	
 	//회원가입
 	@Transactional
-	public Map<String, Object> insertM(Map<String, Object> params) {
+	public Map<String, Object> insertMember(Map<String, Object> params) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
-			memberDao.insertM(params);
+			memberDao.insertMember(params);
 			map.put("result", "success");
 		}catch (Exception e) {
 			map.put("result", "fail");
@@ -31,11 +31,11 @@ public class MemberService {
 		return map; 
 	}
 	//로그인
-	public Map<String, Object> selectOne(Map<String, Object> params, HttpSession session) {
+	public Map<String, Object> selectLoginMember(Map<String, Object> params, HttpSession session) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		System.out.println("서비스"+params);
 		try {
-			Map<String, Object> result = memberDao.selectOne(params);
+			Map<String, Object> result = memberDao.selectLoginMember(params);
 			map.put("result", "success");
 			session.setAttribute("userId", result.get("mid"));
 			session.setAttribute("userNick", result.get("mnick"));
@@ -45,8 +45,24 @@ public class MemberService {
 		}
 		return map; 
 	}
-	//아이디 중복체크
+	//아이디 중복검사
 	public int checkId(String id) {
 		return memberDao.checkId(id);
+	}
+	//회원정보 페이지
+	public Map<String, Object> userInfo(Map<String, Object> params){
+		Map<String, Object> userInfo = memberDao.userInfo(params);
+		return userInfo;
+	}
+	//회원정보 변경
+	public Map<String, Object> updateMemberInfo(Map<String, Object> params){
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			memberDao.updateMemberInfo(params);
+			map.put("result", "success");
+		}catch (Exception e) {
+			map.put("result", "fail");
+		}
+		return map; 
 	}
 }

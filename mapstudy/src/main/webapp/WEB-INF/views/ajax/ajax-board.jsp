@@ -14,7 +14,7 @@
 	 <tbody>
 		<c:forEach var="b" items="${list}" varStatus="count">
 		   <tr>
-		     <th scope="row"><a href=#>${count.count}</a></th>
+		     <th scope="row"><a href="boardContent/${b.bnum}">${count.count}</a></th>
 		     <td>${b.btitle}</td>
 		     <td>${b.bcontent}</td>
 		     <td>${b.mnick}</td>

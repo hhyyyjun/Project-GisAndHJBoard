@@ -2,31 +2,58 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
                         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lee.mapstudy.boardDao.BoardDao">
-
-<insert id="insertB" parameterType="CustomMap">
-	INSERT INTO TB_BOARD(BNUM, BTITLE, BCONTENT, MNICK)
-	VALUES(TB_BOARD_SEQ.NEXTVAL, #{btitle}, #{bcontent}, #{userNick})
+<!-- 글 작성 -->
+<insert id="insertBoard" parameterType="CustomMap">
+	INSERT 
+	 INTO 
+	 TB_BOARD(
+		 BNUM
+		,BTITLE
+		,BCONTENT
+		,MNICK)
+	 VALUES(
+	 	TB_BOARD_SEQ.NEXTVAL
+	 	,#{btitle}
+	 	,#{bcontent}
+	 	,#{userNick})
 </insert>
-
-<select id="selectOne" parameterType="CustomMap" resultType="com.lee.mapstudy.boardDto.MemberDto">
-	SELECT * FROM TB_BOARD WHERE MID=#{bnum}
+<!-- 게시글 상세페이지 -->
+<select id="selectBoardInfo" parameterType="CustomMap" resultType="CustomMap">
+	SELECT 
+		 BTITLE
+		,BCONTENT
+		,MNICK
+		,BDATE
+	 FROM 
+	 	TB_BOARD
+	 WHERE 1 = 1
+	 AND
+	 	BNUM=#{bnum}
 </select>
-
-<select id="selectAll" resultType="CustomMap">
-	SELECT BTITLE
-		  ,BCONTENT
-		  ,MNICK
-		  ,TO_CHAR(BDATE, 'YYYY-MM-DD') AS BDATE
-	FROM TB_BOARD
+<!-- 게시판 목록 -->
+<select id="selectAllBoard" resultType="CustomMap">
+	SELECT 
+		 BNUM
+		,BTITLE
+	    ,BCONTENT
+		,MNICK
+		,TO_CHAR(BDATE, 'YYYY-MM-DD') AS BDATE
+	 FROM 
+	 	TB_BOARD
+	 ORDER BY
+	 	ROWNUM DESC
 </select>
-
-<delete id="deleteB" parameterType="CustomMap">
-	DELETE FROM TB_BOARD 
-	WHERE 1 = 1
-	AND BNUM = #{bnum}
+<!-- 게시글 삭제 -->
+<delete id="deleteBoard" parameterType="CustomMap">
+	DELETE 
+	 FROM 
+	 	TB_BOARD 
+	 WHERE 1 = 1
+	 AND 
+	 	BNUM = #{bnum}
 </delete>
-
-<update id="updateB" parameterType="CustomMap">
-UPDATE BOARD SET BTITLE=#{btitle}, BCONTENT=#{bcontent}, BIMAGE=#{bimage}
+<!-- 게시글 수정 -->
+<update id="updateBoard" parameterType="CustomMap">
+	UPDATE BOARD SET BTITLE=#{btitle}, BCONTENT=#{bcontent}, BIMAGE=#{bimage}
 </update>
 </mapper>

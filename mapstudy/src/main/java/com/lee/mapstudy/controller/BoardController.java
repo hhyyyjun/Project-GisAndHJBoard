@@ -1,6 +1,6 @@
 package com.lee.mapstudy.controller;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -8,12 +8,12 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.lee.mapstudy.boardDto.BoardDto;
+import com.lee.mapstudy.boardDao.MemberDao;
 import com.lee.mapstudy.service.BoardService;
 import com.lee.mapstudy.service.MemberService;
 
@@ -25,6 +25,8 @@ public class BoardController {
 	
 	private final MemberService memberService;
 	private final BoardService boardService;
+	private final MemberDao memeDao;
+	
 	//로그인 화면
 	@GetMapping("/login")
 	public String login() {
@@ -41,9 +43,9 @@ public class BoardController {
 	//로그인 클릭 시
 	@PostMapping("/loginMember")
 	@ResponseBody
-	public Map<String, Object> loginMember(@RequestBody Map<String, Object> params, HttpSession session) {
+	public Map<String, Object> selectLoginMember(@RequestBody Map<String, Object> params, HttpSession session) {
 		System.out.println("loginMember");
-		return memberService.selectOne(params, session);
+		return memberService.selectLoginMember(params, session);
 	}
 	//회원가입 화면
 	@GetMapping("/join")
@@ -65,13 +67,30 @@ public class BoardController {
 		System.out.println("joinMember");
 		System.out.println(params);
 		
-		return memberService.insertM(params);
+		return memberService.insertMember(params);
 	}
-	@RequestMapping("/useredit")
-	public String useredit() {
-		System.out.println("useredit");
-		return "/tiles/view/auth/useredit";
+	//회원 정보화면
+	@GetMapping("/myInfo")
+	public String myInfo(HttpSession session, Model model) {
+		System.out.println("myInfo");
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", session.getAttribute("userId"));
+		model.addAttribute("myInfo", memeDao.userInfo(params));
+		return "/tiles/view/auth/myInfo";
 	}
+	//회원 정보 변경
+	@PostMapping("/updateM")
+	@ResponseBody
+	public Map<String, Object> updateMemberInfo(@RequestBody Map<String, Object> param, HttpSession session){
+		System.out.println("updateM");
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.putAll(param);
+		params.put("id", session.getAttribute("userId"));
+		return memberService.updateMemberInfo(params);
+	}
+	
+	//////////////////////////////////////////////////////////
+	
 	//게시판
 	@GetMapping("/board")
 	public String board() {
@@ -82,11 +101,9 @@ public class BoardController {
 	@GetMapping("/boardAjax")
 	public String boardAjax(Model model) {
 		System.out.println("board");
-		model.addAttribute("list", boardService.selectAll());
+		model.addAttribute("list", boardService.selectAllBoard());
 		return "/tiles/ajax/ajax/ajax-board";
 	}
-	
-	
 	//글 작성화면
 	@GetMapping("/boardWrite")
 	public String boardWrite() {
@@ -99,12 +116,13 @@ public class BoardController {
 	public Map<String, Object> insertB(@RequestBody Map<String, Object> params) {
 		System.out.println("insertB");
 		System.out.println(params);
-		return boardService.insertB(params);
+		return boardService.insertBoard(params);
 	}
 	//글 상세보기
-	@GetMapping("/boardContent")
-	public String boardContent(BoardDto boardDto, Model model) {
+	@GetMapping("/boardContent/{bnum}")
+	public String boardContent(@PathVariable("bnum") String bnum, Model model) {
 		System.out.println("board");
+		model.addAttribute("boardInfo", boardService.selectBoardInfo(bnum));
 		return "/tiles/view/board/boardContent";
 	}
 	//글 삭제
