@@ -126,15 +126,18 @@ public class BoardController {
 		return "/tiles/view/board/boardContent";
 	}
 	//글 삭제
-	@GetMapping("/deleteB")
-	public String deleteB() {
+	@PostMapping("/deleteB")
+	@ResponseBody
+	public Map<String, Object> deleteB(@RequestBody Map<String, Object> param) {
 		System.out.println("deleteB");
-		return "/tiles/view/board/board";
+		return boardService.deleteBoard(param);
 	}
-	//글 수정
-	@PostMapping("/updateB")
-	public String updateB() {
-		System.out.println("updateB");
+	//글 수정 페이지
+	@PostMapping("/boardEdit")
+	@ResponseBody
+	public String updateB(@RequestBody Map<String, Object> param, Model model) {
+		System.out.println("boardEdit");
+		model.addAttribute("editList", boardService.selectBoardInfo(param));
 		return "/tiles/view/board/boardEdit";
 	}
 }

@@ -2,10 +2,10 @@
     pageEncoding="UTF-8"%>
 
 <div id="boardWrite" class="mb-3">
-	<input id="boardTitle" type="text" class="form-control" placeholder="제목을 입력하세요.">
+	<input id="boardTitle" type="text" class="form-control" placeholder="제목을 입력하세요." required>
 	<button id="clearBtn" class="btn btn-outline-secondary" onclick="insertB()">완료</button>
 </div>
-<input type="hidden" value="${sessionScope.userNick}" id="userNick">
+<input type="hidden" value="${sessionScope.userNick}" id="userNick" required>
 <!-- <div> -->
 <!--       <div id="smarteditor"> -->
 <!--         <textarea name="editorTxt" id="editorTxt"  -->

@@ -3,6 +3,12 @@
                         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lee.mapstudy.boardDao.BoardDao">
 <!-- 글 작성 -->
+
+<select id="checkSeq" resultType="String">
+	SELECT TB_BOARD_SEQ.NEXTVAL FROM  DUAL
+</select>
+
+
 <insert id="insertBoard" parameterType="CustomMap">
 	INSERT 
 	 INTO 
@@ -12,18 +18,19 @@
 		,BCONTENT
 		,MNICK)
 	 VALUES(
-	 	TB_BOARD_SEQ.NEXTVAL
+	 	 #{bnum}
 	 	,#{btitle}
 	 	,#{bcontent}
 	 	,#{userNick})
 </insert>
-<!-- 게시글 상세페이지 -->
+<!-- 게시글 상세페이지, 수정페이지 -->
 <select id="selectBoardInfo" parameterType="CustomMap" resultType="CustomMap">
-	SELECT 
-		 BTITLE
+	SELECT
+		 BNUM 
+		,BTITLE
 		,BCONTENT
 		,MNICK
-		,BDATE
+		,TO_CHAR(BDATE, 'YYYY-MM-DD') AS BDATE
 	 FROM 
 	 	TB_BOARD
 	 WHERE 1 = 1
@@ -54,6 +61,10 @@
 </delete>
 <!-- 게시글 수정 -->
 <update id="updateBoard" parameterType="CustomMap">
-	UPDATE BOARD SET BTITLE=#{btitle}, BCONTENT=#{bcontent}, BIMAGE=#{bimage}
+	UPDATE 
+		TB_BOARD 
+	 SET 
+	 	 BTITLE=#{btitle}
+	 	,BCONTENT=#{bcontent}
 </update>
 </mapper>

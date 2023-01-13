@@ -116,4 +116,92 @@ a:visited{
 	width : 80px;
 }
 /* 글 상세화면 */
+#boardPageBox{
+	width : 100%;
+}
+#boardTitleBox{
+	width : 90%;
+	margin : 0 auto;
+}
+#boardToolBox{
+	width : 90%;
+	height : 40px;
+	margin : 20px auto;
+	display : flex;
+	position : relative;
+	border-bottom: 1px solid #BDBDBD;
+	color : #8C8C8C;
+}
+#boardToolBox > div:nth-child(2){
+	margin-left: 10px;
+}
+#boardFuncBox{
+	width : 100px;
+	height : 20px;
+	right : 3px;
+	position : absolute;
+}
+#funcBtn{
+	cursor : pointer;
+	width : 20px;
+	height : 20px;
+	position : absolute;
+	right : 1px;
+	background : url("/images/dotmenu.png") no-repeat center;
+	background-size: contain; 
+}
+#boardFunc{
+	width : 100%;
+	height : 80px;
+	margin-top : 20px;
+	list-style: none;
+	padding-left : 0;
+}
+.viewOn{
+	display : block;
+	background-color : #fff;
+	border : 1px solid black;
+	border-radius: 5px;
+}
+.viewOff{
+	display : none;
+}
+#boardFunc li{
+	width : 100%;
+	height : 50%;
+	cursor : pointer;
+	text-align: center;
+	align-items: center;
+	line-height: 2.8;
+	font-size: 13px;
+}
+#boardFunc li:nth-child(1){
+	color : black;
+	border-bottom : 1px solid #BDBDBD;
+}
+#boardFunc li:nth-child(2){
+	color : red;
+}
+#boardContentBox{
+	width : 90%;
+	margin : 0 auto;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

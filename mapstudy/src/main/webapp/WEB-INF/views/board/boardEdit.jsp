@@ -1,12 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
+<div id="boardWrite" class="mb-3">
+	<input id="boardTitle" type="text" class="form-control" value="${editList.btitle}" required>
+	<button id="clearBtn" class="btn btn-outline-secondary" onclick="updateB()">수정</button>
+</div>
+<input type="hidden" value="${sessionScope.userNick}" id="userNick" required>
 
-</body>
-</html>
+<div id="summernote"></div>

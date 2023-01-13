@@ -8,7 +8,6 @@ function updateInfo(){
 			"pw" : pw,
 			"nick" : nick
 	};
-	console.log("들어옴?");
 	$.ajax({
 		url : "/updateM",
 		type : "POST",
