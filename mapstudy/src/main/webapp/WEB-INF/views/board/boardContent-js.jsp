@@ -16,6 +16,10 @@ function updateBoard(target){
 	var userData = {
 			"bnum" : bnum
 	}
+	
+	location.href = "/boardEdit/"+bnum;
+	
+	/*
 	$.ajax({
 		url : "/boardEdit",
 		type : "POST",
@@ -34,6 +38,7 @@ function updateBoard(target){
 			console.log("글 수정 페이지 에러");
 		}
 	})
+	*/
 }
 
 function deleteBoard(target){

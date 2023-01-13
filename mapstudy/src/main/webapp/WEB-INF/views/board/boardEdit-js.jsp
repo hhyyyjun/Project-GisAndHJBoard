@@ -31,7 +31,6 @@ function updateB() {
 		}
 	})
 }
-	
 $(function() {
 //   smartEditor();
 	//서머노트 에디터 출력

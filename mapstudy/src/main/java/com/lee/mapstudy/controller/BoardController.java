@@ -133,11 +133,10 @@ public class BoardController {
 		return boardService.deleteBoard(param);
 	}
 	//글 수정 페이지
-	@PostMapping("/boardEdit")
-	@ResponseBody
-	public String updateB(@RequestBody Map<String, Object> param, Model model) {
+	@GetMapping("/boardEdit/{bnum}")
+	public String updateB(@PathVariable("bnum") String bnum, Model model) {
 		System.out.println("boardEdit");
-		model.addAttribute("editList", boardService.selectBoardInfo(param));
+		model.addAttribute("editList", boardService.selectBoardInfo(bnum));
 		return "/tiles/view/board/boardEdit";
 	}
 }

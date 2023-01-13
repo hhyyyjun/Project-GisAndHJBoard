@@ -6,4 +6,4 @@
 </div>
 <input type="hidden" value="${sessionScope.userNick}" id="userNick" required>
 
-<div id="summernote"></div>
+<div id="summernote">${editList.bcontent}</div>
