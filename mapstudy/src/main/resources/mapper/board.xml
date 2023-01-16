@@ -48,8 +48,52 @@
 	 FROM 
 	 	TB_BOARD
 	 ORDER BY
-	 	ROWNUM DESC
+	 	BNUM DESC
 </select>
+
+ <select id="boardList" resultType="CustomMap" parameterType="CustomMap">
+    <![CDATA[
+     SELECT
+          BNUM
+		 ,BTITLE
+	     ,BCONTENT
+		 ,MNICK
+		 ,BDATE
+		 ,BCNT
+	 FROM
+	 	(
+	 	SELECT
+	 	     A.*
+	 	     ,ROWNUM AS BCNT
+	 	FROM
+	 	  (
+	 	   SELECT 
+	 		  BNUM
+			 ,BTITLE
+	   		 ,BCONTENT
+			 ,MNICK
+			 ,TO_CHAR(BDATE, 'YYYY-MM-DD') AS BDATE
+			 ,ROWNUM
+			  FROM
+			   TB_BOARD
+			   ORDER BY BNUM DESC
+			   ) A 
+			   WHERE 1 = 1
+			   AND ROWNUM <= #{page} * #{perPageNum}
+			   )
+	 	 		WHERE 1 = 1
+	 	 		AND BCNT > (#{page}-1) * #{perPageNum}
+	]]>
+</select>
+<select id="boardListCnt" resultType="int">
+    SELECT 
+     count(*)
+      FROM 
+       TB_BOARD
+</select>
+
+
+
 <!-- 게시글 삭제 -->
 <delete id="deleteBoard" parameterType="CustomMap">
 	DELETE 

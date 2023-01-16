@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.lee.mapstudy.boardDao.BoardDao;
 import com.lee.mapstudy.boardDto.BoardDto;
+import com.lee.mapstudy.boardDto.PagingContentDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,6 +24,15 @@ public class BoardService {
 		List<Map<String, Object>> boardList = boardDao.selectAllBoard();
 		return boardList;
 	}
+	
+	public List<Map<String, Object>> boardList(PagingContentDto pcd) throws Exception {
+		return boardDao.boardList(pcd);
+	}
+	public int boardListCnt() throws Exception {
+        return boardDao.boardListCnt();
+	}
+ 
+	
 	//글 작성
 	@Transactional
 	public Map<String, Object> insertBoard(Map<String, Object> params) {

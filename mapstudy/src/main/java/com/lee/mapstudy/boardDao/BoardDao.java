@@ -3,9 +3,16 @@ package com.lee.mapstudy.boardDao;
 import java.util.List;
 import java.util.Map;
 
+import com.lee.mapstudy.boardDto.PagingContentDto;
+
 public interface BoardDao {
 	//게시판 목록
 	public List<Map<String, Object>> selectAllBoard();
+	
+	public List<Map<String, Object>> boardList(PagingContentDto pcd) throws Exception;
+	public int boardListCnt() throws Exception;
+
+	
 	//글작성
 	public int insertBoard(Map<String, Object> params);
 	//글삭제

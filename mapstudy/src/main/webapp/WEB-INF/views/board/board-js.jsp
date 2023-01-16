@@ -6,12 +6,23 @@ function boardWrite(){
 }
 
 $(function() {
+	boardList();
+});
+function boardList(target){
+	console.log($(target).attr("data-page"));
+	
+	var pageNum = 1;
+	if($(target).attr("data-page")){
+		pageNum = $(target).attr("data-page");
+	}
+	console.log("페이지 넘버 : "+pageNum);
+	
 	const params = {
 			
 	}
 
 	$.ajax({
-		url : "/boardAjax",
+		url : "/boardAjax/"+pageNum,
 		type : "GET",
 		data : params,
 		contentType : "html",
@@ -23,6 +34,5 @@ $(function() {
 			console.log("error");
 		}
 	})	
-});
-
+}
 </script>

@@ -3,6 +3,7 @@
 <tiles-definitions>
 	<!-- 레이아웃 템플릿 정의 -->
 	<definition name="tiles/default/template"    template="/WEB-INF/template/template.jsp">
+		<put-attribute name="tagLib"             value="/WEB-INF/template/common/tagLib.jsp"/>
 		<put-attribute name="meta"               value="/WEB-INF/template/common/meta.jsp"/>
 		<put-attribute name="styles"             value="/WEB-INF/template/common/styles.jsp"/>
 		<put-attribute name="scripts"            value="/WEB-INF/template/common/scripts.jsp"/>

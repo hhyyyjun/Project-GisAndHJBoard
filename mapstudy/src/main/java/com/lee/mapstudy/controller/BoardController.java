@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lee.mapstudy.boardDao.MemberDao;
+import com.lee.mapstudy.boardDto.PagingContentDto;
+import com.lee.mapstudy.boardDto.PagingDto;
 import com.lee.mapstudy.service.BoardService;
 import com.lee.mapstudy.service.MemberService;
 
@@ -91,17 +93,30 @@ public class BoardController {
 	
 	//////////////////////////////////////////////////////////
 	
-	//게시판
+	//게시판 & 페이징
 	@GetMapping("/board")
-	public String board() {
+	public String board() throws Exception {
 		System.out.println("board");
+		
 		return "/tiles/view/board/board";
 	}
 	//게시판
-	@GetMapping("/boardAjax")
-	public String boardAjax(Model model) {
+	@GetMapping("/boardAjax/{bnum}")
+	public String boardAjax(@PathVariable int bnum,PagingContentDto pcd, Model model) throws Exception {
 		System.out.println("board");
-		model.addAttribute("list", boardService.selectAllBoard());
+		// 전체 글 개수
+        int boardListCnt = boardService.boardListCnt();
+        
+        pcd.setPage(bnum);
+        
+        // 페이징 객체
+        PagingDto paging = new PagingDto();
+        paging.setPcd(pcd);
+        paging.setTotalCount(boardListCnt);  
+        model.addAttribute("paging", paging);
+        model.addAttribute("page", pcd.getPage());
+		model.addAttribute("list", boardService.boardList(pcd));
+		
 		return "/tiles/ajax/ajax/ajax-board";
 	}
 	//글 작성화면
@@ -120,8 +135,11 @@ public class BoardController {
 	}
 	//글 상세보기
 	@GetMapping("/boardContent/{bnum}")
-	public String boardContent(@PathVariable("bnum") String bnum, Model model) {
+	public String boardContent(@PathVariable("bnum") String bnum, Model model, HttpSession session) {
 		System.out.println("board");
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", session.getAttribute("userId"));
+		model.addAttribute("myInfo", memeDao.userInfo(params));
 		model.addAttribute("boardInfo", boardService.selectBoardInfo(bnum));
 		return "/tiles/view/board/boardContent";
 	}
@@ -139,4 +157,15 @@ public class BoardController {
 		model.addAttribute("editList", boardService.selectBoardInfo(bnum));
 		return "/tiles/view/board/boardEdit";
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
