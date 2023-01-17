@@ -23,14 +23,14 @@
 		</c:forEach>
 	 </tbody>
 </table>
-<ul class="paging">
+<ul class="paging" id="paging">
     <c:if test="${paging.prev}">
-        <span onclick="boardList(this)" data-page="${paging.startPage-1}"><a href="javascript:void(0);">이전</a></span>
+        <span onclick="boardList(this)" data-page="${page-1}"><a href="javascript:void(0);">이전</a></span>
     </c:if>
     <c:forEach begin="${paging.startPage}" end="${paging.endPage}" var="num">
         <span onclick="boardList(this)" data-page="${num}"><a href="javascript:void(0);">${num}</a></span>
     </c:forEach>
     <c:if test="${paging.next && paging.endPage>0}">
-        <span onclick="boardList(this)" data-page="${paging.endPage+1}"><a href="javascript:void(0);">다음</a></span>
+        <span onclick="boardList(this)" data-page="${page+1}"><a href="javascript:void(0);">다음</a></span>
     </c:if>
 </ul>

@@ -16,41 +16,31 @@
 		 BNUM
 		,BTITLE
 		,BCONTENT
-		,MNICK)
+		,MID)
 	 VALUES(
 	 	 #{bnum}
 	 	,#{btitle}
 	 	,#{bcontent}
-	 	,#{userNick})
+	 	,#{userId})
 </insert>
 <!-- 게시글 상세페이지, 수정페이지 -->
 <select id="selectBoardInfo" parameterType="CustomMap" resultType="CustomMap">
 	SELECT
-		 BNUM 
-		,BTITLE
-		,BCONTENT
-		,MNICK
-		,TO_CHAR(BDATE, 'YYYY-MM-DD') AS BDATE
+		 B.BNUM 
+		,B.BTITLE
+		,B.BCONTENT
+		,M.MID
+		,M.MNICK
+		,TO_CHAR(B.BDATE, 'YYYY-MM-DD') AS BDATE
 	 FROM 
-	 	TB_BOARD
+	 	 TB_BOARD B
+	 	,TB_MEMBER M
 	 WHERE 1 = 1
+	 AND B.MID = M.MID
 	 AND
 	 	BNUM=#{bnum}
 </select>
 <!-- 게시판 목록 -->
-<select id="selectAllBoard" resultType="CustomMap">
-	SELECT 
-		 BNUM
-		,BTITLE
-	    ,BCONTENT
-		,MNICK
-		,TO_CHAR(BDATE, 'YYYY-MM-DD') AS BDATE
-	 FROM 
-	 	TB_BOARD
-	 ORDER BY
-	 	BNUM DESC
-</select>
-
  <select id="boardList" resultType="CustomMap" parameterType="CustomMap">
     <![CDATA[
      SELECT
@@ -68,14 +58,17 @@
 	 	FROM
 	 	  (
 	 	   SELECT 
-	 		  BNUM
-			 ,BTITLE
-	   		 ,BCONTENT
-			 ,MNICK
-			 ,TO_CHAR(BDATE, 'YYYY-MM-DD') AS BDATE
+	 		  B.BNUM
+			 ,B.BTITLE
+	   		 ,B.BCONTENT
+			 ,M.MNICK
+			 ,TO_CHAR(B.BDATE, 'YYYY-MM-DD') AS BDATE
 			 ,ROWNUM
 			  FROM
-			   TB_BOARD
+			    TB_BOARD B
+			   ,TB_MEMBER M
+			   WHERE 1 = 1
+	 	 	   AND B.MID = M.MID
 			   ORDER BY BNUM DESC
 			   ) A 
 			   WHERE 1 = 1
@@ -110,5 +103,7 @@
 	 SET 
 	 	 BTITLE=#{btitle}
 	 	,BCONTENT=#{bcontent}
+	 WHERE 1 = 1
+	 AND BNUM = #{bnum}
 </update>
 </mapper>

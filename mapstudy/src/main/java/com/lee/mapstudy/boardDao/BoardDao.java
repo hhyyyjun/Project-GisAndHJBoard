@@ -18,7 +18,7 @@ public interface BoardDao {
 	//글삭제
 	public int deleteBoard(Map<String, Object> param);
 	//글수정
-	public int updateBoard(BoardDao boardDao);
+	public int updateBoard(Map<String, Object> params);
 	//게시글 상세페이지
 	public Map<String, Object> selectBoardInfo(String bnum);
 	//시퀀스 마지막 값 확인

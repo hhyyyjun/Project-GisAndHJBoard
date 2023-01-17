@@ -61,8 +61,15 @@ public class BoardService {
 		return map;
 	}
 	//글 수정
-	public int updateBoard(BoardDto boardDto) {
-		return boardDao.updateBoard(boardDao);
+	public Map<String, Object> updateBoard(Map<String, Object> params) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			boardDao.updateBoard(params);
+			map.put("result", "success");
+		} catch(Exception e) {
+			map.put("result", "fail");
+		}
+		return map;
 	}
 	//게시글 상세페이지
 	public Map<String, Object> selectBoardInfo(String bnum){

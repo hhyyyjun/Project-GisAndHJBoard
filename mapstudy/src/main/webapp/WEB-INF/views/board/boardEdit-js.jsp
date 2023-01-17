@@ -6,10 +6,12 @@ function updateB() {
 	//써머노트 입력 값
 	var bcontent = $('#summernote').summernote('code');
 	var boardTitle = $("#boardTitle").val();
+	var updateBnum = $("#updateBnum").val();
 	console.log(bcontent);
 	var userData = {
 			"btitle" : boardTitle,
 			"bcontent" : bcontent,
+			"bnum" : updateBnum
 	};
 	
 	$.ajax({

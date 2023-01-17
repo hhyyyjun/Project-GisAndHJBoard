@@ -5,7 +5,7 @@
 	<input id="boardTitle" type="text" class="form-control" placeholder="제목을 입력하세요." required>
 	<button id="clearBtn" class="btn btn-outline-secondary" onclick="insertB()">완료</button>
 </div>
-<input type="hidden" value="${sessionScope.userNick}" id="userNick" required>
+<input type="hidden" value="${sessionScope.userId}" id="userId" required>
 <!-- <div> -->
 <!--       <div id="smarteditor"> -->
 <!--         <textarea name="editorTxt" id="editorTxt"  -->

@@ -8,7 +8,7 @@
 	<div id="boardToolBox">
 		<div>${boardInfo.mnick}</div>
 		<div>${boardInfo.bdate}</div>
-		<c:if test="${boardInfo.mnick==myInfo.mnick}">
+		<c:if test="${boardInfo.mid==userId}">
 		<div id="boardFuncBox">
 			<div id="funcBtn"></div>
 			<ul id="boardFunc" class="viewOff">
