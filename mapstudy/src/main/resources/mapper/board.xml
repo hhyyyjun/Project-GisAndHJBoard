@@ -2,13 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
                         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lee.mapstudy.boardDao.BoardDao">
-<!-- 글 작성 -->
 
 <select id="checkSeq" resultType="String">
-	SELECT TB_BOARD_SEQ.NEXTVAL FROM  DUAL
+	SELECT TB_BOARD_SEQ.NEXTVAL FROM DUAL
 </select>
 
-
+<!-- 글 작성 -->
 <insert id="insertBoard" parameterType="CustomMap">
 	INSERT 
 	 INTO 
@@ -16,12 +15,16 @@
 		 BNUM
 		,BTITLE
 		,BCONTENT
-		,MID)
+		,MID
+		,TEXT
+		,THUMIDX)
 	 VALUES(
 	 	 #{bnum}
 	 	,#{btitle}
 	 	,#{bcontent}
-	 	,#{userId})
+	 	,#{userId}
+	 	,#{text}
+	 	,#{thumIdx})
 </insert>
 <!-- 게시글 상세페이지, 수정페이지 -->
 <select id="selectBoardInfo" parameterType="CustomMap" resultType="CustomMap">
@@ -42,42 +45,31 @@
 </select>
 <!-- 게시판 목록 -->
  <select id="boardList" resultType="CustomMap" parameterType="CustomMap">
-    <![CDATA[
-     SELECT
-          BNUM
-		 ,BTITLE
-	     ,BCONTENT
-		 ,MNICK
-		 ,BDATE
-		 ,BCNT
-	 FROM
-	 	(
-	 	SELECT
-	 	     A.*
-	 	     ,ROWNUM AS BCNT
-	 	FROM
-	 	  (
-	 	   SELECT 
-	 		  B.BNUM
-			 ,B.BTITLE
-	   		 ,B.BCONTENT
-			 ,M.MNICK
-			 ,TO_CHAR(B.BDATE, 'YYYY-MM-DD') AS BDATE
-			 ,ROWNUM
-			  FROM
-			    TB_BOARD B
-			   ,TB_MEMBER M
-			   WHERE 1 = 1
-	 	 	   AND B.MID = M.MID
-			   ORDER BY BNUM DESC
-			   ) A 
-			   WHERE 1 = 1
-			   AND ROWNUM <= #{page} * #{perPageNum}
-			   )
-	 	 		WHERE 1 = 1
-	 	 		AND BCNT > (#{page}-1) * #{perPageNum}
-	]]>
+	SELECT * FROM(SELECT ROWNUM AS BCNT, A.* FROM(
+		<include refid="selectBoard"/>
+	)A WHERE ROWNUM 
+		<![CDATA[<=]]>  #{page} * #{perPageNum}) WHERE BCNT
+		<![CDATA[>]]> (#{page}-1) * #{perPageNum}
 </select>
+
+<sql id="selectBoard">
+	 SELECT 
+			 A.BNUM 
+			,A.BTITLE 
+			,A.BCONTENT 
+			,A.BDATE 
+			,A.MID 
+			,A.TEXT 
+			,A.THUMIDX 
+			,B.MNICK
+		FROM 
+			 TB_BOARD A
+			,TB_MEMBER B
+		WHERE 1 = 1
+		AND A.MID = B.MID
+		ORDER BY BNUM DESC
+</sql>
+
 <select id="boardListCnt" resultType="int">
     SELECT 
      count(*)
@@ -85,7 +77,78 @@
        TB_BOARD
 </select>
 
+<!-- 썸네일 -->
+<select id="thumnail" resultType="CustomMap">
+	SELECT 
+	 	 B.FILEROOT 
+	 	,B.SFILENAME 
+	FROM 
+		 TB_BOARDFILE A
+		,TB_FILE B
+	 WHERE
+	 	A.FNUM = B.FNUM
+	 AND 
+	 	A.BNUM = #{bnum}
+</select>
 
+
+<!-- 최종 시퀀스 값 -->
+<select id="fnumSeq" resultType="int">
+	SELECT 
+        LAST_NUMBER 
+	FROM 
+        USER_SEQUENCES 
+	WHERE 
+        SEQUENCE_NAME = 'TB_FILE_SEQ'
+</select>
+
+<select id="checkBFseq" resultType="String">
+	SELECT TB_BOARDFILE_SEQ.NEXTVAL FROM  DUAL
+</select>
+<!-- 보드파일 테이블에 저장 -->
+<insert id="insertFileBoard" parameterType="CustomMap">
+	INSERT
+	 INTO
+	  TB_BOARDFILE(
+	    BFNUM
+	   ,BNUM
+	   ,FNUM)
+	   VALUES(
+	     #{bfnum}
+	    ,#{bnum}
+	    ,#{fnum})
+</insert>
+
+<select id="checkFseq" resultType="String">
+	SELECT TB_FILE_SEQ.NEXTVAL FROM  DUAL
+</select>
+<!-- 파일 테이블에 저장 -->
+<insert id="insertFile" parameterType="CustomMap">
+	INSERT
+	 INTO
+	  TB_FILE(
+	    FNUM
+	   ,FILEROOT
+	   ,SFILENAME
+	   ,OFILENAME
+	   ,EXTENSION)
+	   VALUES(
+	     #{fnum}
+	    ,#{fileroot}
+	    ,#{sfname}
+	    ,#{ofname}
+	    ,#{extension})
+</insert>
+<!-- 파일경로 -->
+<select id="fileCheck" resultType="CustomMap">
+	SELECT
+	  FILEROOT
+	 ,SFILENAME
+	FROM
+	  TB_FILE
+	WHERE 1 = 1
+	  AND FNUM=#{fnum}
+</select>
 
 <!-- 게시글 삭제 -->
 <delete id="deleteBoard" parameterType="CustomMap">
@@ -103,6 +166,7 @@
 	 SET 
 	 	 BTITLE=#{btitle}
 	 	,BCONTENT=#{bcontent}
+	 	,THUMIDX=#{thumIdx}
 	 WHERE 1 = 1
 	 AND BNUM = #{bnum}
 </update>

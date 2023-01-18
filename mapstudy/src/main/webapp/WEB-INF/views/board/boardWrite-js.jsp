@@ -33,10 +33,25 @@ function insertB() {
 	var boardTitle = $("#boardTitle").val();
 	var userId = $("#userId").val();
 	console.log(bcontent);
+	
+	let src = "";
+	let fileSeqArr = [];
+	
+	var thumIdx = 0;
+	$(".note-editing-area").find("img").each(function(){
+		src = $(this).attr("src");
+		fileSeqArr.push(src.split("/")[2]);
+	});
+	if(fileSeqArr.length > 0){
+		thumIdx = fileSeqArr[0];
+	}
+	console.log(fileSeqArr);
 	var userData = {
 			"btitle" : boardTitle,
 			"bcontent" : bcontent,
-			"userId" : userId
+			"userId" : userId,
+			"fileSeq" : fileSeqArr.toString(),
+			"thumIdx" : thumIdx
 	};
 	
 	$.ajax({
@@ -59,6 +74,7 @@ function insertB() {
 	})
 }
 	
+var uploadData;
 $(function() {
 //   smartEditor();
 	//서머노트 에디터 출력
@@ -71,7 +87,13 @@ $(function() {
 		  placeholder: '최대 2048자까지 쓸 수 있습니다',	//placeholder 설정
 		  callbacks: {	//여기 부분이 이미지를 첨부하는 부분
 				onImageUpload : function(files) {
-					uploadSummernoteImageFile(files[0],this);
+// 						alert(files[0].size);
+					if(files[0].size < 1024*1024*20){
+						uploadSummernoteImageFile(files[0],this);
+					}else{
+						alert("파일 사이즈가 20mb가 넘습니다.");
+						return;
+					};
 				},
 				onPaste: function (e) {
 					var clipboardData = e.originalEvent.clipboardData;
@@ -90,17 +112,20 @@ $(function() {
 * 이미지 파일 업로드
 */
 function uploadSummernoteImageFile(file, editor) {
-	data = new FormData();
-	data.append("file", file);
+	uploadData = new FormData();
+	uploadData.append("file", file);
 	$.ajax({
-		data : data,
+		data : uploadData,
 		type : "POST",
 		url : "/uploadSummernoteImageFile",
 		contentType : false,
 		processData : false,
 		success : function(data) {
+			alert(data.url);
            	//항상 업로드된 파일의 url이 있어야 한다.
-			$(editor).summernote('insertImage', data.url);
+			$(editor).summernote('insertImage', data.url, function ($image) {
+				  $image.css('width', $image.width() / 3);
+			})
 		}
 	});
 }

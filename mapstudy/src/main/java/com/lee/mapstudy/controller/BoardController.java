@@ -3,6 +3,9 @@ package com.lee.mapstudy.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -10,6 +13,11 @@ import java.util.UUID;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +28,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.google.gson.JsonObject;
 import com.lee.mapstudy.boardDao.MemberDao;
 import com.lee.mapstudy.boardDto.PagingContentDto;
 import com.lee.mapstudy.boardDto.PagingDto;
@@ -109,13 +116,13 @@ public class BoardController {
 		return "/tiles/view/board/board";
 	}
 	//게시판
-	@GetMapping("/boardAjax/{bnum}")
-	public String boardAjax(@PathVariable int bnum,PagingContentDto pcd, Model model) throws Exception {
+	@GetMapping("/boardAjax/{pageNum}")
+	public String boardAjax(@PathVariable int pageNum,PagingContentDto pcd, Model model) throws Exception {
 		System.out.println("board");
 		// 전체 글 개수
         int boardListCnt = boardService.boardListCnt();
         
-        pcd.setPage(bnum);
+        pcd.setPage(pageNum);
         
         // 페이징 객체
         PagingDto paging = new PagingDto();
@@ -124,7 +131,6 @@ public class BoardController {
         model.addAttribute("paging", paging);
         model.addAttribute("page", pcd.getPage());
 		model.addAttribute("list", boardService.boardList(pcd));
-		
 		return "/tiles/ajax/ajax/ajax-board";
 	}
 	//글 작성화면
@@ -139,36 +145,72 @@ public class BoardController {
 	public Map<String, Object> insertB(@RequestBody Map<String, Object> params) {
 		System.out.println("insertB");
 		System.out.println(params);
-		return boardService.insertBoard(params);
+		Map<String, Object> boardWright = new HashMap<String, Object>();
+		boardWright.putAll(params);
+		boardWright.put("text" ,((String)params.get("bcontent")).replaceAll("<([^>]+)>", ""));
+		
+		//게시판 글등록
+		return boardService.insertBoard(boardWright);
 	}
-//	@PostMapping(value="/uploadSummernoteImageFile", produces = "application/json")
-//	@ResponseBody
-//	public JsonObject uploadSummernoteImageFile(@RequestParam("file") MultipartFile multipartFile) {
-//		
-//		JsonObject jsonObject = new JsonObject();
-//		
-//		String fileRoot = "C:\\summernote_image\\";	//저장될 외부 파일 경로
-//		String originalFileName = multipartFile.getOriginalFilename();	//오리지날 파일명
-//		String extension = originalFileName.substring(originalFileName.lastIndexOf("."));	//파일 확장자
-//				
-//		String savedFileName = UUID.randomUUID() + extension;	//저장될 파일 명
-//		
-//		File targetFile = new File(fileRoot + savedFileName);	
-//		
-//		try {
-//			InputStream fileStream = multipartFile.getInputStream();
-//			FileUtils.copyInputStreamToFile(fileStream, targetFile);	//파일 저장
-//			jsonObject.addProperty("url", "/summernoteImage/"+savedFileName);
-//			jsonObject.addProperty("responseCode", "success");
-//				
-//		} catch (IOException e) {
-//			FileUtils.deleteQuietly(targetFile);	//저장된 파일 삭제
-//			jsonObject.addProperty("responseCode", "error");
-//			e.printStackTrace();
-//		}
-//		
-//		return jsonObject;
-//	}
+	//파일 업로드
+	@PostMapping(value="/uploadSummernoteImageFile", produces = "application/json")
+	@ResponseBody
+	public Map<String, Object> uploadSummernoteImageFile(@RequestParam("file") MultipartFile multipartFile) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		Map<String, Object> fileInput = new HashMap<String, Object>();
+		String fileRoot = "C:\\summernote_image\\";	//저장될 외부 파일 경로
+		String originalFileName = multipartFile.getOriginalFilename();	//오리지날 파일명
+		String extension = originalFileName.substring(originalFileName.lastIndexOf("."));	//파일 확장자
+				
+		String savedFileName = UUID.randomUUID() + extension;	//저장될 파일 명
+		
+		File targetFile = new File(fileRoot + savedFileName);	
+		
+		fileInput.put("fileroot", fileRoot);
+		fileInput.put("sfname", savedFileName);
+		fileInput.put("ofname", originalFileName);
+		fileInput.put("extension", extension);
+		
+		
+		try {
+			String fileSeq = boardService.insertFile(fileInput);
+			InputStream fileStream = multipartFile.getInputStream();
+			FileUtils.copyInputStreamToFile(fileStream, targetFile);	//파일 저장
+			result.put("url", "/thubnail/"+fileSeq);
+			result.put("responseCode", "success");
+		} catch (IOException e) {
+			FileUtils.deleteQuietly(targetFile);	//저장된 파일 삭제
+			result.put("responseCode", "error");
+			e.printStackTrace();
+		}
+		return result;
+	}
+	//썸네일 url 변경
+	@GetMapping("/thubnail/{fileseq}")
+	public ResponseEntity<Resource> thubnail(@PathVariable("fileseq") String seq) {
+		Map<String, Object> fileCheck = boardService.fileCheck(seq);
+		
+		String path = "";
+		String filename = "";
+		if(fileCheck!=null) {
+			path = String.valueOf(fileCheck.get("fileroot"));
+			filename = String.valueOf(fileCheck.get("sfilename"));
+		}
+		
+		Resource resource = new FileSystemResource(path + filename);
+		if(!resource.exists()) 
+			return new ResponseEntity<Resource>(HttpStatus.NOT_FOUND);
+			HttpHeaders header = new HttpHeaders();
+			Path filePath = null;
+		try{
+			filePath = Paths.get(path + filename);
+			header.add("Content-type", Files.probeContentType(filePath));
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<Resource>(resource, header, HttpStatus.OK);
+	}
+	
 	//글 상세보기
 	@GetMapping("/boardContent/{bnum}")
 	public String boardContent(@PathVariable("bnum") String bnum, Model model, HttpSession session) {
@@ -200,15 +242,5 @@ public class BoardController {
 		System.out.println("updateB");
 		return boardService.updateBoard(params);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 }
