@@ -17,7 +17,4 @@
 		<button onclick="boardWrite()" class="btn btn-outline-secondary mb-3">글쓰기</button>
 	</div>
 	<div id="target"></div>
-
-
-	
 </div>

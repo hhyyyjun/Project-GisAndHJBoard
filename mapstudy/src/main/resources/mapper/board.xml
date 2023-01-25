@@ -69,7 +69,7 @@
 		AND A.MID = B.MID
 		ORDER BY BNUM DESC
 </sql>
-
+<!-- 게시판 글 총 개수 -->
 <select id="boardListCnt" resultType="int">
     SELECT 
      count(*)
@@ -167,6 +167,7 @@
 	 	 BTITLE=#{btitle}
 	 	,BCONTENT=#{bcontent}
 	 	,THUMIDX=#{thumIdx}
+	 	,TEXT=#{text}
 	 WHERE 1 = 1
 	 AND BNUM = #{bnum}
 </update>

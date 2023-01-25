@@ -23,6 +23,7 @@ public class BoardService {
 	public List<Map<String, Object>> boardList(PagingContentDto pcd) throws Exception {
 		return boardDao.boardList(pcd);
 	}
+	//글의 총 개수 확인
 	public int boardListCnt() throws Exception {
         return boardDao.boardListCnt();
 	}

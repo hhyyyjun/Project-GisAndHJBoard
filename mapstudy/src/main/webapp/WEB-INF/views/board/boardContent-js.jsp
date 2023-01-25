@@ -2,15 +2,20 @@
     pageEncoding="UTF-8"%>
 
 <script>
-// function show(){
-// 	$("#boardFunc").togleClass('viewOn viewOff');
-// }
-
+//게시글 기능박스 출력
 $(function(){
+	replyList();
+	
 	$("#funcBtn").click(function(){
 		$("#boardFunc").toggleClass('viewOn viewOff');
 	})
 })
+
+function rfuncBtnClicked(target){
+	$(target).parents(".replyInfo").find(".replyFunc").toggleClass('viewOn viewOff');
+}
+
+//게시판 수정 페이지로 이동
 function updateBoard(target){
 	var bnum = $(target).attr("data-bnum");
 	var userData = {
@@ -18,29 +23,8 @@ function updateBoard(target){
 	}
 	
 	location.href = "/boardEdit/"+bnum;
-	
-	/*
-	$.ajax({
-		url : "/boardEdit",
-		type : "POST",
-		data : JSON.stringify(userData),
-		contentType : "application/json;charset=UTF-8",
-		success : function(data){
-			if(data){
-				console.log("글 수정 페이지 성공");
-				location.href="/boardEdit";
-			}
-			else{
-				console.log("글 수정 페이지 실패");
-			}
-		},
-		error : function(){
-			console.log("글 수정 페이지 에러");
-		}
-	})
-	*/
 }
-
+//게시글 삭제
 function deleteBoard(target){
 	var bnum = $(target).attr("data-bnum");
 	var userData = {
@@ -70,4 +54,72 @@ function deleteBoard(target){
 		return;
 	}
 }
+//댓글 입력
+function replyInput(){
+	var rcontent = $("#replyContent").val();
+	var bnum = $("#replyBnum").val();
+	var userData = {
+			"rcontent" : rcontent,
+			"bnum" : bnum
+	};
+	console.log(bnum);
+	
+	$.ajax({
+		url : "/replyInput",
+		type : "POST",
+		data : JSON.stringify(userData),
+		contentType : "application/json;charset=utf-8",
+		success : function(data){
+			replyList();
+		},
+		error : function(){
+			console.log("error");
+		}
+	});
+}
+function replyList(){
+	var bnum = $("#replyBnum").val();
+	var param = {
+			
+	};
+	$.ajax({
+		url : "/replyAjax/"+bnum,
+		type : "GET",
+		data : param,
+		contentType : "html",
+		success : function(data){
+			console.log(data);
+			$("#reply").html(data);
+		},
+		error : function(){
+			console.log("reply error");
+		}
+	})
+}
+
+
+//여기부터 시작해야 함
+// function update(target){
+// 	var rnum = $(target).attr("data-rnum");
+// }
+// function deleteR(target){
+// 	var rnum = $(target).attr("data-rnum");
+// }
+
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

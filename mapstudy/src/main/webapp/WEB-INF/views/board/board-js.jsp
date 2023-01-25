@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <script>
+//글쓰기 이동
 function boardWrite(){
 	location.href="/boardWrite";
 }
@@ -8,6 +9,7 @@ function boardWrite(){
 $(function() {
 	boardList();
 });
+//게시글 리스트
 function boardList(target){
 	console.log($(target).attr("data-page"));
 	

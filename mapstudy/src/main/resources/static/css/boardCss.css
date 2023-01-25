@@ -84,9 +84,6 @@ a:visited{
     font-size: 1rem;
     font-weight: 400;
 }
-.nickdiv{
-	
-}
 
 /* 게시판화면 */
 #boardTop{
@@ -128,14 +125,14 @@ a:visited{
 }
 /* 글 상세화면 */
 #boardPageBox{
-	width : 100%;
-}
-#boardTitleBox{
 	width : 90%;
 	margin : 0 auto;
 }
+#boardTitleBox{
+	width : 100%;
+}
 #boardToolBox{
-	width : 90%;
+	width : 100%;
 	height : 40px;
 	margin : 20px auto;
 	display : flex;
@@ -194,15 +191,87 @@ a:visited{
 	color : red;
 }
 #boardContentBox{
-	width : 90%;
-	margin : 0 auto;
+	width : 100%;
+	border-bottom: 1px solid #BDBDBD;
 }
-
-
-
-
-
-
+/* 댓글입력창 */
+#replyInputBox{
+	width : 100%;
+	margin-top : 20px;
+	border : 1px solid #BDBDBD;
+	border-radius: 5px;
+}
+#replyInfo{
+	width : 100%;
+	display : flex;
+	justify-content: space-between;
+}
+#replyInfo div:nth-child(1){
+	padding-top : 4px;
+	margin-left : 13px;
+}
+#replyInfo div:nth-child(2) > span{
+	margin-right : 15px;
+}
+/* 댓글 리스트 */
+.replyContentBox{
+	width : 100%;
+	margin-top : 20px;
+	border : 1px solid #BDBDBD;
+	border-radius: 5px;
+}
+.replyInfo{
+	display : flex;
+	position : relative;
+}
+.replyDate{
+	margin-left : 10px;
+	color : #8C8C8C;
+}
+.replyFuncBox{
+	width : 100px;
+	height : 20px;
+	right : 3px;
+	position : absolute;
+}
+.rfuncBtn{
+	cursor : pointer;
+	width : 20px;
+	height : 20px;
+	position : absolute;
+	right : 1px;
+	background : url("/images/dotmenu.png") no-repeat center;
+	background-size: contain; 
+}
+.replyFunc{
+	width : 100%;
+	height : 80px;
+	margin-top : 20px;
+	list-style: none;
+	padding-left : 0;
+	position: absolute;
+	z-index : 100;
+}
+.replyFuncLi{
+	width : 100%;
+	height : 50%;
+	cursor : pointer;
+	text-align: center;
+	align-items: center;
+	line-height: 2.8;
+	font-size: 13px;
+}
+.replyFuncLi1{
+	color : black;
+	border-bottom : 1px solid #BDBDBD;
+}
+.replyFuncLi2{
+	color : red;
+}
+.replyContent{
+	width : 100%;
+	border-bottom : 1px solid #BDBDBD;
+}
 
 
 

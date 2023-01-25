@@ -33,6 +33,7 @@ import com.lee.mapstudy.boardDto.PagingContentDto;
 import com.lee.mapstudy.boardDto.PagingDto;
 import com.lee.mapstudy.service.BoardService;
 import com.lee.mapstudy.service.MemberService;
+import com.lee.mapstudy.service.ReplyService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -42,6 +43,7 @@ public class BoardController {
 	
 	private final MemberService memberService;
 	private final BoardService boardService;
+	private final ReplyService replyService;
 	private final MemberDao memeDao;
 	
 	//로그인 화면
@@ -219,6 +221,7 @@ public class BoardController {
 		params.put("id", session.getAttribute("userId"));
 		model.addAttribute("myInfo", memeDao.userInfo(params));
 		model.addAttribute("boardInfo", boardService.selectBoardInfo(bnum));
+		
 		return "/tiles/view/board/boardContent";
 	}
 	//글 삭제
@@ -240,7 +243,43 @@ public class BoardController {
 	@ResponseBody
 	public Map<String, Object> updateB(@RequestBody Map<String, Object> params) {
 		System.out.println("updateB");
-		return boardService.updateBoard(params);
+		Map<String, Object> boardWright = new HashMap<String, Object>();
+		boardWright.putAll(params);
+		boardWright.put("text" ,((String)params.get("bcontent")).replaceAll("<([^>]+)>", ""));
+		return boardService.updateBoard(boardWright);
 	}
 	
+	////////////////////////////////////////////////////////////////////////////////////
+	//댓글 입력
+	@PostMapping("/replyInput")
+	@ResponseBody
+	public String replyInsert(@RequestBody Map<String, Object> params, HttpSession session){
+		params.put("mid", session.getAttribute("userId"));
+		replyService.insertReply(params);
+		
+		String bnum = (String) params.get("bnum");
+		return bnum;
+	}
+	//댓글 리스트
+	@GetMapping("/replyAjax/{bnum}")
+	public String replyAjax(@PathVariable("bnum") String bnum, Model model) {
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("bnum", bnum);
+		model.addAttribute("rList", replyService.selectReply(param));
+		
+		return "/tiles/ajax/ajax/ajax-reply";
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

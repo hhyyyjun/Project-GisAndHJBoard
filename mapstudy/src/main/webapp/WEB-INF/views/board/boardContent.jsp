@@ -19,5 +19,16 @@
 		</c:if>
 	</div>
 	<div id="boardContentBox">${boardInfo.bcontent}</div>
-
+	<div id="replyInputBox">
+		<input id="replyBnum" type="hidden" value="${boardInfo.bnum}">
+		<textarea id="replyContent" class="form-control" placeholder="댓글 입력"></textarea>
+		<div id="replyInfo">
+			<div>${myInfo.mnick}</div>
+			<div>
+				<span>0/0</span>
+				<button class="btn btn-outline-secondary" onclick="replyInput()">등록</button>
+			</div>
+		</div>
+	</div>
+	<div id="reply"></div>
 </div>

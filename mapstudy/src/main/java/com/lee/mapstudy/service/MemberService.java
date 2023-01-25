@@ -42,6 +42,7 @@ public class MemberService {
 			session.setAttribute("userRole", result.get("mrole"));
 		}catch (Exception e) {
 			map.put("result", "fail");
+			e.printStackTrace();
 		}
 		return map; 
 	}
