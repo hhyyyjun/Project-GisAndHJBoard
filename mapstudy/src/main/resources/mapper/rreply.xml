@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+                        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lee.mapstudy.boardDao.RreplyDao">
+<select id="checkRrseq" resultType="String">
+	SELECT TB_RREPLY_SEQ.NEXTVAL FROM DUAL
+</select>
+<!-- 대댓글 작성 시 유저 닉네임 출력 -->
+<select id="selectMember" parameterType="CustomMap" resultType="CustomMap">
+	SELECT
+		MNICK
+		FROM
+		TB_MEMBER
+	WHERE 1 = 1
+	AND MID=#{userId}
+</select>
+<!-- 대댓글 작성 -->
+<insert id="insertRreply" parameterType="CustomMap" >
+	INSERT
+		INTO
+		TB_RREPLY(
+			 RRNUM
+			,RNUM
+			,BNUM
+			,RRCONTENT
+			,MID
+		)
+		VALUES(
+			 #{rrnum}
+			,#{rnum}
+			,#{bnum}
+			,#{rrcontent}
+			,#{mid}
+		)
+</insert>
+<!-- 대댓글 출력 -->
+<select id="selectRreply" parameterType="CustomMap" resultType="CustomMap">
+	SELECT
+		 RR.RRNUM
+		,RR.RNUM
+		,RR.RRCONTENT
+		,RR.RRDATE
+		,RR.MID
+		,M.MNICK
+	FROM 
+		 TB_BOARD B
+		,TB_MEMBER M
+		,TB_REPLY R
+		,TB_RREPLY RR
+	WHERE 1 = 1
+	AND B.BNUM = #{bnum}
+	AND B.BNUM = R.BNUM 
+	AND R.RNUM = RR.RNUM
+	AND M.MID = RR.MID 
+	ORDER BY RRNUM DESC
+</select>
+<!-- 대댓글 수정&삭제 -->
+<update id="updateOrDeleteRR" parameterType="CustomMap">
+	UPDATE
+		TB_RREPLY
+	SET
+		RRCONTENT = #{rrcontent}
+	WHERE 1 = 1
+	AND RRNUM = #{rrnum}
+</update>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

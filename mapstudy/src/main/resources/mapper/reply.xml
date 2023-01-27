@@ -6,7 +6,7 @@
 <select id="checkRseq" resultType="String">
 	SELECT TB_REPLY_SEQ.NEXTVAL FROM DUAL
 </select>
-
+<!-- 댓글 입력 -->
 <insert id="insertReply" parameterType="CustomMap">
 	INSERT
 		INTO
@@ -23,24 +23,56 @@
 			,#{mid}
 		)
 </insert>
-
+<!-- 댓글 목록 출력 -->
 <select id="selectReply" parameterType="CustomMap" resultType="CustomMap">
-SELECT 
-	 R.BNUM
-	,R.RNUM 
-	,R.RCONTENT
-	,R.MID
-	,R.RDATE
-	,M.MNICK
-FROM 
-	 TB_BOARD B
-	,TB_MEMBER M
-	,TB_REPLY R
-WHERE 1 = 1
-AND B.BNUM = R.BNUM 
-AND M.MID = R.MID 
-AND B.BNUM = #{bnum}
-ORDER BY RNUM DESC
+	SELECT 
+		 R.BNUM
+		,R.RNUM 
+		,R.RCONTENT
+		,R.MID
+		,R.RDATE
+		,M.MNICK
+	FROM 
+		 TB_BOARD B
+		,TB_MEMBER M
+		,TB_REPLY R
+	WHERE 1 = 1
+	AND B.BNUM = R.BNUM 
+	AND M.MID = R.MID 
+	AND B.BNUM = #{bnum}
+	ORDER BY RNUM DESC
 </select>
-
+<!-- 댓글 수정 -->
+<update id="updateReply">
+	UPDATE 
+		TB_REPLY
+	SET
+		RCONTENT = #{rcontent}
+	WHERE 1 = 1
+	AND RNUM = #{rnum}
+</update>
+<!-- 댓글 완전 삭제 -->
+<delete id="deleteReplyA">
+	DELETE
+	FROM
+		TB_REPLY
+	WHERE 1 = 1
+	AND RNUM = #{rnum}
+</delete>
+<delete id="deleteRreplyA">
+	DELETE
+	FROM
+		TB_RREPLY
+	WHERE 1 = 1
+	AND RNUM = #{rnum}
+</delete>
+<!-- 댓글 수정 -->
+<update id="deleteReply">
+	UPDATE 
+		TB_REPLY
+	SET
+		RCONTENT = #{rcontent}
+	WHERE 1 = 1
+	AND RNUM = #{rnum}
+</update>
 </mapper>

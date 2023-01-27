@@ -3,13 +3,17 @@ package com.lee.mapstudy.boardDao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.lee.mapstudy.boardDto.PagingContentDto;
 
 public interface BoardDao {
 	//게시판 목록
-	public List<Map<String, Object>> boardList(PagingContentDto pcd) throws Exception;
-	public int boardListCnt() throws Exception;
-
+	public List<Map<String, Object>> boardList(@Param(value="params") Map<String, Object> params,@Param(value="page") PagingContentDto pcd) throws Exception;
+	public int boardListCnt(@Param(value="params") Map<String, Object> params) throws Exception;
+	
+	public List<Map<String, Object>> replySearchList(Map<String, Object> params, PagingContentDto pcd) throws Exception;
+	public int ReplyListCnt(Map<String, Object> params) throws Exception;
 	
 	//글작성
 	//시퀀스 마지막 값 확인

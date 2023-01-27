@@ -5,17 +5,18 @@
 <!-- 회원가입 -->
 <insert id="insertMember" parameterType="CustomMap">
 	INSERT 
-	 INTO 
-	 TB_MEMBER(
-	   MID
-	  ,MPW
-	  ,MNICK
-	  ,MROLE)
+	INTO 
+	TB_MEMBER(
+		MID
+	   ,MPW
+	   ,MNICK
+	   ,MROLE)
 	VALUES(
-	  #{id}
- 	 ,#{pw}
-	 ,#{nick}
-	 ,#{role})
+	    #{id}
+ 	   ,#{pw}
+	   ,#{nick}
+	   ,#{role}
+	   )
 </insert>
 <!-- 로그인 확인 -->
 <select id="selectLoginMember" parameterType="CustomMap" resultType="CustomMap">
@@ -24,35 +25,35 @@
 	     ,MPW <!--  -->
 	     ,MNICK
 	     ,MROLE
-	  FROM 
+	FROM 
 	  	TB_MEMBER 
-	 WHERE 
+	WHERE 
 	 	1 = 1
 	   
-	   AND 
-	   	MID = #{id}
+	AND 
+	    MID = #{id}
 	    
-	   AND 
+	AND 
 	   	MPW = #{pw}
 </select>
 <!-- 회원 정보 -->
 <select id="userInfo" parameterType="CustomMap" resultType="CustomMap">
-	SELECT MID 
-	      ,MPW <!--  -->
-	      ,MNICK
-	      ,MROLE
-	  FROM 
+	SELECT 
+		 MID 
+		,MPW <!--  -->
+	    ,MNICK
+	    ,MROLE
+	FROM 
 	  	TB_MEMBER 
-	 WHERE 
+	WHERE 
 	 	1 = 1
-	   
-	   AND 
+	AND 
 	   	MID = #{id}
 </select>
 <!-- 아이디 중복확인 -->
 <select id="checkId" parameterType="String" resultType="int">
 	SELECT COUNT(*) as cnt 
-	  FROM 
+	FROM 
 	   TB_MEMBER 
 	 WHERE 1 = 1
 	  AND 

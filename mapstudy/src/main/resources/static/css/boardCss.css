@@ -201,23 +201,22 @@ a:visited{
 	border : 1px solid #BDBDBD;
 	border-radius: 5px;
 }
-#replyInfo{
+.writerInfo{
 	width : 100%;
 	display : flex;
 	justify-content: space-between;
 }
-#replyInfo div:nth-child(1){
+.replyWriter{
 	padding-top : 4px;
 	margin-left : 13px;
 }
-#replyInfo div:nth-child(2) > span{
+.writerInfo div:nth-child(2) > span{
 	margin-right : 15px;
 }
 /* 댓글 리스트 */
 .replyContentBox{
 	width : 100%;
 	margin-top : 20px;
-	border : 1px solid #BDBDBD;
 	border-radius: 5px;
 }
 .replyInfo{
@@ -268,18 +267,59 @@ a:visited{
 .replyFuncLi2{
 	color : red;
 }
+.deletedContent{
+	color : #BDBDBD;
+}
+.replyBox{
+	display : flex;
+	justify-content: space-between;
+}
 .replyContent{
+	width : 90%;
+}
+.rreplyWrite{
+	width : 10%;
+	text-align: right;
+	cursor : pointer;
+}
+/* 댓글 수정 */
+.changeView{
+	display : none;
+}
+
+/* 대댓글 입력 박스 */
+.rreplyViewOff{
+	display : none;
+}
+.rreplyViewOn{
+	display : block;
+}
+.rreplyBox{
+	display : flex;
+}
+
+/* 대댓글 */
+.rreplyContentBox{
 	width : 100%;
 	border-bottom : 1px solid #BDBDBD;
 }
-
-
-
-
-
-
-
-
+.rreplyImage{
+	width : 20px;
+	height : 20px;
+	background : url("/images/rreplyicon.png") center no-repeat;
+	background-size: contain; 
+	margin-left : 20px;
+}
+.deletedContents{
+	margin-left : 40px;
+	color : #BDBDBD;	
+}
+.rreplyContents{
+	margin-left : 40px;
+}
+.rreplyWriter{
+	margin-left : 40px;
+}
 
 
 

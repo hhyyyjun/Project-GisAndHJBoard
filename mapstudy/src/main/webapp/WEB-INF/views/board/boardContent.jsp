@@ -22,8 +22,8 @@
 	<div id="replyInputBox">
 		<input id="replyBnum" type="hidden" value="${boardInfo.bnum}">
 		<textarea id="replyContent" class="form-control" placeholder="댓글 입력"></textarea>
-		<div id="replyInfo">
-			<div>${myInfo.mnick}</div>
+		<div class="writerInfo">
+			<div class="replyWriter">${myInfo.mnick}</div>
 			<div>
 				<span>0/0</span>
 				<button class="btn btn-outline-secondary" onclick="replyInput()">등록</button>

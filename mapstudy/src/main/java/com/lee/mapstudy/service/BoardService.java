@@ -20,13 +20,22 @@ public class BoardService {
 	
 	private final BoardDao boardDao;
 	//게시판 목록
-	public List<Map<String, Object>> boardList(PagingContentDto pcd) throws Exception {
-		return boardDao.boardList(pcd);
+	public List<Map<String, Object>> boardList(Map<String, Object> params, PagingContentDto pcd) throws Exception {
+		return boardDao.boardList(params, pcd);
 	}
 	//글의 총 개수 확인
-	public int boardListCnt() throws Exception {
-        return boardDao.boardListCnt();
+	public int boardListCnt(Map<String, Object> params) throws Exception {
+        return boardDao.boardListCnt(params);
 	}
+	
+
+	public List<Map<String, Object>> replySearchList(Map<String, Object> params, PagingContentDto pcd) throws Exception {
+		return boardDao.boardList(params, pcd);
+	}
+	public int ReplyListCnt(Map<String, Object> params) throws Exception {
+		return boardDao.boardListCnt(params);
+	}
+	
 	//썸네일
 	public Map<String, Object> thumnail(List<String> idList){
 		return boardDao.thumnail(idList);

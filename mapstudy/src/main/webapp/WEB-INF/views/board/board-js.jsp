@@ -19,14 +19,19 @@ function boardList(target){
 	}
 	console.log("페이지 넘버 : "+pageNum);
 	
-	const params = {
-			
+	var optionVal = $("#selectType").val();
+	var searchVal = $("#searchContent").val().trim();
+	
+	var userData = {
+			"optionVal" : optionVal,
+			"searchVal" : searchVal
 	}
-
+	
+	
 	$.ajax({
 		url : "/boardAjax/"+pageNum,
 		type : "GET",
-		data : params,
+		data : userData,
 		contentType : "html",
 		success : function(data){
 			console.log(data);

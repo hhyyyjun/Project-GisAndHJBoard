@@ -34,6 +34,7 @@ import com.lee.mapstudy.boardDto.PagingDto;
 import com.lee.mapstudy.service.BoardService;
 import com.lee.mapstudy.service.MemberService;
 import com.lee.mapstudy.service.ReplyService;
+import com.lee.mapstudy.service.RreplyService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -44,6 +45,7 @@ public class BoardController {
 	private final MemberService memberService;
 	private final BoardService boardService;
 	private final ReplyService replyService;
+	private final RreplyService rreplyService;
 	private final MemberDao memeDao;
 	
 	//로그인 화면
@@ -119,20 +121,37 @@ public class BoardController {
 	}
 	//게시판
 	@GetMapping("/boardAjax/{pageNum}")
-	public String boardAjax(@PathVariable int pageNum,PagingContentDto pcd, Model model) throws Exception {
+	public String boardAjax(@PathVariable int pageNum, @RequestParam Map<String, Object> params, PagingContentDto pcd, Model model) throws Exception {
 		System.out.println("board");
-		// 전체 글 개수
-        int boardListCnt = boardService.boardListCnt();
-        
-        pcd.setPage(pageNum);
-        
-        // 페이징 객체
-        PagingDto paging = new PagingDto();
-        paging.setPcd(pcd);
-        paging.setTotalCount(boardListCnt);  
-        model.addAttribute("paging", paging);
-        model.addAttribute("page", pcd.getPage());
-		model.addAttribute("list", boardService.boardList(pcd));
+		
+		if(params.get("optionVal") == "2") {
+			// 전체 글 개수
+	        int boardListCnt = boardService.ReplyListCnt(params);
+	        
+	        pcd.setPage(pageNum);
+	        
+	        // 페이징 객체
+	        PagingDto paging = new PagingDto();
+	        paging.setPcd(pcd);
+	        paging.setTotalCount(boardListCnt);  
+	        model.addAttribute("paging", paging);
+	        model.addAttribute("page", pcd.getPage());
+			model.addAttribute("list", boardService.replySearchList(params, pcd));
+		}
+		else {
+			// 전체 글 개수
+	        int boardListCnt = boardService.boardListCnt(params);
+	        
+	        pcd.setPage(pageNum);
+	        
+	        // 페이징 객체
+	        PagingDto paging = new PagingDto();
+	        paging.setPcd(pcd);
+	        paging.setTotalCount(boardListCnt);  
+	        model.addAttribute("paging", paging);
+	        model.addAttribute("page", pcd.getPage());
+			model.addAttribute("list", boardService.boardList(params, pcd));
+		}
 		return "/tiles/ajax/ajax/ajax-board";
 	}
 	//글 작성화면
@@ -260,14 +279,49 @@ public class BoardController {
 		String bnum = (String) params.get("bnum");
 		return bnum;
 	}
+	//댓글수정
+	@PostMapping("/updateReply")
+	@ResponseBody
+	public int updateReply(@RequestBody Map<String, Object> params) {
+		return replyService.updateReply(params);
+	}
+	//댓글 완전 삭제
+	@PostMapping("/deleteReplyA")
+	@ResponseBody
+	public int deleteReplyA(@RequestBody Map<String, Object> params) {
+		return replyService.deleteReplyA(params);
+	}
+	//댓글 삭제 남김
+	@PostMapping("/deleteReply")
+	@ResponseBody
+	public int deleteReply(@RequestBody Map<String, Object> params) {
+		return replyService.deleteReply(params);
+	}
+	
 	//댓글 리스트
 	@GetMapping("/replyAjax/{bnum}")
-	public String replyAjax(@PathVariable("bnum") String bnum, Model model) {
+	public String replyAjax(@PathVariable("bnum") String bnum, Model model, HttpSession session) {
 		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("userId", session.getAttribute("userId"));
 		param.put("bnum", bnum);
 		model.addAttribute("rList", replyService.selectReply(param));
-		
+		model.addAttribute("userNick", rreplyService.selectMember(param));
+		model.addAttribute("rrList", rreplyService.selectRreply(param));
 		return "/tiles/ajax/ajax/ajax-reply";
+	}
+	/////////////////////////////////////////////////////////////////////////
+	//대댓글 입력
+	@PostMapping("/rreplyInput")
+	@ResponseBody
+	public int rreplyInsert(@RequestBody Map<String, Object> params, HttpSession session) {
+		params.put("mid", session.getAttribute("userId"));
+		return rreplyService.insertRreply(params);
+	}
+	//대댓글 수정&삭제
+	@PostMapping("/updateOrDeleteRR")
+	@ResponseBody
+	public int updateOrDeleteRR(@RequestBody Map<String, Object> params) {
+		return rreplyService.updateOrDeleteRR(params);
 	}
 }
 

@@ -45,36 +45,112 @@
 </select>
 <!-- 게시판 목록 -->
  <select id="boardList" resultType="CustomMap" parameterType="CustomMap">
-	SELECT * FROM(SELECT ROWNUM AS BCNT, A.* FROM(
-		<include refid="selectBoard"/>
-	)A WHERE ROWNUM 
-		<![CDATA[<=]]>  #{page} * #{perPageNum}) WHERE BCNT
-		<![CDATA[>]]> (#{page}-1) * #{perPageNum}
-</select>
-
-<sql id="selectBoard">
-	 SELECT 
-			 A.BNUM 
-			,A.BTITLE 
-			,A.BCONTENT 
-			,A.BDATE 
-			,A.MID 
-			,A.TEXT 
-			,A.THUMIDX 
-			,B.MNICK
-		FROM 
-			 TB_BOARD A
-			,TB_MEMBER B
+	SELECT * FROM
+		(
+		SELECT 
+			 ROWNUM AS BCNT
+			,A.* 
+			FROM(
+			<include refid="selectBoard"/>
+			)A 
 		WHERE 1 = 1
-		AND A.MID = B.MID
-		ORDER BY BNUM DESC
+		AND ROWNUM 
+			<![CDATA[<=]]>  #{page.page} * #{page.perPageNum}) WHERE BCNT
+			<![CDATA[>]]> (#{page.page}-1) * #{page.perPageNum}
+</select>
+<sql id="selectBoard">
+	SELECT 
+		 A.BNUM 
+		,A.BTITLE 
+		,A.BCONTENT 
+		,A.BDATE 
+		,A.MID 
+		,A.TEXT 
+		,A.THUMIDX 
+		,B.MNICK
+	FROM 
+		 TB_BOARD A
+		,TB_MEMBER B
+	WHERE 1 = 1
+	AND A.MID = B.MID
+	<if test="!@com.lee.mapstudy.common.StringUtil@empty(params.searchVal)">
+	AND A.BTITLE LIKE '%'||#{params.searchVal}||'%'
+	</if>
+	ORDER BY BNUM DESC
 </sql>
 <!-- 게시판 글 총 개수 -->
-<select id="boardListCnt" resultType="int">
+<select id="boardListCnt" parameterType="CustomMap" resultType="int">
     SELECT 
-     count(*)
-      FROM 
-       TB_BOARD
+		 COUNT(*)
+	FROM 
+		 TB_BOARD B
+		,TB_MEMBER M
+	WHERE 1 = 1
+	AND B.MID = M.MID
+	<if test="!@com.lee.mapstudy.common.StringUtil@empty(params.searchVal)">
+	AND B.BTITLE LIKE '%'||#{params.searchVal}||'%'
+	</if>
+</select>
+
+<!-- 댓글 검색 시 게시글 목록 -->
+ <select id="replySearchList" parameterType="CustomMap" resultType="CustomMap">
+	SELECT * FROM
+		(
+		SELECT 
+			 ROWNUM AS BCNT
+			,C.* 
+			FROM(
+			<include refid="searchBoard"/>
+			)C 
+		WHERE 1 = 1
+		AND ROWNUM 
+			<![CDATA[<=]]>  #{page.page} * #{page.perPageNum}) WHERE BCNT
+			<![CDATA[>]]> (#{page.page}-1) * #{page.perPageNum}
+</select>
+<sql id="searchBoard">
+	SELECT 
+		B.BNUM
+		,B.BTITLE
+		,B.BCONTENT
+		,B.BDATE
+		,B.TEXT
+		,M.MNICK
+		,B.THUMIDX
+	FROM
+		(
+		SELECT 
+			RNUM, BNUM, RCONTENT, MID, RDATE 
+		FROM 
+			TB_REPLY
+		WHERE 
+			1=1
+			AND
+			RCONTENT LIKE '%'||#{searchVal}||'%'
+		UNION ALL
+		SELECT 
+			RNUM , BNUM, RRCONTENT, MID, RRDATE
+		FROM 
+			TB_RREPLY 
+		WHERE
+			1=1	
+			AND
+			RRCONTENT LIKE '%'||#{searchVal}||'%'
+		) A, TB_BOARD B, TB_MEMBER M
+	WHERE 
+		A.BNUM = B.BNUM
+	AND
+		B.MID = M.MID
+	GROUP BY B.BTITLE, B.BNUM, B.BCONTENT ,B.BDATE, B.TEXT  ,M.MNICK ,B.THUMIDX
+</sql>
+
+<!-- 댓글 검색 시 총 개수 -->
+<select id="ReplyListCnt" parameterType="CustomMap" resultType="int">
+	SELECT 
+		COUNT(*) 
+	FROM
+		(
+		<include refid="searchBoard"/>
+		) C;
 </select>
 
 <!-- 썸네일 -->
@@ -85,9 +161,9 @@
 	FROM 
 		 TB_BOARDFILE A
 		,TB_FILE B
-	 WHERE
+	WHERE
 	 	A.FNUM = B.FNUM
-	 AND 
+	AND 
 	 	A.BNUM = #{bnum}
 </select>
 
@@ -108,15 +184,17 @@
 <!-- 보드파일 테이블에 저장 -->
 <insert id="insertFileBoard" parameterType="CustomMap">
 	INSERT
-	 INTO
-	  TB_BOARDFILE(
-	    BFNUM
-	   ,BNUM
-	   ,FNUM)
+		INTO
+		TB_BOARDFILE(
+		    BFNUM
+		   ,BNUM
+		   ,FNUM
+		   )
 	   VALUES(
 	     #{bfnum}
 	    ,#{bnum}
-	    ,#{fnum})
+	    ,#{fnum}
+	    )
 </insert>
 
 <select id="checkFseq" resultType="String">
@@ -125,50 +203,52 @@
 <!-- 파일 테이블에 저장 -->
 <insert id="insertFile" parameterType="CustomMap">
 	INSERT
-	 INTO
-	  TB_FILE(
-	    FNUM
-	   ,FILEROOT
-	   ,SFILENAME
-	   ,OFILENAME
-	   ,EXTENSION)
+		INTO
+		TB_FILE(
+		    FNUM
+		   ,FILEROOT
+		   ,SFILENAME
+		   ,OFILENAME
+		   ,EXTENSION
+		   )
 	   VALUES(
-	     #{fnum}
-	    ,#{fileroot}
-	    ,#{sfname}
-	    ,#{ofname}
-	    ,#{extension})
+			 #{fnum}
+			,#{fileroot}
+			,#{sfname}
+			,#{ofname}
+			,#{extension}
+	    )
 </insert>
 <!-- 파일경로 -->
 <select id="fileCheck" resultType="CustomMap">
 	SELECT
-	  FILEROOT
-	 ,SFILENAME
+	  	 FILEROOT
+		,SFILENAME
 	FROM
-	  TB_FILE
+		TB_FILE
 	WHERE 1 = 1
-	  AND FNUM=#{fnum}
+	AND FNUM=#{fnum}
 </select>
 
 <!-- 게시글 삭제 -->
 <delete id="deleteBoard" parameterType="CustomMap">
 	DELETE 
-	 FROM 
+	FROM 
 	 	TB_BOARD 
-	 WHERE 1 = 1
-	 AND 
+	WHERE 1 = 1
+	AND 
 	 	BNUM = #{bnum}
 </delete>
 <!-- 게시글 수정 -->
 <update id="updateBoard" parameterType="CustomMap">
 	UPDATE 
 		TB_BOARD 
-	 SET 
+	SET 
 	 	 BTITLE=#{btitle}
 	 	,BCONTENT=#{bcontent}
 	 	,THUMIDX=#{thumIdx}
 	 	,TEXT=#{text}
-	 WHERE 1 = 1
-	 AND BNUM = #{bnum}
+	WHERE 1 = 1
+	AND BNUM = #{bnum}
 </update>
 </mapper>
