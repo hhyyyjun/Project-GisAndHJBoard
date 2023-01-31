@@ -99,7 +99,7 @@ public class BoardController {
 		
 		return memberService.insertMember(params);
 	}
-	//회원 정보화면
+	//회원 정보 화면
 	@GetMapping("/myInfo")
 	public String myInfo(HttpSession session, Model model) {
 		System.out.println("myInfo");
@@ -108,7 +108,7 @@ public class BoardController {
 		model.addAttribute("myInfo", memeDao.userInfo(params));
 		return "/tiles/view/auth/myInfo";
 	}
-	//회원 정보 변경
+	//회원 정보 수정
 	@PostMapping("/updateM")
 	@ResponseBody
 	public Map<String, Object> updateMemberInfo(@RequestBody Map<String, Object> param, HttpSession session){
@@ -117,6 +117,16 @@ public class BoardController {
 		params.putAll(param);
 		params.put("id", session.getAttribute("userId"));
 		return memberService.updateMemberInfo(params);
+	}
+	//회원 비밀번호 수정
+	@PostMapping("/updateP")
+	@ResponseBody
+	public Map<String, Object> updateMemberPwd(@RequestBody Map<String, Object> param, HttpSession session){
+		System.out.println("updateP");
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.putAll(param);
+		params.put("id", session.getAttribute("userId"));
+		return memberService.updateMemberPwd(params);
 	}
 	
 	//////////////////////////////////////////////////////////

@@ -154,7 +154,7 @@
 	FROM
 		(
 		<include refid="searchBoard"/>
-		) C;
+		) C
 </select>
 
 <!-- 썸네일 -->

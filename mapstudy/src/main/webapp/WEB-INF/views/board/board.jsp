@@ -14,7 +14,7 @@
 			  <button class="btn btn-outline-secondary" id="button-addon2" onclick="boardList()">검색</button>
 			</div>
 		</div>
-		<button onclick="boardWrite()" class="btn btn-outline-secondary mb-3">글쓰기</button>
+		<button id="writeBtn" onclick="boardWrite()" class="btn btn-outline-secondary mb-3">글쓰기</button>
 	</div>
 	<div id="target"></div>
 </div>

@@ -50,12 +50,12 @@
 </table>
 <ul class="paging" id="paging">
     <c:if test="${paging.prev}">
-        <span onclick="boardList(this)" data-page="${page-1}"><a href="javascript:void(0);">이전</a></span>
+        <li id="prevBtn" onclick="boardList(this)" data-page="${page-1}"><a href="javascript:void(0);">이전</a></li>
     </c:if>
     <c:forEach begin="${paging.startPage}" end="${paging.endPage}" var="num">
-        <span onclick="boardList(this)" data-page="${num}"><a <c:if test="${page == num}">style="color : red; font-weight : bold;"</c:if> href="javascript:void(0);">${num}</a></span>
+        <li class="pageBtn" onclick="boardList(this)" data-page="${num}"><a <c:if test="${page == num}">style="color : red; font-weight : bold;"</c:if> href="javascript:void(0);">${num}</a></li>
     </c:forEach>
     <c:if test="${paging.next && paging.endPage>0}">
-        <span onclick="boardList(this)" data-page="${page+1}"><a href="javascript:void(0);">다음</a></span>
+        <li id="nextBtn" onclick="boardList(this)" data-page="${page+1}"><a href="javascript:void(0);">다음</a></li>
     </c:if>
 </ul>

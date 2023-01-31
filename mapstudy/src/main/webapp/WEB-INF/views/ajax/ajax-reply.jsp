@@ -26,7 +26,7 @@
 				<c:otherwise>
 					<div class="replyBox">
 						<div class="replyContent">${r.rcontent}</div>
-						<div class="rreplyWrite" onclick="rreplyWrite(this)">대댓글작성</div>
+						<div class="rreplyWrite" onclick="rreplyWrite(this)">댓글</div>
 					</div>
 				</c:otherwise>
 			</c:choose>

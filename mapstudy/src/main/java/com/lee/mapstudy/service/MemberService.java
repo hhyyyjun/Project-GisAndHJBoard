@@ -53,5 +53,18 @@ public class MemberService {
 		}
 		return map; 
 	}
+	//회원 비밀번호 변경
+	public Map<String, Object> updateMemberPwd(Map<String, Object> params){
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+			params.put("pw", passwordEncoder.encode(String.valueOf(params.get("pw"))));
+			memberDao.updateMemberPwd(params);
+			map.put("result", "success");
+		}catch (Exception e) {
+			map.put("result", "fail");
+		}
+		return map; 
+	}
 	
 }

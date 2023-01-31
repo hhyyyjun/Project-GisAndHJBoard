@@ -33,7 +33,7 @@ public class BoardService {
 		return boardDao.replySearchList(params, pcd);
 	}
 	public int ReplyListCnt(Map<String, Object> params) throws Exception {
-		return boardDao.boardListCnt(params);
+		return boardDao.ReplyListCnt(params);
 	}
 	
 	//썸네일

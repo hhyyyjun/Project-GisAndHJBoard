@@ -59,13 +59,22 @@
 	  AND 
 	   MID = #{id}
 </select>
-<!-- 회원정보 변경 -->
+<!-- 회원정보(닉네임) 변경 -->
 <update id="updateMemberInfo" parameterType="CustomMap">
 	UPDATE
 	 TB_MEMBER
 	SET
-	  MPW = #{pw}
-	 ,MNICK = #{nick}
+	 MNICK = #{nick}
+	WHERE 1 = 1
+	 AND
+	  MID = #{id}
+</update>
+<!-- 회원정보(비밀번호) 변경 -->
+<update id="updateMemberPwd" parameterType="CustomMap">
+	UPDATE
+	 TB_MEMBER
+	SET
+	 MPW = #{pw}
 	WHERE 1 = 1
 	 AND
 	  MID = #{id}

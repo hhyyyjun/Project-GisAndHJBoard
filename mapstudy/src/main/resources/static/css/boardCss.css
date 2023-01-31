@@ -41,61 +41,6 @@ a:visited{
 	background-color : #FAEAEA;
 	align-items: center;
 }
-@media screen and (max-width: 1230px) {
-  #userBox {
-    width : 15%;
-  }
-}
-@media screen and (max-width: 1085px) {
-  #userBox {
-    width : 17%;
-  }
-}
-@media screen and (max-width: 960px) {
-  #userBox {
-    width : 19%;
-  }
-}
-@media screen and (max-width: 860px) {
-  #userBox {
-    width : 21%;
-  }
-}
-@media screen and (max-width: 780px) {
-  #userBox {
-    width : 23%;
-  }
-}
-@media screen and (max-width: 715px) {
-  #userBox {
-    width : 25%;
-  }
-}
-@media screen and (max-width: 660px) {
-  #userBox {
-    width : 27%;
-  }
-}
-@media screen and (max-width: 610px) {
-  #userBox {
-    width : 29%;
-  }
-}
-@media screen and (max-width: 570px) {
-  #userBox {
-    width : 31%;
-  }
-}
-@media screen and (max-width: 535px) {
-  #userBox {
-    width : 33%;
-  }
-}
-@media screen and (max-width: 505px) {
-  #userBox {
-    width : 35%;
-  }
-}
 #userBox > li{
 	width : 50%;
 	border : none;
@@ -119,6 +64,8 @@ a:visited{
 	font-size : 20px;
 	font-weight : bold;
 }
+
+
 /* 회원가입 화면 */
 #idBox{
 	display : flex;
@@ -143,11 +90,35 @@ a:visited{
     font-weight: 400;
 }
 
+
+/* 정보 수정 화면 */
+#userInfoBox{
+	width : 100%;
+	display : flex;
+	margin-bottom : 10px;
+}
+#userInfoBox > .changeInfo:nth-child(2){
+	border-right: 10px solid #FAEAEA;
+}
+.changeInfo{
+	height : 50px;
+	border-left: 10px solid #FAEAEA;
+	width : 50%;
+	text-align : center;
+	padding-bottom : 10px;
+	font-weight : bold;
+}
+.changeInfo > span{
+	cursor : pointer;
+	line-height : 3;
+}
+
+
 /* 게시판화면 */
 #boardTable{
 	width : 100%;
 }
-#id{
+#num{
 	width : 5%;
 }
 #title{
@@ -164,10 +135,12 @@ a:visited{
 }
 
 #boardTop{
+	width : 100%;
 	display : flex;
 	justify-content: space-between;
 }
 #boardTop > div {
+	width: 84%;
 	display : flex;
 }
 #selectType{
@@ -182,13 +155,24 @@ a:visited{
 	margin : 0 auto;
 	padding-left : 0;
 	display : flex;
-	justify-content: center;
+	justify-content: space-between;
+	list-style: none;
 }
-#paging > span{
-	width : 10%;
+.pageBtn{
+	width : 5%;
 	margin : 0 auto;
 	padding-left : 0;
 }
+#prevBtn{
+	width : 40px;
+	text-align: left;
+}
+#nextBtn{
+	width : 40px;
+	text-align: right;
+}
+
+
 /* 글 작성 화면 */
 #editorTxt{
 	width : 99.8%;
@@ -200,6 +184,8 @@ a:visited{
 #clearBtn{
 	width : 80px;
 }
+
+
 /* 글 상세화면 */
 #boardPageBox{
 	width : 90%;
@@ -271,6 +257,8 @@ a:visited{
 	width : 100%;
 	border-bottom: 1px solid #BDBDBD;
 }
+
+
 /* 댓글입력창 */
 #replyInputBox{
 	width : 100%;
@@ -290,6 +278,8 @@ a:visited{
 .writerInfo div:nth-child(2) > span{
 	margin-right : 15px;
 }
+
+
 /* 댓글 리스트 */
 .replyContentBox{
 	width : 100%;
@@ -359,10 +349,16 @@ a:visited{
 	text-align: right;
 	cursor : pointer;
 }
+
+
 /* 댓글 수정 */
 .changeView{
 	display : none;
 }
+
+
+
+
 
 /* 대댓글 입력 박스 */
 .rreplyViewOff{
@@ -375,6 +371,9 @@ a:visited{
 	display : flex;
 }
 
+
+
+
 /* 대댓글 */
 .rreplyContentBox{
 	width : 100%;
@@ -386,6 +385,7 @@ a:visited{
 	background : url("/images/rreplyicon.png") center no-repeat;
 	background-size: contain; 
 	margin-left : 20px;
+	margin-right : 8px;
 }
 .deletedContents{
 	margin-left : 40px;
@@ -399,4 +399,110 @@ a:visited{
 }
 
 
+
+
+
+
+
+@media screen and (max-width: 1250px) {
+  #userBox {
+    width : 15%;
+  }
+}
+@media screen and (max-width: 1230px) {
+  #content {
+  	width : 45%;
+  }
+  #date{
+  	width : 15%;
+  }
+}
+@media screen and (max-width: 1200px) {
+  #paging{
+  	width : 40%;
+  }
+}
+@media screen and (max-width: 1085px) {
+  #userBox {
+    width : 17%;
+  }
+  #content {
+  	width : 40%;
+  }
+  #date{
+  	width : 20%;
+  }
+}
+@media screen and (max-width: 960px) {
+  #userBox {
+    width : 19%;
+  }
+  #paging{
+  	width : 50%;
+  }
+}
+@media screen and (max-width: 860px) {
+  #userBox {
+    width : 21%;
+  }
+}
+@media screen and (max-width: 780px) {
+  #userBox {
+    width : 23%;
+  }
+  #searchBox{
+	width: 320px;
+  }
+  #title{
+    width : 17%;
+  }
+  #content {
+  	width : 35%;
+  }
+  #writer{
+	width : 15%;
+  }
+  #date{
+  	width : 23%;
+  }
+  #paging{
+  	width : 60%;
+  }
+}
+@media screen and (max-width: 715px) {
+  #userBox {
+    width : 25%;
+  }
+}
+@media screen and (max-width: 660px) {
+  #userBox {
+    width : 27%;
+  }
+}
+@media screen and (max-width: 610px) {
+  #userBox {
+    width : 29%;
+  }
+}
+@media screen and (max-width: 570px) {
+  #userBox {
+    width : 31%;
+  }
+}
+@media screen and (max-width: 535px) {
+  #userBox {
+    width : 33%;
+  }
+}
+@media screen and (max-width: 505px) {
+  #userBox {
+    width : 35%;
+  }
+  #boardTop > div {
+  	width : 80%;
+  }
+  #writeBtn{
+  	width : 20%;
+  }
+}
 
