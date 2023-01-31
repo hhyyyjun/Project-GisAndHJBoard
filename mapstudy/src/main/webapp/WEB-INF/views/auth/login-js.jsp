@@ -16,17 +16,18 @@ function login() {
 	var id = $("#loginId").val();
 	var pw = $("#loginpw").val();
 	var userData = {
-		"id" : id,
-		"pw" : pw
+		mid : id,
+		mpw : pw
 	};
 
 	$.ajax({
-		url : "/loginMember",
+		url : "/login_proc",
 		type : "POST",
-		data : JSON.stringify(userData),
+		data : userData,
 		dataType : "json",
-		contentType : "application/json;charset=UTF-8",
+// 		contentType : "application/x-www-form-urlencoded; charset=utf-8",
 		success : function(data) {
+			console.log(data);
 			if (data.result == "success") {
 				console.log('로그인 성공');
 				location.href="/board";

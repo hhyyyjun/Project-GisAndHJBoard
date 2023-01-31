@@ -253,7 +253,13 @@ function updateOrDeleteRR(target){
 	if($(target).attr("value") == "수정하기"){
 		rrcontent = $(target).parents(".rreplyrreply").find(".replyUcontent").val();
 	} else{
-		rrcontent = "삭제된 댓글입니다.";
+		if(confirm("정말로 삭제하시겠습니까?")){
+			rrcontent = "삭제된 댓글입니다.";
+			alert("삭제 되었습니다.");
+		}
+		else{
+			return;
+		}
 	}
 	var userData = {
 			"rrnum" : rrnum,
@@ -282,7 +288,31 @@ function updateOrDeleteRR(target){
 		alert("공백으로 수정할 수 없습니다.");
 	}
 }
-
+//첨부파일 삭제
+function deleteAttachFile(target){
+	var fnum = $(target).val();
+	var userData = {
+			"fnum" : fnum
+	} 
+	if(confirm("정말로 삭제하시겠습니까?")){
+		$.ajax({
+			url : "/deleteAttachFile",
+			type : "POST",
+			data : JSON.stringify(userData),
+			contentType : "application/json;charset=utf-8",
+			success : function(data){
+					console.log("첨부파일 삭제 성공");
+					location.reload();
+			},
+			error : function(){
+				console.log("에러");
+			} 
+		})
+	}
+	else{
+		return;
+	}
+}
 </script>
 
 

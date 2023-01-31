@@ -10,7 +10,12 @@
   </div>
   <div class="mb-3">
     <label for="joinPassword" class="form-label">비밀번호</label>
-    <input type="text" class="form-control" id="enterPw" value="${myInfo.mpw}">
+    <input type="text" class="form-control" id="enterPw" required>
+    <div id="joinPassword"></div>
+  </div>
+  <div class="mb-3">
+    <label for="joinPassword" class="form-label">비밀번호 확인</label>
+    <input type="text" class="form-control" id="enterPw" required>
     <div id="joinPassword"></div>
   </div>
   <div class="mb-3">

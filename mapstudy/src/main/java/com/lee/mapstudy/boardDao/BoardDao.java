@@ -11,18 +11,21 @@ public interface BoardDao {
 	//게시판 목록
 	public List<Map<String, Object>> boardList(@Param(value="params") Map<String, Object> params,@Param(value="page") PagingContentDto pcd) throws Exception;
 	public int boardListCnt(@Param(value="params") Map<String, Object> params) throws Exception;
-	
-	public List<Map<String, Object>> replySearchList(Map<String, Object> params, PagingContentDto pcd) throws Exception;
-	public int ReplyListCnt(Map<String, Object> params) throws Exception;
+	//댓글 검색 시 목록
+	public List<Map<String, Object>> replySearchList(@Param(value="params") Map<String, Object> params,@Param(value="page") PagingContentDto pcd) throws Exception;
+	public int ReplyListCnt(@Param(value="params") Map<String, Object> params) throws Exception;
 	
 	//글작성
 	//시퀀스 마지막 값 확인
 	public String checkSeq();
 	public int insertBoard(Map<String, Object> params);
 	
-	//파일 저장
+	//파일 테이블에 저장
 	public String checkFseq();
 	public void insertFile(Map<String, Object> params);
+	
+	//파일 다운로드
+	public Map<String, Object> downloadFile(String params);
 	
 	//보드 파일 저장
 	public int fnumSeq();
@@ -40,6 +43,11 @@ public interface BoardDao {
 	public int updateBoard(Map<String, Object> params);
 	//게시글 상세페이지
 	public Map<String, Object> selectBoardInfo(String bnum);
+	
+	public List<Map<String, Object>> attachFileList(String bnum);
+	//첨부파일 삭제
+	public int deleteAttachFile(Map<String, Object> params);
+	
 	//게시글 수정페이지
 	public Map<String, Object> selectBoardInfo(Map<String, Object> param);
 }

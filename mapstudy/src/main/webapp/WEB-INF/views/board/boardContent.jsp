@@ -19,6 +19,19 @@
 		</c:if>
 	</div>
 	<div id="boardContentBox">${boardInfo.bcontent}</div>
+	<c:if test="${!empty fileInfo}">
+	<ul>
+		<c:forEach var="fileInfo" items="${fileInfo}">
+		<li>
+			<span>${fileInfo.ofilename}</span>
+			<a href="/download/${fileInfo.fnum}"> [download] </a> <br />
+			<c:if test="${boardInfo.mid==userId}">
+			<button onclick="deleteAttachFile(this)" value="${fileInfo.fnum}">삭제</button>
+			</c:if>
+		</li>
+		</c:forEach>
+	</ul>
+	</c:if>
 	<div id="replyInputBox">
 		<input id="replyBnum" type="hidden" value="${boardInfo.bnum}">
 		<textarea id="replyContent" class="form-control" placeholder="댓글 입력"></textarea>

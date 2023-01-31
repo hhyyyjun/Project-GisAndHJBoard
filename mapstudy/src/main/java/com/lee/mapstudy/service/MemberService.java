@@ -2,9 +2,9 @@ package com.lee.mapstudy.service;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.servlet.http.HttpSession;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,26 +23,13 @@ public class MemberService {
 	public Map<String, Object> insertMember(Map<String, Object> params) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
+			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+			params.put("pw", passwordEncoder.encode(String.valueOf(params.get("pw"))));
+			
 			memberDao.insertMember(params);
 			map.put("result", "success");
 		}catch (Exception e) {
 			map.put("result", "fail");
-		}
-		return map; 
-	}
-	//로그인
-	public Map<String, Object> selectLoginMember(Map<String, Object> params, HttpSession session) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		System.out.println("서비스"+params);
-		try {
-			Map<String, Object> result = memberDao.selectLoginMember(params);
-			map.put("result", "success");
-			session.setAttribute("userId", result.get("mid"));
-			session.setAttribute("userNick", result.get("mnick"));
-			session.setAttribute("userRole", result.get("mrole"));
-		}catch (Exception e) {
-			map.put("result", "fail");
-			e.printStackTrace();
 		}
 		return map; 
 	}
@@ -66,4 +53,5 @@ public class MemberService {
 		}
 		return map; 
 	}
+	
 }

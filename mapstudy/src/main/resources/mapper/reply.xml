@@ -15,12 +15,14 @@
 			,BNUM
 			,RCONTENT
 			,MID
+			,RDATE
 		)
 		VALUES(
 			 #{rnum}
 			,#{bnum}
 			,#{rcontent}
 			,#{mid}
+			,TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS')
 		)
 </insert>
 <!-- 댓글 목록 출력 -->

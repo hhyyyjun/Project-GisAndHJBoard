@@ -17,14 +17,18 @@
 		,BCONTENT
 		,MID
 		,TEXT
-		,THUMIDX)
+		,THUMIDX
+		,BDATE
+		)
 	 VALUES(
 	 	 #{bnum}
 	 	,#{btitle}
 	 	,#{bcontent}
 	 	,#{userId}
 	 	,#{text}
-	 	,#{thumIdx})
+	 	,#{thumIdx}
+	 	,TO_CHAR(SYSDATE, 'yyyy-mm-dd hh24:mi:ss')
+	 	)
 </insert>
 <!-- 게시글 상세페이지, 수정페이지 -->
 <select id="selectBoardInfo" parameterType="CustomMap" resultType="CustomMap">
@@ -34,7 +38,7 @@
 		,B.BCONTENT
 		,M.MID
 		,M.MNICK
-		,TO_CHAR(B.BDATE, 'YYYY-MM-DD') AS BDATE
+		,B.BDATE
 	 FROM 
 	 	 TB_BOARD B
 	 	,TB_MEMBER M
@@ -67,12 +71,10 @@
 		,A.MID 
 		,A.TEXT 
 		,A.THUMIDX 
-		,B.MNICK
+		,(SELECT MNICK FROM TB_MEMBER T1 WHERE T1.MID = A.MID) AS MNICK
 	FROM 
 		 TB_BOARD A
-		,TB_MEMBER B
 	WHERE 1 = 1
-	AND A.MID = B.MID
 	<if test="!@com.lee.mapstudy.common.StringUtil@empty(params.searchVal)">
 	AND A.BTITLE LIKE '%'||#{params.searchVal}||'%'
 	</if>
@@ -84,9 +86,7 @@
 		 COUNT(*)
 	FROM 
 		 TB_BOARD B
-		,TB_MEMBER M
 	WHERE 1 = 1
-	AND B.MID = M.MID
 	<if test="!@com.lee.mapstudy.common.StringUtil@empty(params.searchVal)">
 	AND B.BTITLE LIKE '%'||#{params.searchVal}||'%'
 	</if>
@@ -124,8 +124,10 @@
 			TB_REPLY
 		WHERE 
 			1=1
+			<if test="!@com.lee.mapstudy.common.StringUtil@empty(params.searchVal)">
 			AND
-			RCONTENT LIKE '%'||#{searchVal}||'%'
+			RCONTENT LIKE '%'||#{params.searchVal}||'%'
+			</if>
 		UNION ALL
 		SELECT 
 			RNUM , BNUM, RRCONTENT, MID, RRDATE
@@ -133,8 +135,10 @@
 			TB_RREPLY 
 		WHERE
 			1=1	
+			<if test="!@com.lee.mapstudy.common.StringUtil@empty(params.searchVal)">
 			AND
-			RRCONTENT LIKE '%'||#{searchVal}||'%'
+			RRCONTENT LIKE '%'||#{params.searchVal}||'%'
+			</if>
 		) A, TB_BOARD B, TB_MEMBER M
 	WHERE 
 		A.BNUM = B.BNUM
@@ -168,7 +172,7 @@
 </select>
 
 
-<!-- 최종 시퀀스 값 -->
+<!-- 파일 테이블 최종 시퀀스 값 -->
 <select id="fnumSeq" resultType="int">
 	SELECT 
         LAST_NUMBER 
@@ -251,4 +255,38 @@
 	WHERE 1 = 1
 	AND BNUM = #{bnum}
 </update>
+
+<select id="downloadFile" parameterType="CustomMap" resultType="CustomMap">
+	SELECT
+		 FILEROOT
+		,SFILENAME
+		,OFILENAME
+	FROM
+		TB_FILE
+	WHERE 1 = 1
+	AND FNUM = #{fnum}
+</select>
+<!-- 파일 정보 가져오기 -->
+<select id="attachFileList" parameterType="CustomMap" resultType="CustomMap">
+	SELECT
+		 F.FNUM
+		,F.OFILENAME
+	FROM
+		 TB_BOARDFILE BF
+		,TB_FILE F
+	WHERE 1 = 1
+	AND BF.FNUM = F.FNUM
+	AND BF.BNUM = #{bnum}
+	AND BF.DEL_YN = 'N'
+</select>
+
+<update id="deleteAttachFile" parameterType="CustomMap">
+	UPDATE
+		TB_BOARDFILE
+	SET
+		DEL_YN = 'Y'
+	WHERE 1 = 1
+	AND	FNUM = #{fnum}
+</update>
+
 </mapper>

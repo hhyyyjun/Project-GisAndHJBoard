@@ -28,9 +28,9 @@ public class BoardService {
         return boardDao.boardListCnt(params);
 	}
 	
-
+	//댓글 검색 시 목록
 	public List<Map<String, Object>> replySearchList(Map<String, Object> params, PagingContentDto pcd) throws Exception {
-		return boardDao.boardList(params, pcd);
+		return boardDao.replySearchList(params, pcd);
 	}
 	public int ReplyListCnt(Map<String, Object> params) throws Exception {
 		return boardDao.boardListCnt(params);
@@ -85,6 +85,10 @@ public class BoardService {
 	public Map<String, Object> fileCheck(String params) {
 		return boardDao.fileCheck(params);
 	}
+	//파일 다운로드
+	public Map<String, Object> downloadFile(String params) {
+		return boardDao.downloadFile(params);
+	}
 	
 	//글 삭제
 	public Map<String, Object> deleteBoard(Map<String, Object> param) {
@@ -112,6 +116,16 @@ public class BoardService {
 	public Map<String, Object> selectBoardInfo(String bnum){
 		return boardDao.selectBoardInfo(bnum);
 	}
+	public List<Map<String, Object>> attachFileList(String bnum){
+		return boardDao.attachFileList(bnum);
+	}
+	//첨부파일 삭제
+	public Map<String, Object> deleteAttachFile(Map<String, Object> params) {
+		boardDao.deleteAttachFile(params);
+		return params;
+	}
+	
+	
 	//게시글 수정페이지
 	public Map<String, Object> selectBoardInfo(Map<String, Object> param){
 		return boardDao.selectBoardInfo(param);

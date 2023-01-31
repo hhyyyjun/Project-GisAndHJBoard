@@ -3,18 +3,23 @@ package com.lee.mapstudy.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.UriUtils;
 
 import com.lee.mapstudy.boardDao.MemberDao;
 import com.lee.mapstudy.boardDto.PagingContentDto;
@@ -50,27 +56,30 @@ public class BoardController {
 	
 	//로그인 화면
 	@GetMapping("/login")
-	public String login() {
+	public String login(HttpServletResponse res, Principal principal) throws IOException {
+		
+		if(principal != null) {
+			res.sendRedirect("/board");
+		}
+		
 		System.out.println("login");
 		return "/tiles/view/auth/login";
 	}
 	//로그아웃
-	@GetMapping("/logout")
-	public String logout(HttpSession session) {
-		session.invalidate();
-		System.out.println("logout");
-		return "/tiles/view/auth/login";
-	}
-	//로그인 클릭 시
-	@PostMapping("/loginMember")
-	@ResponseBody
-	public Map<String, Object> selectLoginMember(@RequestBody Map<String, Object> params, HttpSession session) {
-		System.out.println("loginMember");
-		return memberService.selectLoginMember(params, session);
-	}
+//	@GetMapping("/logout")
+//	public String logout(HttpSession session) {
+//		session.invalidate();
+//		System.out.println("logout");
+//		return "/tiles/view/auth/login";
+//	}
 	//회원가입 화면
 	@GetMapping("/join")
-	public String join() {
+	public String join(HttpServletResponse res, Principal principal) throws IOException {
+		
+		if(principal != null) {
+			res.sendRedirect("/board");
+		}
+		
 		System.out.println("join");
 		return "/tiles/view/auth/join";
 	}
@@ -123,29 +132,29 @@ public class BoardController {
 	@GetMapping("/boardAjax/{pageNum}")
 	public String boardAjax(@PathVariable int pageNum, @RequestParam Map<String, Object> params, PagingContentDto pcd, Model model) throws Exception {
 		System.out.println("board");
-		
-		if(params.get("optionVal") == "2") {
+		//페이징 객체
+		PagingDto paging = new PagingDto();
+		int boardListCnt = 0;
+
+		if("2".equals(params.get("optionVal"))) {
 			// 전체 글 개수
-	        int boardListCnt = boardService.ReplyListCnt(params);
+	        boardListCnt = boardService.ReplyListCnt(params);
 	        
 	        pcd.setPage(pageNum);
 	        
-	        // 페이징 객체
-	        PagingDto paging = new PagingDto();
 	        paging.setPcd(pcd);
 	        paging.setTotalCount(boardListCnt);  
+	        
 	        model.addAttribute("paging", paging);
 	        model.addAttribute("page", pcd.getPage());
 			model.addAttribute("list", boardService.replySearchList(params, pcd));
 		}
-		else {
+		if("1".equals(params.get("optionVal"))) {
 			// 전체 글 개수
-	        int boardListCnt = boardService.boardListCnt(params);
+	        boardListCnt = boardService.boardListCnt(params);
 	        
 	        pcd.setPage(pageNum);
 	        
-	        // 페이징 객체
-	        PagingDto paging = new PagingDto();
 	        paging.setPcd(pcd);
 	        paging.setTotalCount(boardListCnt);  
 	        model.addAttribute("paging", paging);
@@ -181,9 +190,9 @@ public class BoardController {
 		Map<String, Object> fileInput = new HashMap<String, Object>();
 		String fileRoot = "C:\\summernote_image\\";	//저장될 외부 파일 경로
 		String originalFileName = multipartFile.getOriginalFilename();	//오리지날 파일명
-		String extension = originalFileName.substring(originalFileName.lastIndexOf("."));	//파일 확장자
+		String extension = originalFileName.substring(originalFileName.lastIndexOf(".")); //파일 확장자
 				
-		String savedFileName = UUID.randomUUID() + extension;	//저장될 파일 명
+		String savedFileName = UUID.randomUUID() + extension; //저장될 파일 명
 		
 		File targetFile = new File(fileRoot + savedFileName);	
 		
@@ -196,16 +205,47 @@ public class BoardController {
 		try {
 			String fileSeq = boardService.insertFile(fileInput);
 			InputStream fileStream = multipartFile.getInputStream();
-			FileUtils.copyInputStreamToFile(fileStream, targetFile);	//파일 저장
+			FileUtils.copyInputStreamToFile(fileStream, targetFile); //파일 저장
 			result.put("url", "/thubnail/"+fileSeq);
 			result.put("responseCode", "success");
 		} catch (IOException e) {
-			FileUtils.deleteQuietly(targetFile);	//저장된 파일 삭제
+			FileUtils.deleteQuietly(targetFile); //저장된 파일 삭제
 			result.put("responseCode", "error");
 			e.printStackTrace();
 		}
 		return result;
 	}
+	//첨부파일 다운로드
+	@GetMapping("/download/{fnum}")
+	public ResponseEntity<Resource> downloadAttach(@PathVariable String fnum) throws MalformedURLException {
+		 //...itemId 이용해서 고객이 업로드한 파일 이름인 uploadFileName랑 서버 내부에서 사용하는 파일 이름인 storeFileName을 얻는다는 내용은 생략
+	    Map<String, Object> fileInfo = boardService.downloadFile(fnum);
+	    String filePath = String.valueOf(fileInfo.get("fileroot"));
+	    String serverFileName = String.valueOf(fileInfo.get("sfilename"));
+	    String originalName = String.valueOf(fileInfo.get("ofilename"));
+	    
+	    
+	    UrlResource resource = new UrlResource("file:" + filePath + serverFileName);
+	    
+	    //한글 파일 이름이나 특수 문자의 경우 깨질 수 있으니 인코딩 한번 해주기
+	    String encodedUploadFileName = UriUtils.encode(originalName,
+	    StandardCharsets.UTF_8);
+	    
+	    //아래 문자를 ResponseHeader에 넣어줘야 한다. 그래야 링크를 눌렀을 때 다운이 된다.
+	    //정해진 규칙이다.
+	    String contentDisposition = "attachment; filename=\"" + encodedUploadFileName + "\"";
+	    
+	    return ResponseEntity.ok()
+	 			.header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
+			 	.body(resource);
+	}
+	//첨부파일 삭제
+	@PostMapping("/deleteAttachFile")
+	@ResponseBody
+	public Map<String, Object> deleteAttachFile(@RequestBody Map<String, Object> param) {
+		return boardService.deleteAttachFile(param);
+	}
+	
 	//썸네일 url 변경
 	@GetMapping("/thubnail/{fileseq}")
 	public ResponseEntity<Resource> thubnail(@PathVariable("fileseq") String seq) {
@@ -240,6 +280,7 @@ public class BoardController {
 		params.put("id", session.getAttribute("userId"));
 		model.addAttribute("myInfo", memeDao.userInfo(params));
 		model.addAttribute("boardInfo", boardService.selectBoardInfo(bnum));
+		model.addAttribute("fileInfo", boardService.attachFileList(bnum));
 		
 		return "/tiles/view/board/boardContent";
 	}
