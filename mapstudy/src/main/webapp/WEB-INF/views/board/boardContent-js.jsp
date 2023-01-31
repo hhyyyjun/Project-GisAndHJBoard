@@ -12,6 +12,7 @@ $(function(){
 })
 //댓글 기능박스 출력
 function rfuncBtnClicked(target){
+	$(".viewOn").not($(target).parents(".replyInfo").find(".replyFunc")).attr("class", "viewOff replyFunc");
 	$(target).parents(".replyInfo").find(".replyFunc").toggleClass('viewOn viewOff');
 }
 
