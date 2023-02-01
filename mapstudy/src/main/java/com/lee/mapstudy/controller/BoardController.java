@@ -133,8 +133,9 @@ public class BoardController {
 	
 	//게시판 & 페이징
 	@GetMapping("/board")
-	public String board() throws Exception {
+	public String board(Model model) throws Exception {
 		System.out.println("board");
+		model.addAttribute("cateList", boardService.categoryList());
 		
 		return "/tiles/view/board/board";
 	}
@@ -173,10 +174,24 @@ public class BoardController {
 		}
 		return "/tiles/ajax/ajax/ajax-board";
 	}
+	//카테고리 추가하기
+	@PostMapping("/insertCate")
+	@ResponseBody
+	public int insertCate(@RequestBody Map<String, Object> params) {
+		return boardService.insertCate(params);
+	}
+	//카테고리 삭제
+	@PostMapping("/deleteCate")
+	@ResponseBody
+	public int deleteCate(@RequestBody Map<String, Object> params) {
+		return boardService.deleteCate(params); 
+	}
+	
 	//글 작성화면
 	@GetMapping("/boardWrite")
-	public String boardWrite() {
+	public String boardWrite(Model model) {
 		System.out.println("board");
+		model.addAttribute("cateList", boardService.categoryList());
 		return "/tiles/view/board/boardWrite";
 	}
 	//글 작성
@@ -306,6 +321,7 @@ public class BoardController {
 	public String boardEdit(@PathVariable("bnum") String bnum, Model model) {
 		System.out.println("boardEdit");
 		model.addAttribute("editList", boardService.selectBoardInfo(bnum));
+		model.addAttribute("cateList", boardService.categoryList());
 		return "/tiles/view/board/boardEdit";
 	}
 	//글 수정

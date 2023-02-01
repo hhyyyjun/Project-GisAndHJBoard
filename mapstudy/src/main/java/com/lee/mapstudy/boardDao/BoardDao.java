@@ -15,6 +15,13 @@ public interface BoardDao {
 	public List<Map<String, Object>> replySearchList(@Param(value="params") Map<String, Object> params,@Param(value="page") PagingContentDto pcd) throws Exception;
 	public int ReplyListCnt(@Param(value="params") Map<String, Object> params) throws Exception;
 	
+	//카테고리 목록
+	public List<Map<String, Object>> categoryList();
+	//카테고리 추가
+	public int insertCate(Map<String, Object> params);
+	//카테고리 삭제
+	public int deleteCate(Map<String, Object> params);
+	
 	//글작성
 	//시퀀스 마지막 값 확인
 	public String checkSeq();

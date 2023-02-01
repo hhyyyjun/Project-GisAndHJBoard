@@ -12,6 +12,7 @@ $(function() {
 //게시글 리스트
 function boardList(target){
 	console.log($(target).attr("data-page"));
+	var cname = $(target).attr("data-cname");
 	
 	var pageNum = 1;
 	if($(target).attr("data-page")){
@@ -24,7 +25,8 @@ function boardList(target){
 	
 	var userData = {
 			"optionVal" : optionVal,
-			"searchVal" : searchVal
+			"searchVal" : searchVal,
+			"cname" : cname
 	}
 	
 	
@@ -41,5 +43,56 @@ function boardList(target){
 			console.log("error");
 		}
 	})	
+}
+function insertCate(){
+	var cname = $(".insertCate").val();
+	var userData = {
+			"cname" : cname
+	}
+	$.ajax({
+		url : "/insertCate",
+		type : "POST",
+		data : JSON.stringify(userData),
+		contentType : "application/json;charset=utf-8",
+		success : function(data){
+			if(data == 1){
+				console.log("카테고리 추가 성공");
+				location.reload();
+			}else{
+				console.log("카테고리 추가 실패");
+			}
+		},
+		error : function(){
+			console.log("error");
+		}
+	})
+}
+function deleteCate(target){
+	var cnum = $(target).attr("data-cnum");
+	var userData = {
+			"cnum" : cnum
+	}
+	if(confirm("정말로 카테고리를 삭제하시겠습니까?")){
+		$.ajax({
+			url : "/deleteCate",
+			type : "POST",
+			data : JSON.stringify(userData),
+			contentType : "application/json;charset=utf-8",
+			success : function(data){
+				if(data == 1){
+					alert("카테고리가 삭제되었습니다.")
+					console.log("카테고리 추가 성공");
+					location.reload();
+				}else{
+					console.log("카테고리 추가 실패");
+				}
+			},
+			error : function(){
+				console.log("error");
+			}
+		})
+	}else{
+		alert("취소");
+	}
 }
 </script>

@@ -59,3 +59,4 @@
         <li id="nextBtn" onclick="boardList(this)" data-page="${page+1}"><a href="javascript:void(0);">다음</a></li>
     </c:if>
 </ul>
+	<c:if test="${empty list}"><div class="noList">글이 존재하지 않습니다.</div></c:if>

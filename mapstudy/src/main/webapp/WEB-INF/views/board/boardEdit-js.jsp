@@ -7,6 +7,7 @@ function updateB() {
 	var bcontent = $('#summernote').summernote('code');
 	var boardTitle = $("#boardTitle").val();
 	var updateBnum = $("#updateBnum").val();
+	var cname = $("#cateSelect").val();
 	console.log(bcontent);
 	
 	let src = "";
@@ -27,7 +28,8 @@ function updateB() {
 			"bcontent" : bcontent,
 			"bnum" : updateBnum,
 			"fileSeq" : fileSeqArr.toString(),
-			"thumIdx" : thumIdx
+			"thumIdx" : thumIdx,
+			"cname" : cname
 	};
 	
 	$.ajax({
@@ -39,6 +41,7 @@ function updateB() {
 		success : function(data){
 				if(data.result == "success"){
 				console.log("글 수정 성공");
+				alert("글 수정 완료");
 				location.href = "/board";
 			}else{
 				console.log("글 수정 실패");

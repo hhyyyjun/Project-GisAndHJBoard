@@ -8,7 +8,7 @@
 	<div id="boardToolBox">
 		<div>${boardInfo.mnick}</div>
 		<div>${boardInfo.bdate}</div>
-		<c:if test="${boardInfo.mid==userId}">
+		<c:if test="${boardInfo.mid==userId || mrole=='admin'}">
 		<div id="boardFuncBox">
 			<div id="funcBtn"></div>
 			<ul id="boardFunc" class="viewOff">
@@ -25,7 +25,7 @@
 		<li>
 			<span>${fileInfo.ofilename}</span>
 			<a href="/download/${fileInfo.fnum}"> [download] </a> <br />
-			<c:if test="${boardInfo.mid==userId}">
+			<c:if test="${boardInfo.mid==userId || mrole=='admin'}">
 			<button onclick="deleteAttachFile(this)" value="${fileInfo.fnum}">삭제</button>
 			</c:if>
 		</li>

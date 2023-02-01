@@ -27,6 +27,28 @@ public class BoardService {
 	public int boardListCnt(Map<String, Object> params) throws Exception {
         return boardDao.boardListCnt(params);
 	}
+	//카테고리 목록
+	public List<Map<String, Object>> categoryList(){
+		return boardDao.categoryList();
+	}
+	//카테고리 추가
+	public int insertCate(Map<String, Object> params) {
+		try{
+			boardDao.insertCate(params);
+			return 1;
+		}catch(Exception e) {
+			return 0;
+		}
+	}
+	//카테고리 삭제
+	public int deleteCate(Map<String, Object> params) {
+		try{
+			boardDao.deleteCate(params);
+			return 1;
+		}catch(Exception e) {
+			return 0;
+		}
+	}
 	
 	//댓글 검색 시 목록
 	public List<Map<String, Object>> replySearchList(Map<String, Object> params, PagingContentDto pcd) throws Exception {

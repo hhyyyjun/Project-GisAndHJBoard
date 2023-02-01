@@ -8,7 +8,7 @@
 		<div class="replyInfo">
 			<div>${r.mnick}</div>
 			<div class="replyDate">${r.rdate}</div>
-			<c:if test="${r.mid==userId && r.rcontent != '삭제된 댓글입니다.'}">
+			<c:if test="${r.mid==userId && r.rcontent != '삭제된 댓글입니다.' || mrole=='admin'}">
 			<div class="replyFuncBox">
 			<div class="rfuncBtn" onclick="rfuncBtnClicked(this)"></div>
 			<ul class="replyFunc viewOff">
@@ -67,7 +67,7 @@
 				<div class="rreplyImage"></div>
 				<div>${rr.mnick}</div>
 				<div class="replyDate">${rr.rrdate}</div>
-				<c:if test="${rr.mid==userId}">
+				<c:if test="${rr.mid==userId || mrole=='admin'}">
 				<c:if test="${rr.rrcontent != '삭제된 댓글입니다.'}">
 					<div class="replyFuncBox">
 					<div class="rfuncBtn" onclick="rfuncBtnClicked(this)"></div>

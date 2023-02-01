@@ -12,8 +12,10 @@
 <body>
 	
 	<tiles:insertAttribute name="header"/>
-	<div class="container-sm">
-		<tiles:insertAttribute name="contents"/>
+	<div id="contentsWrapBox">
+		<div class="container-sm">
+			<tiles:insertAttribute name="contents"/>
+		</div>
 	</div>
 	<tiles:insertAttribute name="footer"/>
 	<tiles:insertAttribute name="contents-js"/>

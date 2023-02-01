@@ -51,7 +51,9 @@ a:visited{
 	color : #fff;
 }
 
-
+#contentsWrapBox{
+	position : relative;
+}
 
 
 #boardFooter{
@@ -134,6 +136,68 @@ a:visited{
 	width : 10%;
 }
 
+.noList{
+	margin-top : 50px;
+	text-align: center;
+	font-weight: bold;
+	font-size : 30px;
+}
+.boardContent{
+	height : 800px;
+}
+#categoryWrap{
+	position : absolute;
+	left : 0;
+	background-color : #FAEAEA;
+	width : 160px;
+	height : 800px;
+	z-index : 2;
+}
+.category{
+	width : 90%;
+	margin-top : 10px;
+	padding : 0 0 10px 10px;
+	border-bottom : 2px solid #ffffff;
+	cursor : pointer;
+	font-weight : bold;
+}
+.category:hover{
+	color : #ffffff;
+}
+.categoryContent{
+	display : flex;
+	align-items: center;
+}
+.trachIcon{
+	cursor : pointer;
+	padding-right : 15px;
+	width : 10%;
+	height : 20px;
+	background : url("/images/trash.png") center no-repeat;
+	background-size: cover;
+}
+#insertCateBtn{
+	display : flex;
+	position : absolute;
+	bottom : 0px;
+	border-top : 2px solid #ffffff;
+	border-bottom : none;
+	border-left : none;
+	border-right : none;
+	padding-block : 10px;
+	font-weight : bold;
+	width : 100%;
+	background-color : #FAEAEA;
+	justify-content: center;
+	align-items: center;
+}
+#settingIcon{
+	width : 20px;
+	height : 20px;
+	background: url("/images/setting.png") center no-repeat;
+	background-size: cover;
+}
+
 #boardTop{
 	width : 100%;
 	display : flex;
@@ -183,6 +247,16 @@ a:visited{
 }
 #clearBtn{
 	width : 80px;
+}
+
+#categorySelectBox{
+	font-weight: bold;
+	margin-bottom : 5px;
+}
+#cateSelect{
+	font-weight: bold;
+	width : 100px;
+	border-radius: 5px;
 }
 
 

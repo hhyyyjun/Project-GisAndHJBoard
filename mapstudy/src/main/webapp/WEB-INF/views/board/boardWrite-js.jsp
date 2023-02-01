@@ -32,6 +32,7 @@ function insertB() {
 	var bcontent = $('#summernote').summernote('code');
 	var boardTitle = $("#boardTitle").val();
 	var userId = $("#userId").val();
+	var cname = $("#cateSelect").val();
 	console.log(bcontent);
 	
 	let src = "";
@@ -51,7 +52,8 @@ function insertB() {
 			"bcontent" : bcontent,
 			"userId" : userId,
 			"fileSeq" : fileSeqArr.toString(),
-			"thumIdx" : thumIdx
+			"thumIdx" : thumIdx,
+			"cname" : cname
 	};
 	
 	$.ajax({
