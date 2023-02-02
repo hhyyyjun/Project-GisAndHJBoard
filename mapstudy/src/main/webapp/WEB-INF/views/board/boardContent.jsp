@@ -5,6 +5,7 @@
 	<div id="boardTitleBox">
 		<h1 id="boardTitle">${boardInfo.btitle}</h1>
 	</div>
+	<div id="categoryInfo">${boardInfo.cname}</div>
 	<div id="boardToolBox">
 		<div>${boardInfo.mnick}</div>
 		<div>${boardInfo.bdate}</div>

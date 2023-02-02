@@ -41,6 +41,7 @@
 		,M.MID
 		,M.MNICK
 		,B.BDATE
+		,B.CNAME
 	 FROM 
 	 	 TB_BOARD B
 	 	,TB_MEMBER M
@@ -332,4 +333,13 @@
 	WHERE 1 = 1
 	AND CNUM = #{cnum}
 </delete>
+<!-- 카테고리 존재 유무 확인 -->
+<select id="checkCate" parameterType="CustomMap" resultType="Custommap">
+	SELECT
+		CNAME
+	FROM
+		TB_CATE
+	WHERE 1 = 1
+	AND CNAME = #{cname}
+</select>
 </mapper>

@@ -5,7 +5,9 @@
 
 
 <div class="boardContent">
-	<div id="categoryWrap">
+
+
+	<div id="categoryWrap" class="categoryUnvi">
 		<div id="categoryTop">
 			<div class="category" onclick="boardList()">전체 게시판</div>
 			<c:forEach var="c" items="${cateList}">
@@ -22,6 +24,8 @@
 		   카테고리 추가&nbsp;<span id="settingIcon"></span>
 		</button>
 	</div>
+	
+	
 	<div id="boardTop">
 		<div>
 			<select id="selectType" class="mb-3">

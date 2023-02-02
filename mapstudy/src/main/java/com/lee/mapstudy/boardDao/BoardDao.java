@@ -21,6 +21,7 @@ public interface BoardDao {
 	public int insertCate(Map<String, Object> params);
 	//카테고리 삭제
 	public int deleteCate(Map<String, Object> params);
+	//카테고리 확인
 	
 	//글작성
 	//시퀀스 마지막 값 확인

@@ -3,7 +3,10 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%> 
 
 <div id="headerBox">
-	<div id="boardHeader" onclick="board()">JJun's Board</div>
+	<div id="boardHeader">
+		<div id="menuIcon" onclick="openMenu()"></div>
+		<div id="goMain" onclick="board()">JJun's Board</div>
+	</div>
 	<c:if test="${userId!=null}">
 		<ul id="userBox">
 			<li onclick="myinfo()">내정보</li>

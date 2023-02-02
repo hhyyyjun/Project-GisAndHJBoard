@@ -21,17 +21,35 @@ a:visited{
 	background-color : #FAEAEA;
 	font-weight : bold;
 	justify-content: space-between;
+	border-bottom : 1px solid #FFB4B4;
 }
 #boardHeader{
-	padding-top : 0.5rem;
-	padding-left : 1rem;
-	text-align : center;
+	padding-left : 0.8rem;
+	justify-content: space-between;
+	align-items: center;
 	font-size : 20px;
+	display : flex;
+}
+#goMain{
+/* 	padding-top : 0.5rem; */
+}
+#goMain:hover{
+	color : #fff;
 	cursor : pointer;
 }
-#boardHeader:hover{
-	color : #fff;
-}
+
+#menuIcon {
+    margin-right : 0.5rem;
+	cursor : pointer;
+	width : 30px;
+	height : 30px;
+	background : url("/images/menu.png") center no-repeat;
+	background-size : cover;
+  }
+  #menuIcon:active{
+  	opacity : 0.8;
+  }
+
 #userBox{
 	width : 13%;
 	height : 50px;
@@ -40,6 +58,7 @@ a:visited{
 	display : flex;
 	background-color : #FAEAEA;
 	align-items: center;
+	border-bottom : 1px solid #FFB4B4;
 }
 #userBox > li{
 	width : 50%;
@@ -51,10 +70,9 @@ a:visited{
 	color : #fff;
 }
 
-#contentsWrapBox{
+.contentsWrapBox{
 	position : relative;
 }
-
 
 #boardFooter{
 	width : 100%;
@@ -65,8 +83,13 @@ a:visited{
 	background-color : #FAEAEA;
 	font-size : 20px;
 	font-weight : bold;
+	border-top : 1px solid #FFB4B4;
 }
 
+/* 로그인 화면 */
+#rememberId{
+	margin-top : 5px;
+}
 
 /* 회원가입 화면 */
 #idBox{
@@ -145,14 +168,28 @@ a:visited{
 .boardContent{
 	height : 800px;
 }
-#categoryWrap{
+.categoryVi{
 	position : absolute;
+	border : 1px solid #FFB4B4;
+	border-radius : 5px;
 	left : 0;
 	background-color : #FAEAEA;
 	width : 160px;
 	height : 800px;
 	z-index : 2;
-}
+/* 	transition : all ease 1.5s; */
+/* 	visibility: visible; */
+}	
+.categoryUnvi{
+/* 	position : absolute; */
+/* 	left : 0; */
+/* 	width : 0; */
+/* 	height : 0; */
+/*  visibility: hidden; */
+/*  transition : all ease-out 1s; */
+/*  opacity : 0; */
+	display : none;
+}	
 .category{
 	width : 90%;
 	margin-top : 10px;
@@ -268,10 +305,13 @@ a:visited{
 #boardTitleBox{
 	width : 100%;
 }
+#categoryInfo{
+	padding-top : 10px;
+}
 #boardToolBox{
 	width : 100%;
 	height : 40px;
-	margin : 20px auto;
+	margin : 10px auto 20px;
 	display : flex;
 	position : relative;
 	border-bottom: 1px solid #BDBDBD;
@@ -478,6 +518,31 @@ a:visited{
 
 
 
+@media screen and (max-width: 1650px) {
+/*   #boardHeader{ */
+/* 	display : flex; */
+/*   } */
+/*   #goMain{ */
+/*   	padding-top : 0; */
+/*   } */
+/*   #menuIcon { */
+/*     margin-right : 0.5rem; */
+/* 	cursor : pointer; */
+/* 	width : 30px; */
+/* 	height : 30px; */
+/* 	background : url("/images/menu.png") center no-repeat; */
+/* 	background-size : cover; */
+/*   } */
+/*   #menuIcon:active{ */
+/*   	opacity : 0.8; */
+/*   } */
+/*   .categoryVi{ */
+/*   	width : 0; */
+/*   	visibility: hidden; */
+/*   	transition : all ease-out 1s; */
+/*   	opacity : 0; */
+/*   } */
+}
 @media screen and (max-width: 1250px) {
   #userBox {
     width : 15%;

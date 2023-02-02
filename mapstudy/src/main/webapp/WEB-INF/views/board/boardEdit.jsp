@@ -5,7 +5,7 @@
 <div id="categorySelectBox">카테고리 선택
 	<select id="cateSelect">
 		<c:forEach var="c" items="${cateList}">
-			<option value="${c.cname}">${c.cname}</option>
+			<option value="${c.cname}" <c:if test="${c.cname == editList.cname}">selected</c:if> >${c.cname}</option>
 		</c:forEach>
 	</select>
 </div>

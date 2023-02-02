@@ -33,6 +33,8 @@ public class LoginSuccessHandler extends CoTopComponent implements Authenticatio
 		session.setAttribute("userId", ((UserVo) auth.getPrincipal()).getMid());
 		session.setAttribute("mrole", ((UserVo) auth.getPrincipal()).getMrole());
 //		session.setMaxInactiveInterval(60 * 60 * 3);
+		//세션 유지시간
+		session.setMaxInactiveInterval(1200);
 		
 	    //Response 결과 값을 넣어줌
 	    JsonObject loginResult = new JsonObject();

@@ -9,6 +9,7 @@ function boardWrite(){
 $(function() {
 	boardList();
 });
+
 //게시글 리스트
 function boardList(target){
 	console.log($(target).attr("data-page"));
@@ -44,6 +45,7 @@ function boardList(target){
 		}
 	})	
 }
+//카테고리 추가하기
 function insertCate(){
 	var cname = $(".insertCate").val();
 	var userData = {
@@ -67,6 +69,7 @@ function insertCate(){
 		}
 	})
 }
+//카테고리 삭제하기
 function deleteCate(target){
 	var cnum = $(target).attr("data-cnum");
 	var userData = {
@@ -95,4 +98,15 @@ function deleteCate(target){
 		alert("취소");
 	}
 }
+//메뉴 출력
+function openMenu(){
+	if($("#categoryWrap").hasClass("categoryVi")){
+		$("#categoryWrap").removeClass("categoryVi");
+		$("#categoryWrap").addClass("categoryUnvi");
+	}else{
+		$("#categoryWrap").removeClass("categoryUnvi");
+		$("#categoryWrap").addClass("categoryVi");
+	}
+}
+
 </script>

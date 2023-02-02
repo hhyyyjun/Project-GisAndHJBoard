@@ -5,8 +5,9 @@
   <div class="mb-3">
     <label for="loginId" class="form-label">아이디 입력</label>
     <input type="text" class="form-control" id="loginId" aria-describedby="emailHelp">
-    <div id="emailHelp" class="form-text">아이디 입력</div>
+    <div id="rememberId"><input type="checkbox"> 아이디 기억하기</div>
   </div>
+  
   <div class="mb-3">
     <label for="loginpw" class="form-label">패스워드 입력</label>
     <input type="password" class="form-control" id="loginpw">
