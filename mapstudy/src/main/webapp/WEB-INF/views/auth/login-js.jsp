@@ -7,8 +7,6 @@ function join() {
 	location.href = "/join";
 }
 $(function(){
-	var cookie = document.cookie;
-	
 	fnInit();
 })
 function fnInit(){
@@ -17,6 +15,9 @@ function fnInit(){
     if(cookieid !=""){
         $("input:checkbox[id='idChk']").prop("checked", true);
         $('#loginId').val(cookieid);
+    }else{
+    	$('#loginId').val("");
+    	$('#loginpw').val("");
     }
 }   
 function setCookie(name, value, expiredays){ //쿠키 저장함수
@@ -49,20 +50,19 @@ function getCookie(Name) { // 쿠키 불러오는 함수
 function saveid() {
     var expdate = new Date();
     if ($("#idChk").is(":checked")){
-        expdate.setTime(expdate.getTime() + 1000 * 60 * 60 * 1);
+        expdate.setTime(expdate.getTime() + 1000 * 3600 * 24 * 30);
         setCookie("saveid", $("#loginId").val(), expdate);
         }else{
-       expdate.setTime(expdate.getTime() - 1000 * 60 * 60 * 1);
-        setCookie("saveid", $("#loginId").val(), expdate);
+       deleteCookie("saveid");
     }
 }
-
+function deleteCookie(name) {
+	document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
 
 
 function login() {
 	console.log("로그인 들어옴");
-	
-	saveid();
 	
 	var id = $("#loginId").val();
 	var pw = $("#loginpw").val();
@@ -94,6 +94,7 @@ function login() {
 			console.log(data);
 			if (data.result == "success") {
 				console.log('로그인 성공');
+				saveid();
 				location.href="/board";
 			} else {
 				alert("아이디 혹은 비밀번호가 일치하지 않습니다.");

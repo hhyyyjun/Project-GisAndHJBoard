@@ -391,16 +391,3 @@ public class BoardController {
 		return rreplyService.updateOrDeleteRR(params);
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
