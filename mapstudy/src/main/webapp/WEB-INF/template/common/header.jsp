@@ -4,7 +4,9 @@
 
 <div id="headerBox">
 	<div id="boardHeader">
-		<div id="menuIcon" onclick="openMenu()"></div>
+		<c:if test="${userId!=null}">
+			<div id="menuIcon" onclick="openMenu()"></div>
+		</c:if>
 		<div id="goMain" onclick="board()">JJun's Board</div>
 	</div>
 	<c:if test="${userId!=null}">

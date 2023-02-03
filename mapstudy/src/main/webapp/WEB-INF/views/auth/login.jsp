@@ -5,7 +5,7 @@
   <div class="mb-3">
     <label for="loginId" class="form-label">아이디 입력</label>
     <input type="text" class="form-control" id="loginId" aria-describedby="emailHelp">
-    <div id="rememberId"><input type="checkbox"> 아이디 기억하기</div>
+    <div id="rememberId"><input id="idChk" type="checkbox"> 아이디 기억하기</div>
   </div>
   
   <div class="mb-3">
