@@ -2,6 +2,7 @@
 하나의 프로젝트에 Gis 공부와 개인프로젝트가 함께 있음
 
 🔶Gis Study - Gis 공부
+
 🔷 종류
 1. Leaflet.js
 2. openlayers
@@ -11,15 +12,22 @@
 
 
 🔶 HJ Board (계층형 게시판) - 개인 프로젝트
+
 🔷 사용 Tool & Library & Language
+
 Language : java, javaScript, jQuery, html, css
+
 Sql : oracle
+
 Framwork : SpringBoot, Mybatis
+
 IDE : Spring Tool Suite
+
 Git : Github
+
 Server : Apache Tomcat
 
-🔷 
+🔷 프로젝트 설명
 1. 게시판, 회원 CRUD 구현
 2. 게시판 퍼블리싱 및 BootStrap5 활용
 3. 정규표현식을 활용한 회원가입 구현
