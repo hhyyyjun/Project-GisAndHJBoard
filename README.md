@@ -19,7 +19,7 @@ IDE : Spring Tool Suite
 Git : Github
 Server : Apache Tomcat
 
-🔷 주요 기능
+🔷 
 1. 게시판, 회원 CRUD 구현
 2. 게시판 퍼블리싱 및 BootStrap5 활용
 3. 정규표현식을 활용한 회원가입 구현
