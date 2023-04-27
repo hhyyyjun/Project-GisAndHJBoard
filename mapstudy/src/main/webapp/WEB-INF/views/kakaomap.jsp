@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="EUC-KR"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>kakaomap</title>
 
 <script
@@ -21,12 +21,12 @@
 		<div>
 			<div id="search">
 				<div id="searchmap">
-					ÁÖ¼Ò °Ë»ö : <input type="text" name="query" id="searchadd"> <input
-						id="searchBtn" type="button" value="°Ë»ö">
+					ì£¼ì†Œ ê²€ìƒ‰ : <input type="text" name="query" id="searchadd"> <input
+						id="searchBtn" type="button" value="ê²€ìƒ‰">
 				</div>
 			</div>
 			<div>
-				<button onclick="addpolygon()">Ãß°¡ÇÑ ¸¶Ä¿ Æú¸®°ï »ı¼ºÇÏ±â</button>
+				<button onclick="addpolygon()">ì¶”ê°€í•œ ë§ˆì»¤ í´ë¦¬ê³¤ ìƒì„±í•˜ê¸°</button>
 				<select id="colorsel">
 					<option>red</option>
 					<option>blue</option>
@@ -46,27 +46,27 @@
 				</select>
 			</div>
 			<div>
-				<button onclick="showMarkers()">¸¶Ä¿ º¸ÀÌ±â</button>
-				<button onclick="hideMarkers()">¸¶Ä¿ ¼û±â±â</button>
+				<button onclick="showMarkers()">ë§ˆì»¤ ë³´ì´ê¸°</button>
+				<button onclick="hideMarkers()">ë§ˆì»¤ ìˆ¨ê¸°ê¸°</button>
 			</div>
 		</div>
 		<div id="clickLatlng"></div>
 		<div id="buttons">
-			<button onClick="me()">³» À§Ä¡ Ã£±â</button>
-			<button onclick="move()">¼­¿ï¿ª</button>
-			<button onclick="addPin()">ÇÉ »ı¼ºÇÏ±â</button>
-			<button onclick="pinchk()" id="pinchk">ÇÉ È®ÀÎ</button>
-			<button onclick='pindel()' id="pindel" disabled>ÇÉ »èÁ¦</button>
-			<button onclick="polygon()" id="polygon" disabled>Æú¸®°ï ¿¬°á</button>
-			<button onclick="circle()" id="circle" disabled>È¸»ç ÁÖº¯ È®ÀÎ</button>
+			<button onClick="me()">ë‚´ ìœ„ì¹˜ ì°¾ê¸°</button>
+			<button onclick="move()">ì„œìš¸ì—­</button>
+			<button onclick="addPin()">í•€ ìƒì„±í•˜ê¸°</button>
+			<button onclick="pinchk()" id="pinchk">í•€ í™•ì¸</button>
+			<button onclick='pindel()' id="pindel" disabled>í•€ ì‚­ì œ</button>
+			<button onclick="polygon()" id="polygon" disabled>í´ë¦¬ê³¤ ì—°ê²°</button>
+			<button onclick="circle()" id="circle" disabled>íšŒì‚¬ ì£¼ë³€ í™•ì¸</button>
 		</div>
 		<div>
-			<button onclick="letsDraw()">Áöµµ ±×¸®±â</button>
-			<button class="draw" onclick="selectOverlay('MARKER')" disabled>¸¶Ä¿</button>
-			<button class="draw" onclick="selectOverlay('POLYLINE')" disabled>¼±</button>
-			<button class="draw" onclick="selectOverlay('CIRCLE')" disabled>¿ø</button>
-			<button class="draw" onclick="selectOverlay('RECTANGLE')" disabled>»ç°¢Çü</button>
-			<button class="draw" onclick="selectOverlay('POLYGON')" disabled>´Ù°¢Çü</button>
+			<button onclick="letsDraw()">ì§€ë„ ê·¸ë¦¬ê¸°</button>
+			<button class="draw" onclick="selectOverlay('MARKER')" disabled>ë§ˆì»¤</button>
+			<button class="draw" onclick="selectOverlay('POLYLINE')" disabled>ì„ </button>
+			<button class="draw" onclick="selectOverlay('CIRCLE')" disabled>ì›</button>
+			<button class="draw" onclick="selectOverlay('RECTANGLE')" disabled>ì‚¬ê°í˜•</button>
+			<button class="draw" onclick="selectOverlay('POLYGON')" disabled>ë‹¤ê°í˜•</button>
 		</div>
 	</div>
 	<script type="text/javascript"
@@ -76,7 +76,7 @@
 	<script type="text/javascript"
 		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=5a1f9ffba7242dca60963ad07d1d79b3"></script>
 	<script>
-		//////////////////Áöµµ ¶ç¿ì±â
+		//////////////////ì§€ë„ ë„ìš°ê¸°
 		var container = document.getElementById('map');
 		var options = {
 			center : new kakao.maps.LatLng(NHLat, NHLng),
@@ -84,90 +84,90 @@
 		};
 		var map = new kakao.maps.Map(container, options);
 
-		/////////////////Áöµµ ÄÁÆ®·Ñ
-		// ÀÏ¹İ Áöµµ¿Í ½ºÄ«ÀÌºä·Î Áöµµ Å¸ÀÔÀ» ÀüÈ¯ÇÒ ¼ö ÀÖ´Â ÁöµµÅ¸ÀÔ ÄÁÆ®·ÑÀ» »ı¼ºÇÕ´Ï´Ù
+		/////////////////ì§€ë„ ì»¨íŠ¸ë¡¤
+		// ì¼ë°˜ ì§€ë„ì™€ ìŠ¤ì¹´ì´ë·°ë¡œ ì§€ë„ íƒ€ì…ì„ ì „í™˜í•  ìˆ˜ ìˆëŠ” ì§€ë„íƒ€ì… ì»¨íŠ¸ë¡¤ì„ ìƒì„±í•©ë‹ˆë‹¤
 		var mapTypeControl = new kakao.maps.MapTypeControl();
 
-		// Áöµµ¿¡ ÄÁÆ®·ÑÀ» Ãß°¡ÇØ¾ß ÁöµµÀ§¿¡ Ç¥½ÃµË´Ï´Ù
-		// kakao.maps.ControlPositionÀº ÄÁÆ®·ÑÀÌ Ç¥½ÃµÉ À§Ä¡¸¦ Á¤ÀÇÇÏ´Âµ¥ TOPRIGHT´Â ¿À¸¥ÂÊ À§¸¦ ÀÇ¹ÌÇÕ´Ï´Ù
+		// ì§€ë„ì— ì»¨íŠ¸ë¡¤ì„ ì¶”ê°€í•´ì•¼ ì§€ë„ìœ„ì— í‘œì‹œë©ë‹ˆë‹¤
+		// kakao.maps.ControlPositionì€ ì»¨íŠ¸ë¡¤ì´ í‘œì‹œë  ìœ„ì¹˜ë¥¼ ì •ì˜í•˜ëŠ”ë° TOPRIGHTëŠ” ì˜¤ë¥¸ìª½ ìœ„ë¥¼ ì˜ë¯¸í•©ë‹ˆë‹¤
 		map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
 
-		// Áöµµ È®´ë Ãà¼Ò¸¦ Á¦¾îÇÒ ¼ö ÀÖ´Â  ÁÜ ÄÁÆ®·ÑÀ» »ı¼ºÇÕ´Ï´Ù
+		// ì§€ë„ í™•ëŒ€ ì¶•ì†Œë¥¼ ì œì–´í•  ìˆ˜ ìˆëŠ”  ì¤Œ ì»¨íŠ¸ë¡¤ì„ ìƒì„±í•©ë‹ˆë‹¤
 		var zoomControl = new kakao.maps.ZoomControl();
 		map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 
 		//////////////////////////////////////////////////////////////////////////////////////////////
-		////////////////////ÇÉ È®ÀÎ
-		//¼­¿ï¿ª, ½ÃÃ»¿ª, ¿ÀÇÂ¸ŞÀÌÆ®¿¡ ¸¶Ä¿°¡ »ı¼ºµÇ°í ¸ğµç ¸¶Ä¿°¡ º¸ÀÌ´Â ·¹º§·Î º¯°æ
+		////////////////////í•€ í™•ì¸
+		//ì„œìš¸ì—­, ì‹œì²­ì—­, ì˜¤í”ˆë©”ì´íŠ¸ì— ë§ˆì»¤ê°€ ìƒì„±ë˜ê³  ëª¨ë“  ë§ˆì»¤ê°€ ë³´ì´ëŠ” ë ˆë²¨ë¡œ ë³€ê²½
 		function pinchk() {
-			// ¸¶Ä¿¸¦ Ç¥½ÃÇÒ À§Ä¡¿Í title °´Ã¼ ¹è¿­ÀÔ´Ï´Ù 
+			// ë§ˆì»¤ë¥¼ í‘œì‹œí•  ìœ„ì¹˜ì™€ title ê°ì²´ ë°°ì—´ì…ë‹ˆë‹¤ 
 			var positions = [
 					{
-						title : '½ÃÃ»¿ª',
-						content : '<div>½ÃÃ»¿ªÀÌ´Ù</div>',
+						title : 'ì‹œì²­ì—­',
+						content : '<div>ì‹œì²­ì—­ì´ë‹¤</div>',
 						latlng : new kakao.maps.LatLng(cityhallLat, cityhallLng)
 					},
 					{
-						title : '¿ÀÇÂ¸ŞÀÌÆ®',
-						content : '<div>¿ÀÇÂÀÌ´Ù</div>',
+						title : 'ì˜¤í”ˆë©”ì´íŠ¸',
+						content : '<div>ì˜¤í”ˆì´ë‹¤</div>',
 						latlng : new kakao.maps.LatLng(openmateLat, openmateLng)
 					},
 					{
-						title : '¼­¿ï¿ª',
-						content : '<div>¼³¿ªÀÌ´Ù</div>',
+						title : 'ì„œìš¸ì—­',
+						content : '<div>ì„¤ì—­ì´ë‹¤</div>',
 						latlng : new kakao.maps.LatLng(seoulstationLat,
 								seoulstationLng)
 					}, ];
-			//Áöµµ ·¹º§ º¯°æ
+			//ì§€ë„ ë ˆë²¨ ë³€ê²½
 			map.setLevel(5);
 
-			// ÀÌµ¿ÇÒ À§µµ °æµµ À§Ä¡¸¦ »ı¼ºÇÕ´Ï´Ù 
+			// ì´ë™í•  ìœ„ë„ ê²½ë„ ìœ„ì¹˜ë¥¼ ìƒì„±í•©ë‹ˆë‹¤ 
 			var moveToPinCenter = new kakao.maps.LatLng(moveToPinCenterLat,
 					moveToPinCenterLng);
-			// Áöµµ Áß½ÉÀ» ºÎµå·´°Ô ÀÌµ¿½ÃÅµ´Ï´Ù
-			// ¸¸¾à ÀÌµ¿ÇÒ °Å¸®°¡ Áöµµ È­¸éº¸´Ù Å©¸é ºÎµå·¯¿î È¿°ú ¾øÀÌ ÀÌµ¿ÇÕ´Ï´Ù
+			// ì§€ë„ ì¤‘ì‹¬ì„ ë¶€ë“œëŸ½ê²Œ ì´ë™ì‹œí‚µë‹ˆë‹¤
+			// ë§Œì•½ ì´ë™í•  ê±°ë¦¬ê°€ ì§€ë„ í™”ë©´ë³´ë‹¤ í¬ë©´ ë¶€ë“œëŸ¬ìš´ íš¨ê³¼ ì—†ì´ ì´ë™í•©ë‹ˆë‹¤
 			map.panTo(moveToPinCenter);
 
-			// ¸¶Ä¿ ÀÌ¹ÌÁöÀÇ ÀÌ¹ÌÁö ÁÖ¼ÒÀÔ´Ï´Ù
+			// ë§ˆì»¤ ì´ë¯¸ì§€ì˜ ì´ë¯¸ì§€ ì£¼ì†Œì…ë‹ˆë‹¤
 			var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
 
 			for (var i = 0; i < positions.length; i++) {
 
-				// ¸¶Ä¿ ÀÌ¹ÌÁöÀÇ ÀÌ¹ÌÁö Å©±â ÀÔ´Ï´Ù
+				// ë§ˆì»¤ ì´ë¯¸ì§€ì˜ ì´ë¯¸ì§€ í¬ê¸° ì…ë‹ˆë‹¤
 				var imageSize = new kakao.maps.Size(24, 35);
 
-				// ¸¶Ä¿ ÀÌ¹ÌÁö¸¦ »ı¼ºÇÕ´Ï´Ù    
+				// ë§ˆì»¤ ì´ë¯¸ì§€ë¥¼ ìƒì„±í•©ë‹ˆë‹¤    
 				var markerImage = new kakao.maps.MarkerImage(imageSrc,
 						imageSize);
 
-				// ¸¶Ä¿¸¦ »ı¼ºÇÕ´Ï´Ù
+				// ë§ˆì»¤ë¥¼ ìƒì„±í•©ë‹ˆë‹¤
 				var marker = new kakao.maps.Marker({
-					map : map, // ¸¶Ä¿¸¦ Ç¥½ÃÇÒ Áöµµ
-					position : positions[i].latlng, // ¸¶Ä¿¸¦ Ç¥½ÃÇÒ À§Ä¡
-					title : positions[i].title, // ¸¶Ä¿ÀÇ Å¸ÀÌÆ², ¸¶Ä¿¿¡ ¸¶¿ì½º¸¦ ¿Ã¸®¸é Å¸ÀÌÆ²ÀÌ Ç¥½ÃµË´Ï´Ù
+					map : map, // ë§ˆì»¤ë¥¼ í‘œì‹œí•  ì§€ë„
+					position : positions[i].latlng, // ë§ˆì»¤ë¥¼ í‘œì‹œí•  ìœ„ì¹˜
+					title : positions[i].title, // ë§ˆì»¤ì˜ íƒ€ì´í‹€, ë§ˆì»¤ì— ë§ˆìš°ìŠ¤ë¥¼ ì˜¬ë¦¬ë©´ íƒ€ì´í‹€ì´ í‘œì‹œë©ë‹ˆë‹¤
 					image : markerImage
-				// ¸¶Ä¿ ÀÌ¹ÌÁö 
+				// ë§ˆì»¤ ì´ë¯¸ì§€ 
 				});
-				// ¸¶Ä¿¿¡ Ç¥½ÃÇÒ ÀÎÆ÷À©µµ¿ì¸¦ »ı¼ºÇÕ´Ï´Ù 
+				// ë§ˆì»¤ì— í‘œì‹œí•  ì¸í¬ìœˆë„ìš°ë¥¼ ìƒì„±í•©ë‹ˆë‹¤ 
 				var infowindow = new kakao.maps.InfoWindow({
 					content : positions[i].content
-				// ÀÎÆ÷À©µµ¿ì¿¡ Ç¥½ÃÇÒ ³»¿ë
+				// ì¸í¬ìœˆë„ìš°ì— í‘œì‹œí•  ë‚´ìš©
 				});
-				// ¸¶Ä¿¿¡ mouseover ÀÌº¥Æ®¿Í mouseout ÀÌº¥Æ®¸¦ µî·ÏÇÕ´Ï´Ù
-				// ÀÌº¥Æ® ¸®½º³Ê·Î´Â Å¬·ÎÀú¸¦ ¸¸µé¾î µî·ÏÇÕ´Ï´Ù 
-				// for¹®¿¡¼­ Å¬·ÎÀú¸¦ ¸¸µé¾î ÁÖÁö ¾ÊÀ¸¸é ¸¶Áö¸· ¸¶Ä¿¿¡¸¸ ÀÌº¥Æ®°¡ µî·ÏµË´Ï´Ù
+				// ë§ˆì»¤ì— mouseover ì´ë²¤íŠ¸ì™€ mouseout ì´ë²¤íŠ¸ë¥¼ ë“±ë¡í•©ë‹ˆë‹¤
+				// ì´ë²¤íŠ¸ ë¦¬ìŠ¤ë„ˆë¡œëŠ” í´ë¡œì €ë¥¼ ë§Œë“¤ì–´ ë“±ë¡í•©ë‹ˆë‹¤ 
+				// forë¬¸ì—ì„œ í´ë¡œì €ë¥¼ ë§Œë“¤ì–´ ì£¼ì§€ ì•Šìœ¼ë©´ ë§ˆì§€ë§‰ ë§ˆì»¤ì—ë§Œ ì´ë²¤íŠ¸ê°€ ë“±ë¡ë©ë‹ˆë‹¤
 				kakao.maps.event.addListener(marker, 'mouseover',
 						makeOverListener(map, marker, infowindow));
 				kakao.maps.event.addListener(marker, 'mouseout',
 						makeOutListener(infowindow));
 			}
-			// ÀÎÆ÷À©µµ¿ì¸¦ Ç¥½ÃÇÏ´Â Å¬·ÎÀú¸¦ ¸¸µå´Â ÇÔ¼öÀÔ´Ï´Ù 
+			// ì¸í¬ìœˆë„ìš°ë¥¼ í‘œì‹œí•˜ëŠ” í´ë¡œì €ë¥¼ ë§Œë“œëŠ” í•¨ìˆ˜ì…ë‹ˆë‹¤ 
 			function makeOverListener(map, marker, infowindow) {
 				return function() {
 					infowindow.open(map, marker);
 				};
 			}
-			// ÀÎÆ÷À©µµ¿ì¸¦ ´İ´Â Å¬·ÎÀú¸¦ ¸¸µå´Â ÇÔ¼öÀÔ´Ï´Ù 
+			// ì¸í¬ìœˆë„ìš°ë¥¼ ë‹«ëŠ” í´ë¡œì €ë¥¼ ë§Œë“œëŠ” í•¨ìˆ˜ì…ë‹ˆë‹¤ 
 			function makeOutListener(infowindow) {
 				return function() {
 					infowindow.close();
@@ -177,18 +177,18 @@
 		}
 
 		/*
-		// Áöµµ¿¡ Å¬¸¯ ÀÌº¥Æ®¸¦ µî·ÏÇÕ´Ï´Ù
-		// Áöµµ¸¦ Å¬¸¯ÇÏ¸é ¸¶Áö¸· ÆÄ¶ó¹ÌÅÍ·Î ³Ñ¾î¿Â ÇÔ¼ö¸¦ È£ÃâÇÕ´Ï´Ù
+		// ì§€ë„ì— í´ë¦­ ì´ë²¤íŠ¸ë¥¼ ë“±ë¡í•©ë‹ˆë‹¤
+		// ì§€ë„ë¥¼ í´ë¦­í•˜ë©´ ë§ˆì§€ë§‰ íŒŒë¼ë¯¸í„°ë¡œ ë„˜ì–´ì˜¨ í•¨ìˆ˜ë¥¼ í˜¸ì¶œí•©ë‹ˆë‹¤
 		kakao.maps.event.addListener(map, 'click', function(mouseEvent) {        
 		    
-		    // Å¬¸¯ÇÑ À§µµ, °æµµ Á¤º¸¸¦ °¡Á®¿É´Ï´Ù 
+		    // í´ë¦­í•œ ìœ„ë„, ê²½ë„ ì •ë³´ë¥¼ ê°€ì ¸ì˜µë‹ˆë‹¤ 
 		    var latlng = mouseEvent.latLng; 
 		    
-		    // ¸¶Ä¿ À§Ä¡¸¦ Å¬¸¯ÇÑ À§Ä¡·Î ¿Å±é´Ï´Ù
+		    // ë§ˆì»¤ ìœ„ì¹˜ë¥¼ í´ë¦­í•œ ìœ„ì¹˜ë¡œ ì˜®ê¹ë‹ˆë‹¤
 		    marker.setPosition(latlng);
 		    
-		    var message = 'Å¬¸¯ÇÑ À§Ä¡ÀÇ À§µµ´Â ' + latlng.getLat() + ' ÀÌ°í, ';
-		    message += '°æµµ´Â ' + latlng.getLng() + ' ÀÔ´Ï´Ù';
+		    var message = 'í´ë¦­í•œ ìœ„ì¹˜ì˜ ìœ„ë„ëŠ” ' + latlng.getLat() + ' ì´ê³ , ';
+		    message += 'ê²½ë„ëŠ” ' + latlng.getLng() + ' ì…ë‹ˆë‹¤';
 		    
 		    var resultDiv = document.getElementById('clickLatlng'); 
 		    resultDiv.innerHTML = message;
@@ -197,18 +197,18 @@
 		 */
 
 		//////////////////////////////////////////////////////////////////////////////////////////////
-		//ÇÉ Ãß°¡ÇÏ±â
+		//í•€ ì¶”ê°€í•˜ê¸°
 		var latLng = "";
 		var infowindow = "";
 		var flag = false;
 		function addPin() {
-			// Áöµµ¿¡ ¸¶Ä¿ Ãß°¡¿©ºÎ ¹öÆ° »ı¼º
-			var makeMarker = "<button style='padding : 5px;' onclick='plusPin()'>¸¶Ä¿Ãß°¡</button>";
-			// ¸¶Ä¿¿¡ Å¬¸¯ÀÌº¥Æ®¸¦ µî·ÏÇÕ´Ï´Ù
+			// ì§€ë„ì— ë§ˆì»¤ ì¶”ê°€ì—¬ë¶€ ë²„íŠ¼ ìƒì„±
+			var makeMarker = "<button style='padding : 5px;' onclick='plusPin()'>ë§ˆì»¤ì¶”ê°€</button>";
+			// ë§ˆì»¤ì— í´ë¦­ì´ë²¤íŠ¸ë¥¼ ë“±ë¡í•©ë‹ˆë‹¤
 			flag = true;
 			kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
 				if (flag) {
-					//ÀÎÆ÷ À©µµ¿ì »ı¼º
+					//ì¸í¬ ìœˆë„ìš° ìƒì„±
 					infowindow = new kakao.maps.InfoWindow({
 						map : map,
 						position : mouseEvent.latLng,
@@ -229,111 +229,111 @@
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////
-		// Áöµµ¿¡ Ç¥½ÃµÈ ¸¶Ä¿ °´Ã¼¸¦ °¡Áö°í ÀÖÀ» ¹è¿­ÀÔ´Ï´Ù
-		//Å¬¸¯ ½Ã µé¾î°¡´Â ¸¶Ä¿ ÀüÃ¼ Á¤º¸
+		// ì§€ë„ì— í‘œì‹œëœ ë§ˆì»¤ ê°ì²´ë¥¼ ê°€ì§€ê³  ìˆì„ ë°°ì—´ì…ë‹ˆë‹¤
+		//í´ë¦­ ì‹œ ë“¤ì–´ê°€ëŠ” ë§ˆì»¤ ì „ì²´ ì •ë³´
 		var markers4clk = [];
-		//Å¬¸¯ ½Ã µé¾î°¡´Â ¸¶Ä¿ À§°æµµ °ª
+		//í´ë¦­ ì‹œ ë“¤ì–´ê°€ëŠ” ë§ˆì»¤ ìœ„ê²½ë„ ê°’
 		var markers4polygon = [];
-		// ¸¶Ä¿¸¦ »ı¼ºÇÏ°í ÁöµµÀ§¿¡ Ç¥½ÃÇÏ´Â ÇÔ¼öÀÔ´Ï´Ù
+		// ë§ˆì»¤ë¥¼ ìƒì„±í•˜ê³  ì§€ë„ìœ„ì— í‘œì‹œí•˜ëŠ” í•¨ìˆ˜ì…ë‹ˆë‹¤
 		function addMarker(position) {
 
-			// ¸¶Ä¿¸¦ »ı¼ºÇÕ´Ï´Ù
+			// ë§ˆì»¤ë¥¼ ìƒì„±í•©ë‹ˆë‹¤
 			var clkmarker = new kakao.maps.Marker({
 				position : position
 			});
-			// ¸¶Ä¿°¡ Áöµµ À§¿¡ Ç¥½ÃµÇµµ·Ï ¼³Á¤ÇÕ´Ï´Ù
+			// ë§ˆì»¤ê°€ ì§€ë„ ìœ„ì— í‘œì‹œë˜ë„ë¡ ì„¤ì •í•©ë‹ˆë‹¤
 			clkmarker.setMap(map);
-			// »ı¼ºµÈ ¸¶Ä¿¸¦ ¹è¿­¿¡ Ãß°¡ÇÕ´Ï´Ù
+			// ìƒì„±ëœ ë§ˆì»¤ë¥¼ ë°°ì—´ì— ì¶”ê°€í•©ë‹ˆë‹¤
 			markers4polygon.push(position);
 			markers4clk.push(clkmarker);
 			console.log(markers4polygon);
 		}
 
-		// ¹è¿­¿¡ Ãß°¡µÈ ¸¶Ä¿µéÀ» Áöµµ¿¡ Ç¥½ÃÇÏ°Å³ª »èÁ¦ÇÏ´Â ÇÔ¼öÀÔ´Ï´Ù
+		// ë°°ì—´ì— ì¶”ê°€ëœ ë§ˆì»¤ë“¤ì„ ì§€ë„ì— í‘œì‹œí•˜ê±°ë‚˜ ì‚­ì œí•˜ëŠ” í•¨ìˆ˜ì…ë‹ˆë‹¤
 		function setMarkers(map) {
 			console.log(markers4clk);
 			for (var i = 0; i < markers4clk.length; i++) {
 				markers4clk[i].setMap(map);
 			}
 		}
-		// "¸¶Ä¿ º¸ÀÌ±â" ¹öÆ°À» Å¬¸¯ÇÏ¸é È£ÃâµÇ¾î ¹è¿­¿¡ Ãß°¡µÈ ¸¶Ä¿¸¦ Áöµµ¿¡ Ç¥½ÃÇÏ´Â ÇÔ¼öÀÔ´Ï´Ù
+		// "ë§ˆì»¤ ë³´ì´ê¸°" ë²„íŠ¼ì„ í´ë¦­í•˜ë©´ í˜¸ì¶œë˜ì–´ ë°°ì—´ì— ì¶”ê°€ëœ ë§ˆì»¤ë¥¼ ì§€ë„ì— í‘œì‹œí•˜ëŠ” í•¨ìˆ˜ì…ë‹ˆë‹¤
 		function showMarkers() {
 			setMarkers(map)
 		}
-		// "¸¶Ä¿ °¨Ãß±â" ¹öÆ°À» Å¬¸¯ÇÏ¸é È£ÃâµÇ¾î ¹è¿­¿¡ Ãß°¡µÈ ¸¶Ä¿¸¦ Áöµµ¿¡¼­ »èÁ¦ÇÏ´Â ÇÔ¼öÀÔ´Ï´Ù
+		// "ë§ˆì»¤ ê°ì¶”ê¸°" ë²„íŠ¼ì„ í´ë¦­í•˜ë©´ í˜¸ì¶œë˜ì–´ ë°°ì—´ì— ì¶”ê°€ëœ ë§ˆì»¤ë¥¼ ì§€ë„ì—ì„œ ì‚­ì œí•˜ëŠ” í•¨ìˆ˜ì…ë‹ˆë‹¤
 		function hideMarkers() {
 			setMarkers(null);
 		}
 
-		//Å¬¸¯ÇÑ ¸¶Ä¿³¢¸® Æú¸®°ï »ı¼ºÇÏ±â
+		//í´ë¦­í•œ ë§ˆì»¤ë¼ë¦¬ í´ë¦¬ê³¤ ìƒì„±í•˜ê¸°
 		function addpolygon() {
-			console.log("½ÃÀÛ");
+			console.log("ì‹œì‘");
 			var colorsel = document.getElementById("colorsel").value;
 			var polygonW = document.getElementById("polygonW").value;
-			// ´Ù°¢ÇüÀ» ±¸¼ºÇÏ´Â ÁÂÇ¥ ¹è¿­ÀÔ´Ï´Ù. ÀÌ ÁÂÇ¥µéÀ» ÀÌ¾î¼­ ´Ù°¢ÇüÀ» Ç¥½ÃÇÕ´Ï´Ù
-			// markers4polygon ¹è¿­¿¡ ÀúÀåµÇ¾î ÀÖÀ½.
-			console.log("¹è¿­°ªÈ®ÀÎ1 : " + markers4polygon);
-			// Áöµµ¿¡ Ç¥½ÃÇÒ ´Ù°¢ÇüÀ» »ı¼ºÇÕ´Ï´Ù
+			// ë‹¤ê°í˜•ì„ êµ¬ì„±í•˜ëŠ” ì¢Œí‘œ ë°°ì—´ì…ë‹ˆë‹¤. ì´ ì¢Œí‘œë“¤ì„ ì´ì–´ì„œ ë‹¤ê°í˜•ì„ í‘œì‹œí•©ë‹ˆë‹¤
+			// markers4polygon ë°°ì—´ì— ì €ì¥ë˜ì–´ ìˆìŒ.
+			console.log("ë°°ì—´ê°’í™•ì¸1 : " + markers4polygon);
+			// ì§€ë„ì— í‘œì‹œí•  ë‹¤ê°í˜•ì„ ìƒì„±í•©ë‹ˆë‹¤
 			var polygon = new kakao.maps.Polygon({
-				path : markers4polygon, // ±×·ÁÁú ´Ù°¢ÇüÀÇ ÁÂÇ¥ ¹è¿­ÀÔ´Ï´Ù
-				strokeWeight : polygonW, // ¼±ÀÇ µÎ²²ÀÔ´Ï´Ù
-				strokeColor : '#39DE2A', // ¼±ÀÇ »ö±òÀÔ´Ï´Ù
-				strokeOpacity : 0.8, // ¼±ÀÇ ºÒÅõ¸íµµ ÀÔ´Ï´Ù 1¿¡¼­ 0 »çÀÌÀÇ °ªÀÌ¸ç 0¿¡ °¡±î¿ï¼ö·Ï Åõ¸íÇÕ´Ï´Ù
-				strokeStyle : 'longdash', // ¼±ÀÇ ½ºÅ¸ÀÏÀÔ´Ï´Ù
-				fillColor : colorsel, // Ã¤¿ì±â »ö±òÀÔ´Ï´Ù
+				path : markers4polygon, // ê·¸ë ¤ì§ˆ ë‹¤ê°í˜•ì˜ ì¢Œí‘œ ë°°ì—´ì…ë‹ˆë‹¤
+				strokeWeight : polygonW, // ì„ ì˜ ë‘ê»˜ì…ë‹ˆë‹¤
+				strokeColor : '#39DE2A', // ì„ ì˜ ìƒ‰ê¹”ì…ë‹ˆë‹¤
+				strokeOpacity : 0.8, // ì„ ì˜ ë¶ˆíˆ¬ëª…ë„ ì…ë‹ˆë‹¤ 1ì—ì„œ 0 ì‚¬ì´ì˜ ê°’ì´ë©° 0ì— ê°€ê¹Œìš¸ìˆ˜ë¡ íˆ¬ëª…í•©ë‹ˆë‹¤
+				strokeStyle : 'longdash', // ì„ ì˜ ìŠ¤íƒ€ì¼ì…ë‹ˆë‹¤
+				fillColor : colorsel, // ì±„ìš°ê¸° ìƒ‰ê¹”ì…ë‹ˆë‹¤
 				fillOpacity : 0.7
-			// Ã¤¿ì±â ºÒÅõ¸íµµ ÀÔ´Ï´Ù
+			// ì±„ìš°ê¸° ë¶ˆíˆ¬ëª…ë„ ì…ë‹ˆë‹¤
 			});
-			console.log("¿©±ä Áö³ª°¨?");
-			// Áöµµ¿¡ ´Ù°¢ÇüÀ» Ç¥½ÃÇÕ´Ï´Ù
+			console.log("ì—¬ê¸´ ì§€ë‚˜ê°?");
+			// ì§€ë„ì— ë‹¤ê°í˜•ì„ í‘œì‹œí•©ë‹ˆë‹¤
 			if (markers4polygon.length >= 3) {
 				polygon.setMap(map);
 				markers4polygon = [];
 			} else {
-				alert("¸¶Ä¿¸¦ 3°³ ÀÌ»ó ÁöÁ¤ÇØÁÖ¼¼¿ä.");
+				alert("ë§ˆì»¤ë¥¼ 3ê°œ ì´ìƒ ì§€ì •í•´ì£¼ì„¸ìš”.");
 			}
-			console.log("¹è¿­°ªÈ®ÀÎ2 : " + markers4polygon);
+			console.log("ë°°ì—´ê°’í™•ì¸2 : " + markers4polygon);
 		}
 
 		/*
-		// ¸¶Ä¿°¡ Ç¥½ÃµÉ À§Ä¡ÀÔ´Ï´Ù 
+		// ë§ˆì»¤ê°€ í‘œì‹œë  ìœ„ì¹˜ì…ë‹ˆë‹¤ 
 		var markerPosition = new kakao.maps.LatLng(37.56249213, 126.96849315);
 
-		// ¸¶Ä¿¸¦ »ı¼ºÇÕ´Ï´Ù
+		// ë§ˆì»¤ë¥¼ ìƒì„±í•©ë‹ˆë‹¤
 		var marker = new kakao.maps.Marker({
 			position : markerPosition
 		});
 
-		// ¸¶Ä¿°¡ Áöµµ À§¿¡ Ç¥½ÃµÇµµ·Ï ¼³Á¤ÇÕ´Ï´Ù
+		// ë§ˆì»¤ê°€ ì§€ë„ ìœ„ì— í‘œì‹œë˜ë„ë¡ ì„¤ì •í•©ë‹ˆë‹¤
 		marker.setMap(map);
 
-		// ¸¶Ä¿°¡ µå·¡±× °¡´ÉÇÏµµ·Ï ¼³Á¤ÇÕ´Ï´Ù 
+		// ë§ˆì»¤ê°€ ë“œë˜ê·¸ ê°€ëŠ¥í•˜ë„ë¡ ì„¤ì •í•©ë‹ˆë‹¤ 
 		marker.setDraggable(true);
 		 */
 
 		//////////////////////////////////////////////////////////////////////////////////////////////
-		//¹öÆ° Å¬¸¯ ½Ã ÀÌµ¿
+		//ë²„íŠ¼ í´ë¦­ ì‹œ ì´ë™
 		function move() {
-			// ÀÌµ¿ÇÒ À§µµ °æµµ À§Ä¡¸¦ »ı¼ºÇÕ´Ï´Ù 
+			// ì´ë™í•  ìœ„ë„ ê²½ë„ ìœ„ì¹˜ë¥¼ ìƒì„±í•©ë‹ˆë‹¤ 
 			var moveLatLon = new kakao.maps.LatLng(seoulstationLat,
 					seoulstationLng);
 
-			// Áöµµ Áß½ÉÀ» ºÎµå·´°Ô ÀÌµ¿½ÃÅµ´Ï´Ù
-			// ¸¸¾à ÀÌµ¿ÇÒ °Å¸®°¡ Áöµµ È­¸éº¸´Ù Å©¸é ºÎµå·¯¿î È¿°ú ¾øÀÌ ÀÌµ¿ÇÕ´Ï´Ù
+			// ì§€ë„ ì¤‘ì‹¬ì„ ë¶€ë“œëŸ½ê²Œ ì´ë™ì‹œí‚µë‹ˆë‹¤
+			// ë§Œì•½ ì´ë™í•  ê±°ë¦¬ê°€ ì§€ë„ í™”ë©´ë³´ë‹¤ í¬ë©´ ë¶€ë“œëŸ¬ìš´ íš¨ê³¼ ì—†ì´ ì´ë™í•©ë‹ˆë‹¤
 			map.panTo(moveLatLon);
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////
-		// ±×¸®±â µµ±¸
+		// ê·¸ë¦¬ê¸° ë„êµ¬
 		function letsDraw() {
 			console.log($(".draw"));
 			$(".draw").prop("disabled", false);
 		}
-		// µµÇü ½ºÅ¸ÀÏÀ» º¯¼ö·Î ¼³Á¤ÇÕ´Ï´Ù
+		// ë„í˜• ìŠ¤íƒ€ì¼ì„ ë³€ìˆ˜ë¡œ ì„¤ì •í•©ë‹ˆë‹¤
 		var strokeColor = '#39f', fillColor = '#cce6ff', fillOpacity = 0.5, hintStrokeStyle = 'dash';
-		var drawOptions = { // Drawing Manager¸¦ »ı¼ºÇÒ ¶§ »ç¿ëÇÒ ¿É¼ÇÀÔ´Ï´Ù
-			map : map, // Drawing Manager·Î ±×¸®±â ¿ä¼Ò¸¦ ±×¸± map °´Ã¼ÀÔ´Ï´Ù
-			drawingMode : [ // drawing manager·Î Á¦°øÇÒ ±×¸®±â ¿ä¼Ò ¸ğµåÀÔ´Ï´Ù
+		var drawOptions = { // Drawing Managerë¥¼ ìƒì„±í•  ë•Œ ì‚¬ìš©í•  ì˜µì…˜ì…ë‹ˆë‹¤
+			map : map, // Drawing Managerë¡œ ê·¸ë¦¬ê¸° ìš”ì†Œë¥¼ ê·¸ë¦´ map ê°ì²´ì…ë‹ˆë‹¤
+			drawingMode : [ // drawing managerë¡œ ì œê³µí•  ê·¸ë¦¬ê¸° ìš”ì†Œ ëª¨ë“œì…ë‹ˆë‹¤
 			kakao.maps.drawing.OverlayType.MARKER,
 					kakao.maps.Drawing.OverlayType.ARROW,
 					kakao.maps.drawing.OverlayType.POLYLINE,
@@ -341,13 +341,13 @@
 					kakao.maps.drawing.OverlayType.CIRCLE,
 					kakao.maps.Drawing.OverlayType.ELLIPSE,
 					kakao.maps.drawing.OverlayType.POLYGON ],
-			// »ç¿ëÀÚ¿¡°Ô Á¦°øÇÒ ±×¸®±â °¡ÀÌµå ÅøÆÁÀÔ´Ï´Ù
-			// »ç¿ëÀÚ¿¡°Ô µµÇüÀ» ±×¸±¶§, µå·¡±×ÇÒ¶§, ¼öÁ¤ÇÒ¶§ °¡ÀÌµå ÅøÆÁÀ» Ç¥½ÃÇÏµµ·Ï ¼³Á¤ÇÕ´Ï´Ù
+			// ì‚¬ìš©ìì—ê²Œ ì œê³µí•  ê·¸ë¦¬ê¸° ê°€ì´ë“œ íˆ´íŒì…ë‹ˆë‹¤
+			// ì‚¬ìš©ìì—ê²Œ ë„í˜•ì„ ê·¸ë¦´ë•Œ, ë“œë˜ê·¸í• ë•Œ, ìˆ˜ì •í• ë•Œ ê°€ì´ë“œ íˆ´íŒì„ í‘œì‹œí•˜ë„ë¡ ì„¤ì •í•©ë‹ˆë‹¤
 			guideTooltip : [ 'draw', 'drag', 'edit' ],
-			markerOptions : { // ¸¶Ä¿ ¿É¼ÇÀÔ´Ï´Ù 
-				draggable : true, // ¸¶Ä¿¸¦ ±×¸®°í ³ª¼­ µå·¡±× °¡´ÉÇÏ°Ô ÇÕ´Ï´Ù 
+			markerOptions : { // ë§ˆì»¤ ì˜µì…˜ì…ë‹ˆë‹¤ 
+				draggable : true, // ë§ˆì»¤ë¥¼ ê·¸ë¦¬ê³  ë‚˜ì„œ ë“œë˜ê·¸ ê°€ëŠ¥í•˜ê²Œ í•©ë‹ˆë‹¤ 
 				removable : true
-			// ¸¶Ä¿¸¦ »èÁ¦ ÇÒ ¼ö ÀÖµµ·Ï x ¹öÆ°ÀÌ Ç¥½ÃµË´Ï´Ù  
+			// ë§ˆì»¤ë¥¼ ì‚­ì œ í•  ìˆ˜ ìˆë„ë¡ x ë²„íŠ¼ì´ í‘œì‹œë©ë‹ˆë‹¤  
 			},
 			arrowOptions : {
 				draggable : true,
@@ -355,23 +355,23 @@
 				strokeColor : strokeColor,
 				hintStrokeStyle : hintStrokeStyle
 			},
-			polylineOptions : { // ¼± ¿É¼ÇÀÔ´Ï´Ù
-				draggable : true, // ±×¸° ÈÄ µå·¡±×°¡ °¡´ÉÇÏµµ·Ï ¼³Á¤ÇÕ´Ï´Ù
-				removable : true, // ±×¸° ÈÄ »èÁ¦ ÇÒ ¼ö ÀÖµµ·Ï x ¹öÆ°ÀÌ Ç¥½ÃµË´Ï´Ù
-				editable : true, // ±×¸° ÈÄ ¼öÁ¤ÇÒ ¼ö ÀÖµµ·Ï ¼³Á¤ÇÕ´Ï´Ù 
-				strokeColor : '#39f', // ¼± »ö
-				hintStrokeStyle : 'dash', // ±×¸®Áß ¸¶¿ì½º¸¦ µû¶ó´Ù´Ï´Â º¸Á¶¼±ÀÇ ¼± ½ºÅ¸ÀÏ
+			polylineOptions : { // ì„  ì˜µì…˜ì…ë‹ˆë‹¤
+				draggable : true, // ê·¸ë¦° í›„ ë“œë˜ê·¸ê°€ ê°€ëŠ¥í•˜ë„ë¡ ì„¤ì •í•©ë‹ˆë‹¤
+				removable : true, // ê·¸ë¦° í›„ ì‚­ì œ í•  ìˆ˜ ìˆë„ë¡ x ë²„íŠ¼ì´ í‘œì‹œë©ë‹ˆë‹¤
+				editable : true, // ê·¸ë¦° í›„ ìˆ˜ì •í•  ìˆ˜ ìˆë„ë¡ ì„¤ì •í•©ë‹ˆë‹¤ 
+				strokeColor : '#39f', // ì„  ìƒ‰
+				hintStrokeStyle : 'dash', // ê·¸ë¦¬ì¤‘ ë§ˆìš°ìŠ¤ë¥¼ ë”°ë¼ë‹¤ë‹ˆëŠ” ë³´ì¡°ì„ ì˜ ì„  ìŠ¤íƒ€ì¼
 				hintStrokeOpacity : 0.5
-			// ±×¸®Áß ¸¶¿ì½º¸¦ µû¶ó´Ù´Ï´Â º¸Á¶¼±ÀÇ Åõ¸íµµ
+			// ê·¸ë¦¬ì¤‘ ë§ˆìš°ìŠ¤ë¥¼ ë”°ë¼ë‹¤ë‹ˆëŠ” ë³´ì¡°ì„ ì˜ íˆ¬ëª…ë„
 			},
 			rectangleOptions : {
 				draggable : true,
 				removable : true,
 				editable : true,
-				strokeColor : '#39f', // ¿Ü°û¼± »ö
-				fillColor : '#39f', // Ã¤¿ì±â »ö
+				strokeColor : '#39f', // ì™¸ê³½ì„  ìƒ‰
+				fillColor : '#39f', // ì±„ìš°ê¸° ìƒ‰
 				fillOpacity : 0.5
-			// Ã¤¿ì±â»ö Åõ¸íµµ
+			// ì±„ìš°ê¸°ìƒ‰ íˆ¬ëª…ë„
 			},
 			circleOptions : {
 				draggable : true,
@@ -400,26 +400,26 @@
 			}
 		};
 
-		// À§¿¡ ÀÛ¼ºÇÑ ¿É¼ÇÀ¸·Î Drawing Manager¸¦ »ı¼ºÇÕ´Ï´Ù
+		// ìœ„ì— ì‘ì„±í•œ ì˜µì…˜ìœ¼ë¡œ Drawing Managerë¥¼ ìƒì„±í•©ë‹ˆë‹¤
 		var manager = new kakao.maps.drawing.DrawingManager(drawOptions);
 
-		// Toolbox¸¦ »ı¼ºÇÕ´Ï´Ù. 
-		// Toolbox »ı¼º ½Ã À§¿¡¼­ »ı¼ºÇÑ DrawingManager °´Ã¼¸¦ ¼³Á¤ÇÕ´Ï´Ù.
-		// DrawingManager °´Ã¼¸¦ ²À ¼³Á¤ÇØ¾ß¸¸ ±×¸®±â ¸ğµå¿Í ¸Å´ÏÀúÀÇ »óÅÂ¸¦ Åø¹Ú½º¿¡ ¼³Á¤ÇÒ ¼ö ÀÖ½À´Ï´Ù.
+		// Toolboxë¥¼ ìƒì„±í•©ë‹ˆë‹¤. 
+		// Toolbox ìƒì„± ì‹œ ìœ„ì—ì„œ ìƒì„±í•œ DrawingManager ê°ì²´ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
+		// DrawingManager ê°ì²´ë¥¼ ê¼­ ì„¤ì •í•´ì•¼ë§Œ ê·¸ë¦¬ê¸° ëª¨ë“œì™€ ë§¤ë‹ˆì €ì˜ ìƒíƒœë¥¼ íˆ´ë°•ìŠ¤ì— ì„¤ì •í•  ìˆ˜ ìˆìŠµë‹ˆë‹¤.
 		var toolbox = new kakao.maps.Drawing.Toolbox({
 			drawingManager : manager
 		});
-		// Áöµµ À§¿¡ Toolbox¸¦ Ç¥½ÃÇÕ´Ï´Ù
-		// kakao.maps.ControlPositionÀº ÄÁÆ®·ÑÀÌ Ç¥½ÃµÉ À§Ä¡¸¦ Á¤ÀÇÇÏ´Âµ¥ TOPÀº À§ °¡¿îµ¥¸¦ ÀÇ¹ÌÇÕ´Ï´Ù.
+		// ì§€ë„ ìœ„ì— Toolboxë¥¼ í‘œì‹œí•©ë‹ˆë‹¤
+		// kakao.maps.ControlPositionì€ ì»¨íŠ¸ë¡¤ì´ í‘œì‹œë  ìœ„ì¹˜ë¥¼ ì •ì˜í•˜ëŠ”ë° TOPì€ ìœ„ ê°€ìš´ë°ë¥¼ ì˜ë¯¸í•©ë‹ˆë‹¤.
 		map.addControl(toolbox.getElement(), kakao.maps.ControlPosition.TOP);
 
-		// ¹öÆ° Å¬¸¯ ½Ã È£ÃâµÇ´Â ÇÚµé·¯ ÀÔ´Ï´Ù
+		// ë²„íŠ¼ í´ë¦­ ì‹œ í˜¸ì¶œë˜ëŠ” í•¸ë“¤ëŸ¬ ì…ë‹ˆë‹¤
 		function selectOverlay(type) {
-			console.log("¼±ÅÃÀº µÈ°Å?");
-			// ±×¸®±â ÁßÀÌ¸é ±×¸®±â¸¦ Ãë¼ÒÇÕ´Ï´Ù
+			console.log("ì„ íƒì€ ëœê±°?");
+			// ê·¸ë¦¬ê¸° ì¤‘ì´ë©´ ê·¸ë¦¬ê¸°ë¥¼ ì·¨ì†Œí•©ë‹ˆë‹¤
 			//manager.cancel();
 
-			// Å¬¸¯ÇÑ ±×¸®±â ¿ä¼Ò Å¸ÀÔÀ» ¼±ÅÃÇÕ´Ï´Ù
+			// í´ë¦­í•œ ê·¸ë¦¬ê¸° ìš”ì†Œ íƒ€ì…ì„ ì„ íƒí•©ë‹ˆë‹¤
 			manager.select(kakao.maps.drawing.OverlayType[type]);
 		}
 	</script>
