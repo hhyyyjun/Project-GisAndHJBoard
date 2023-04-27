@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="EUC-KR"%>
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>leaflet</title>
 
 <link rel="stylesheet"
@@ -125,15 +125,15 @@
 		<div>
 			<div id="search">
 				<div id="searchmap">
-					ÁÖ¼Ò °Ë»ö : <input type="text" name="query" id="searchadd"> <input
-						id="searchBtn" type="button" value="°Ë»ö">
+					ì£¼ì†Œ ê²€ìƒ‰ : <input type="text" name="query" id="searchadd"> <input
+						id="searchBtn" type="button" value="ê²€ìƒ‰">
 				</div>
 			</div>
 			<div>
-				<button onclick="addPin()">ÇÉ Ãß°¡ÇÏ±â</button>
+				<button onclick="addPin()">í•€ ì¶”ê°€í•˜ê¸°</button>
 			</div>
 			<div>
-				<button onclick="addpolygon()">Ãß°¡ÇÑ ¸¶Ä¿ Æú¸®°ï »ı¼ºÇÏ±â</button>
+				<button onclick="addpolygon()">ì¶”ê°€í•œ ë§ˆì»¤ í´ë¦¬ê³¤ ìƒì„±í•˜ê¸°</button>
 				<select id="colorsel">
 					<option>red</option>
 					<option>blue</option>
@@ -154,21 +154,21 @@
 			</div>
 		</div>
 		<div id="buttons">
-			<button onClick="me()">³» À§Ä¡ Ã£±â</button>
-			<button onclick="move()">¼­¿ï¿ª</button>
-			<button onclick="pinchk()" id="pinchk">ÇÉ È®ÀÎ</button>
-			<button onclick='pindel()' id="pindel" disabled>ÇÉ »èÁ¦</button>
-			<button onclick="polygon()" id="polygon" disabled>Æú¸®°ï ¿¬°á</button>
-			<button onclick="circle()" id="circle" disabled>nh ÁÖº¯ È®ÀÎ</button>
+			<button onClick="me()">ë‚´ ìœ„ì¹˜ ì°¾ê¸°</button>
+			<button onclick="move()">ì„œìš¸ì—­</button>
+			<button onclick="pinchk()" id="pinchk">í•€ í™•ì¸</button>
+			<button onclick='pindel()' id="pindel" disabled>í•€ ì‚­ì œ</button>
+			<button onclick="polygon()" id="polygon" disabled>í´ë¦¬ê³¤ ì—°ê²°</button>
+			<button onclick="circle()" id="circle" disabled>nh ì£¼ë³€ í™•ì¸</button>
 		</div>
 		<div>
-			<button onclick="delLayer()">·¹ÀÌ¾î ÀüºÎ Áö¿ì±â</button>
+			<button onclick="delLayer()">ë ˆì´ì–´ ì „ë¶€ ì§€ìš°ê¸°</button>
 		</div>
 		<div>
-			<button onclick="lineDraw()">¼±±×¸®±â</button>
+			<button onclick="lineDraw()">ì„ ê·¸ë¦¬ê¸°</button>
 		</div>
 	</div>
-	<div class="info">¾È³çÇÏ¼¼¿ä</div>
+	<div class="info">ì•ˆë…•í•˜ì„¸ìš”</div>
 
 	<script src="js/common.js"></script>
 
@@ -176,28 +176,28 @@
 		var map = L.map("map",{
 			center : [NHLat, NHLng],
 			zoom : 18,
-			//´õºí Å¬¸¯À» ÅëÇÑ ÁÜ ±â´É ÇØÁ¦
+			//ë”ë¸” í´ë¦­ì„ í†µí•œ ì¤Œ ê¸°ëŠ¥ í•´ì œ
 			doubleClickZoom : false
 		});
 		L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{
 							maxZoom : 19,
 							attribution : '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 						}).addTo(map);
-		console.log("Áöµµ ÃÊ±âÈ­");
+		console.log("ì§€ë„ ì´ˆê¸°í™”");
 	</script>
 		
 	<script>
-		// ±×¸®±â µµ±¸ Ãß°¡
-		//»ı¼ºµÈ ·¹ÀÌ¾îµéÀ» ÀúÀåÇÒ °÷
+		// ê·¸ë¦¬ê¸° ë„êµ¬ ì¶”ê°€
+		//ìƒì„±ëœ ë ˆì´ì–´ë“¤ì„ ì €ì¥í•  ê³³
 		var drawnItems = new L.FeatureGroup();
 		map.addLayer(drawnItems);
-		//±×¸®±â ÄÁÆ®·Ñ·¯ ÃÊ±âÈ­ ¹× Ãß°¡
+		//ê·¸ë¦¬ê¸° ì»¨íŠ¸ë¡¤ëŸ¬ ì´ˆê¸°í™” ë° ì¶”ê°€
 		var drawControl = new L.Control.Draw({
-			//ÄÁÆ®·Ñ·¯ À§Ä¡
+			//ì»¨íŠ¸ë¡¤ëŸ¬ ìœ„ì¹˜
 			position : 'topright',
-			//±×¸®±â ¿É¼Ç
+			//ê·¸ë¦¬ê¸° ì˜µì…˜
 			draw : {
-				//Æú¸®¶óÀÎ ¿É¼Ç
+				//í´ë¦¬ë¼ì¸ ì˜µì…˜
 				polyline : {
 					shapeOptions: {
 						stroke: true,
@@ -210,252 +210,252 @@
 					showLength : true,
 					metric : true
 				},
-				//¿ø ¿É¼Ç
+				//ì› ì˜µì…˜
 				circle : {
 					shapeOptions : {
 						color : '#FFE400',
 						fillColor : '#8041D9'
 					}
 				},
-				//»ç°¢Çü ¿É¼Ç
+				//ì‚¬ê°í˜• ì˜µì…˜
 				rectangle : {
 					shapeOptions : {
 						color : '#2F9D27',
 						fillColor : '#86E57F'
 					}
 				},
-				//Æú¸®°ï ¿É¼Ç
+				//í´ë¦¬ê³¤ ì˜µì…˜
 				polygon : {
 					showArea : true
 				}
 			},
-			//ÆíÁı ¿É¼Ç
+			//í¸ì§‘ ì˜µì…˜
 			edit : {
 				featureGroup : drawnItems
-				//ÆíÁı µµ±¸ ºñÈ°¼ºÈ­
+				//í¸ì§‘ ë„êµ¬ ë¹„í™œì„±í™”
 				//edit : false
 			}
 		});
 		console.log(drawControl);
 		map.addControl(drawControl);
 		
-		//·¹ÀÌ¾îÀÇ Å¸ÀÔ ÃÊ±âÈ­
+		//ë ˆì´ì–´ì˜ íƒ€ì… ì´ˆê¸°í™”
 		var type = "";
-		//·¹ÀÌ¾î Á¤º¸
+		//ë ˆì´ì–´ ì •ë³´
 		var layer = "";
-		//´ÜÀ§º¯È¯ÇÏ¿© Ãâ·ÂÇÒ °ª
+		//ë‹¨ìœ„ë³€í™˜í•˜ì—¬ ì¶œë ¥í•  ê°’
 		var output;
 		var Totaloutput;
-		//¿øÀÇ Áß½É ÁÂÇ¥
+		//ì›ì˜ ì¤‘ì‹¬ ì¢Œí‘œ
 		var circleLatlng
-		//¿øÀÇ Áß½É ÁÂÇ¥¿¡ »ı¼ºµÉ ¸¶Ä¿
+		//ì›ì˜ ì¤‘ì‹¬ ì¢Œí‘œì— ìƒì„±ë  ë§ˆì»¤
 		var circleMarker
 		
-		//¸¶Ä¿µé
+		//ë§ˆì»¤ë“¤
 		var polylineMarkers = [];
 		
-		//±×¸®±â ½ÃÀÛ ½Ã
+		//ê·¸ë¦¬ê¸° ì‹œì‘ ì‹œ
 		map.on('draw:drawstart',function(e){
 // 			alert(e.layerType);
 			type = e.layerType;
 			layer = e.layer;
-			console.log("¼±ÅÃÇÑ µµ±¸ : "+type);
+			console.log("ì„ íƒí•œ ë„êµ¬ : "+type);
 			
-			//±×¸®±â µµ±¸°¡ Æú¸®¶óÀÎ ÀÌ¶ó¸é
+			//ê·¸ë¦¬ê¸° ë„êµ¬ê°€ í´ë¦¬ë¼ì¸ ì´ë¼ë©´
 			if(type === 'polyline'){
-				//Å¬¸¯ÇÑ °÷ÀÇ ÁÂÇ¥°ªµéÀÌ µé¾î°¥ ¹è¿­
+				//í´ë¦­í•œ ê³³ì˜ ì¢Œí‘œê°’ë“¤ì´ ë“¤ì–´ê°ˆ ë°°ì—´
 				var linePoint = [];
-				//ÃÑ °Å¸®
+				//ì´ ê±°ë¦¬
 				var totalDistance = 0;
-				//¸¶Ä¿
+				//ë§ˆì»¤
 				var polylineMarker;
-// 				//¸¶Ä¿µé
+// 				//ë§ˆì»¤ë“¤
 // 				var polylineMarkers = [];
-				//Áöµµ Å¬¸¯ÇÏ¸é Æ÷ÀÎÆ® »çÀÌÀÇ °Å¸®¸¦ ¹ÙÀÎµå ÆË¾÷À¸·Î »ı¼º
+				//ì§€ë„ í´ë¦­í•˜ë©´ í¬ì¸íŠ¸ ì‚¬ì´ì˜ ê±°ë¦¬ë¥¼ ë°”ì¸ë“œ íŒì—…ìœ¼ë¡œ ìƒì„±
 				map.on('click', function(e){
-					//Å¬¸¯ÇÑ °÷ÀÇ ÁÂÇ¥°ªÀ» ¹è¿­¿¡ ÀúÀå
+					//í´ë¦­í•œ ê³³ì˜ ì¢Œí‘œê°’ì„ ë°°ì—´ì— ì €ì¥
 					linePoint.push(e.latlng);
-					console.log("¸¶Ä¿ÀÇ ÁÂÇ¥ °ª : "+linePoint);
-					//Áöµµ¿¡ ¸¶Ä¿ Ãß°¡
+					console.log("ë§ˆì»¤ì˜ ì¢Œí‘œ ê°’ : "+linePoint);
+					//ì§€ë„ì— ë§ˆì»¤ ì¶”ê°€
 					polylineMarker = L.marker(e.latlng,{
 						riseOnHover : true
 					}).addTo(map);
-					//¸¶Ä¿Á¤º¸¸¦ ¹è¿­¿¡ Ãß°¡
+					//ë§ˆì»¤ì •ë³´ë¥¼ ë°°ì—´ì— ì¶”ê°€
 					polylineMarkers.push(polylineMarker);
 					console.log(polylineMarkers);
-					//¸¸¾à clicksÀÇ ±æÀÌ°¡ 2ÀÌ»óÀÌ¸é
+					//ë§Œì•½ clicksì˜ ê¸¸ì´ê°€ 2ì´ìƒì´ë©´
 					if(linePoint.length >= 2){
-						//¹è¿­ÀÇ ±æÀÌ
+						//ë°°ì—´ì˜ ê¸¸ì´
 						var i = linePoint.length;
-						//ÀÌÀü ¸¶Ä¿ÀÇ ÁÂÇ¥
+						//ì´ì „ ë§ˆì»¤ì˜ ì¢Œí‘œ
 						var distance1 = linePoint[i-2];
-						//ÀÌÈÄ ¸¶Ä¿ÀÇ ÁÂÇ¥
+						//ì´í›„ ë§ˆì»¤ì˜ ì¢Œí‘œ
 						var distance2 = linePoint[i-1];
-						//°Å¸® °è»ê
+						//ê±°ë¦¬ ê³„ì‚°
 						var measure = map.distance(distance1, distance2);
 						if(measure > 1000){
 							output = (Math.round(measure / 1000 * 100) / 100) + ' km';
 						} else{
 							output = (Math.round(measure * 100) / 100) + ' m'
 						}
-						//°Å¸® °ª
-						console.log("¸¶Ä¿ »çÀÌ °Å¸® : "+output);
-						//¸¶Ä¿ »çÀÌÀÇ °Å¸®¸¦ ÅøÆÁÀ¸·Î Ãâ·Â
-						polylineMarker.bindTooltip(("°Å¸® : "+output),{
-							permanent : true //Áöµµ¿¡ ¿µ±¸ÀûÀ¸·Î ¶ç¿ö³õÀ»°ÇÁö?
+						//ê±°ë¦¬ ê°’
+						console.log("ë§ˆì»¤ ì‚¬ì´ ê±°ë¦¬ : "+output);
+						//ë§ˆì»¤ ì‚¬ì´ì˜ ê±°ë¦¬ë¥¼ íˆ´íŒìœ¼ë¡œ ì¶œë ¥
+						polylineMarker.bindTooltip(("ê±°ë¦¬ : "+output),{
+							permanent : true //ì§€ë„ì— ì˜êµ¬ì ìœ¼ë¡œ ë„ì›Œë†“ì„ê±´ì§€?
 						}).addTo(map).openTooltip();
-						//ÃÑ °Å¸® °è»ê
+						//ì´ ê±°ë¦¬ ê³„ì‚°
 						totalDistance += measure;
 						if(totalDistance > 1000){
 							Totaloutput = (Math.round(totalDistance / 1000 * 100) / 100) + ' km';
 						} else{
 							Totaloutput = (Math.round(totalDistance * 100) / 100) + ' m'
 						}
-						//¸¶Ä¿ ¹è¿­ÀÇ ¸¶Áö¸· ÀÎµ¦½ºÀÇ ¸¶Ä¿ Á¤º¸¸¦ °¡Á®¿Í
+						//ë§ˆì»¤ ë°°ì—´ì˜ ë§ˆì§€ë§‰ ì¸ë±ìŠ¤ì˜ ë§ˆì»¤ ì •ë³´ë¥¼ ê°€ì ¸ì™€
 						var lastMarker = polylineMarkers[polylineMarkers.length-1];
-						//¸¶Áö¸· ¸¶Ä¿¿¡ ÃÑ °Å¸® Ãâ·Â
-						lastMarker.bindPopup("<div id='lastDistanceInfo'>ÃÑ °Å¸® : "+Totaloutput+"</div>"
-											 +"<button id='lastDistanceBtn'>Áö¿ì±â</button>");
-						console.log("ÃÑ °Å¸® : "+Totaloutput);
+						//ë§ˆì§€ë§‰ ë§ˆì»¤ì— ì´ ê±°ë¦¬ ì¶œë ¥
+						lastMarker.bindPopup("<div id='lastDistanceInfo'>ì´ ê±°ë¦¬ : "+Totaloutput+"</div>"
+											 +"<button id='lastDistanceBtn'>ì§€ìš°ê¸°</button>");
+						console.log("ì´ ê±°ë¦¬ : "+Totaloutput);
 					}
 				});
 			}
-			//±×¸®±â µµ±¸°¡ Æú¸®°ïÀÌ¶ó¸é
+			//ê·¸ë¦¬ê¸° ë„êµ¬ê°€ í´ë¦¬ê³¤ì´ë¼ë©´
 			if(type === 'polygon'){
-				//Æú¸®°ï ²ÀÁöÁ¡µéÀÇ ÁÂÇ¥¸¦ ÀúÀåÇÒ ¹è¿­
+				//í´ë¦¬ê³¤ ê¼­ì§€ì ë“¤ì˜ ì¢Œí‘œë¥¼ ì €ì¥í•  ë°°ì—´
 				var polygonPoint = [];				
 				map.on('click', function(e){
 					polygonPoint.push(e.latlng);
-					console.log("Æú¸®°ï ²ÀÁöÁ¡ ÁÂÇ¥ °ª : "+polygonPoint);
+					console.log("í´ë¦¬ê³¤ ê¼­ì§€ì  ì¢Œí‘œ ê°’ : "+polygonPoint);
 				});
 			}
-			//¿øÀÌ¶ó¸é
+			//ì›ì´ë¼ë©´
 			if(type === 'circle'){
-				console.log("¿ø ±×¸®´Â Áß");
+				console.log("ì› ê·¸ë¦¬ëŠ” ì¤‘");
 			}
 		})
 
 		
-		//±×¸®±â Á¾·á ½Ã(Á¾·á ½ÃÁ¡ÀÌ µµÇü »ı¼º ½ÃÁ¡º¸´Ù ³ªÁßÀÓ)
+		//ê·¸ë¦¬ê¸° ì¢…ë£Œ ì‹œ(ì¢…ë£Œ ì‹œì ì´ ë„í˜• ìƒì„± ì‹œì ë³´ë‹¤ ë‚˜ì¤‘ì„)
 		map.on('draw:drawstop',function(e){
 			
-			//Å¬¸¯ ÀÌº¥Æ® ÇØÁ¦
+			//í´ë¦­ ì´ë²¤íŠ¸ í•´ì œ
 			map.off('click');
 			map.off('mousedown');
 		});
 		
 		
-		//µµÇüÀÌ »ı¼ºµÇ¾úÀ» ¶§
+		//ë„í˜•ì´ ìƒì„±ë˜ì—ˆì„ ë•Œ
 		//map.on(L.Draw.Event.CREATED, function (e) {
 		map.on('draw:created', function (e) {
 			   layer = e.layer;
 			   drawnItems.addLayer(layer);
-			   //Å¸ÀÔÀÌ ¿øÀÎ °æ¿ì
+			   //íƒ€ì…ì´ ì›ì¸ ê²½ìš°
 			   if(type === 'circle'){
-				   console.log("»ı¼º¿Ï·á : "+type);	
-				   //¿øÀÇ Áß½É ÁÂÇ¥
+				   console.log("ìƒì„±ì™„ë£Œ : "+type);	
+				   //ì›ì˜ ì¤‘ì‹¬ ì¢Œí‘œ
 				   circleLatlng = layer.getLatLng();
-			       console.log("Áß½É ÁÂÇ¥ : "+circleLatlng);
-			       //¿øÀÇ Áß½É¿¡ ¸¶Ä¿ »ı¼º
+			       console.log("ì¤‘ì‹¬ ì¢Œí‘œ : "+circleLatlng);
+			       //ì›ì˜ ì¤‘ì‹¬ì— ë§ˆì»¤ ìƒì„±
 			       circleMarker = L.marker(circleLatlng).addTo(map);
-			       //¸¶Ä¿ Å¬¸¯ ½Ã ÇØ´ç ÁÂÇ¥ Ãâ·Â
-			       circleMarker.bindPopup("Áß½ÉÁÂÇ¥´Â "+circleLatlng+" ÀÔ´Ï´Ù.").addTo(map);
-			       console.log("Áß½É ÁÂÇ¥ÀÇ ¸¶Ä¿ Á¤º¸ : "+circleLatlng);
-			       //¿øÀÇ ¹İÁö¸§
+			       //ë§ˆì»¤ í´ë¦­ ì‹œ í•´ë‹¹ ì¢Œí‘œ ì¶œë ¥
+			       circleMarker.bindPopup("ì¤‘ì‹¬ì¢Œí‘œëŠ” "+circleLatlng+" ì…ë‹ˆë‹¤.").addTo(map);
+			       console.log("ì¤‘ì‹¬ ì¢Œí‘œì˜ ë§ˆì»¤ ì •ë³´ : "+circleLatlng);
+			       //ì›ì˜ ë°˜ì§€ë¦„
 			       var theRadius = layer.getRadius();
-			       //¿ø ³»ºÎ Å¬¸¯ ½Ã ¹İÁö¸§ ¾È³»
-			       layer.bindPopup("¹İ°æÀº "+theRadius.toFixed(3)+"m ÀÔ´Ï´Ù.").addTo(map);
+			       //ì› ë‚´ë¶€ í´ë¦­ ì‹œ ë°˜ì§€ë¦„ ì•ˆë‚´
+			       layer.bindPopup("ë°˜ê²½ì€ "+theRadius.toFixed(3)+"m ì…ë‹ˆë‹¤.").addTo(map);
 			    }
 			   
-				//±×¸®±â µµ±¸°¡ »ç°¢ÇüÀÌ¶ó¸é
+				//ê·¸ë¦¬ê¸° ë„êµ¬ê°€ ì‚¬ê°í˜•ì´ë¼ë©´
 				if(type === 'rectangle'){
-					console.log("»ı¼º¿Ï·á : "+type);	
-					//»ç°¢Çü °æ·ÎÀÇ Á¡À» ¹è¿­·Î ÀúÀå(2Â÷ ¹è¿­·Î ÀúÀåµÈ´Ù.)
+					console.log("ìƒì„±ì™„ë£Œ : "+type);	
+					//ì‚¬ê°í˜• ê²½ë¡œì˜ ì ì„ ë°°ì—´ë¡œ ì €ì¥(2ì°¨ ë°°ì—´ë¡œ ì €ì¥ëœë‹¤.)
 					var rect = layer.getLatLngs();
-					console.log("ÁÂÇ¥°ª : "+rect);
-					//°¡·Î ±æÀÌ °è»ê
+					console.log("ì¢Œí‘œê°’ : "+rect);
+					//ê°€ë¡œ ê¸¸ì´ ê³„ì‚°
 					var width = map.distance(rect[0][1], rect[0][2]);
-					//¼¼·Î ±æÀÌ °è»ê
+					//ì„¸ë¡œ ê¸¸ì´ ê³„ì‚°
 					var height = map.distance(rect[0][2], rect[0][3]);
-					console.log("°¡·Î : "+width+", ¼¼·Î : "+height);
-					//³ĞÀÌ °è»ê
+					console.log("ê°€ë¡œ : "+width+", ì„¸ë¡œ : "+height);
+					//ë„“ì´ ê³„ì‚°
 					var area = width * height;
-					console.log("³ĞÀÌ : "+area);
-					//»ç°¢Çü ³»ºÎ Å¬¸¯ ½Ã ³ĞÀÌ¸¦ ÆË¾÷À¸·Î Ãâ·Â
-					layer.bindPopup("»ç°¢ÇüÀÇ ³ĞÀÌ´Â <br>"+area.toFixed(2)+"m<sup>2</sup> ÀÔ´Ï´Ù.").addTo(map); 
+					console.log("ë„“ì´ : "+area);
+					//ì‚¬ê°í˜• ë‚´ë¶€ í´ë¦­ ì‹œ ë„“ì´ë¥¼ íŒì—…ìœ¼ë¡œ ì¶œë ¥
+					layer.bindPopup("ì‚¬ê°í˜•ì˜ ë„“ì´ëŠ” <br>"+area.toFixed(2)+"m<sup>2</sup> ì…ë‹ˆë‹¤.").addTo(map); 
 				}
-				//±×¸®±â µµ±¸°¡ Æú¸®°ïÀÌ¶ó¸é
+				//ê·¸ë¦¬ê¸° ë„êµ¬ê°€ í´ë¦¬ê³¤ì´ë¼ë©´
 				if(type === 'polygon'){
-					console.log("created ÀÌÈÄ Æú¸®°ï");
-					//Æú¸®°ïÀÇ ¸éÀû °è»êÇÏ¸ç, ¼Ò¼öÁ¡ 3¹øÂ° ÀÚ¸®±îÁö Ãâ·Â
+					console.log("created ì´í›„ í´ë¦¬ê³¤");
+					//í´ë¦¬ê³¤ì˜ ë©´ì  ê³„ì‚°í•˜ë©°, ì†Œìˆ˜ì  3ë²ˆì§¸ ìë¦¬ê¹Œì§€ ì¶œë ¥
 					var area = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0]).toFixed(1);
 					console.log("area : "+area);
 					console.log(typeof area)
-					//¹ÌÅÍ Á¦°öÀ¸·Î ´ÜÀ§ ºÙ¿©ÁØ´Ù.
+					//ë¯¸í„° ì œê³±ìœ¼ë¡œ ë‹¨ìœ„ ë¶™ì—¬ì¤€ë‹¤.
 					area += " m<sup>2</sup>";
-					//ÇíÅ¸¸£ ´ÜÀ§·Î º¯È¯ÇÔ
+					//í—¥íƒ€ë¥´ ë‹¨ìœ„ë¡œ ë³€í™˜í•¨
 // 					var readableArea = L.GeometryUtil.readableArea(area, true);
 // 					console.log("readableArea : "+ readableArea);
 // 					console.log(typeof readableArea)
 
-					layer.bindTooltip("¸éÀû " + area, {permanent: true, direction: 'center'}).openTooltip();
+					layer.bindTooltip("ë©´ì  " + area, {permanent: true, direction: 'center'}).openTooltip();
 // 					createAreaTooltip(layer);
 				}
 			});
 		
 		
-		//ÆíÁıµµ±¸ »ç¿ëÇÏ°í ÀúÀå ½Ã
+		//í¸ì§‘ë„êµ¬ ì‚¬ìš©í•˜ê³  ì €ì¥ ì‹œ
 		map.on('draw:edited', function(e){
 			console.log(type);
 			if(type === 'circle'){
 				if(circleMarker){
 					circleMarker.remove();
 				}
-				//ÀÌÀü¿¡ Âï¾ú´ø ¸¶Ä¿ »èÁ¦ÇØ¾ß ÇÔ >> Àü¿ªÀ¸·Î »©³õ±â
-				console.log("ÆíÁı ¿Ï·á : "+type);		
-				//¿øÀÇ Áß½É ÁÂÇ¥
+				//ì´ì „ì— ì°ì—ˆë˜ ë§ˆì»¤ ì‚­ì œí•´ì•¼ í•¨ >> ì „ì—­ìœ¼ë¡œ ë¹¼ë†“ê¸°
+				console.log("í¸ì§‘ ì™„ë£Œ : "+type);		
+				//ì›ì˜ ì¤‘ì‹¬ ì¢Œí‘œ
 				circleLatlng = layer.getLatLng();
-			    console.log("Áß½É ÁÂÇ¥ : "+circleLatlng);
-			    //¿øÀÇ Áß½É¿¡ ¸¶Ä¿ »ı¼º
+			    console.log("ì¤‘ì‹¬ ì¢Œí‘œ : "+circleLatlng);
+			    //ì›ì˜ ì¤‘ì‹¬ì— ë§ˆì»¤ ìƒì„±
 			    circleMarker = L.marker(circleLatlng).addTo(map);
-			    //¸¶Ä¿ Å¬¸¯ ½Ã ÇØ´ç ÁÂÇ¥ Ãâ·Â
-			    circleMarker.bindPopup("Áß½ÉÁÂÇ¥´Â "+circleLatlng+" ÀÔ´Ï´Ù.").addTo(map);
-			    console.log("Áß½É ÁÂÇ¥ÀÇ ¸¶Ä¿ Á¤º¸ : "+circleLatlng);
-			    //¿øÀÇ ¹İÁö¸§
+			    //ë§ˆì»¤ í´ë¦­ ì‹œ í•´ë‹¹ ì¢Œí‘œ ì¶œë ¥
+			    circleMarker.bindPopup("ì¤‘ì‹¬ì¢Œí‘œëŠ” "+circleLatlng+" ì…ë‹ˆë‹¤.").addTo(map);
+			    console.log("ì¤‘ì‹¬ ì¢Œí‘œì˜ ë§ˆì»¤ ì •ë³´ : "+circleLatlng);
+			    //ì›ì˜ ë°˜ì§€ë¦„
 			    var theRadius = layer.getRadius();
-			    //¿ø ³»ºÎ Å¬¸¯ ½Ã ¹İÁö¸§ ¾È³»
-			    layer.bindPopup("¹İ°æÀº "+theRadius.toFixed(3)+"m ÀÔ´Ï´Ù.").addTo(map);
+			    //ì› ë‚´ë¶€ í´ë¦­ ì‹œ ë°˜ì§€ë¦„ ì•ˆë‚´
+			    layer.bindPopup("ë°˜ê²½ì€ "+theRadius.toFixed(3)+"m ì…ë‹ˆë‹¤.").addTo(map);
 			}
 			if(type === 'rectangle'){
-				console.log("ÆíÁı ¿Ï·á : "+type);				
-				//»ç°¢Çü °æ·ÎÀÇ Á¡À» ¹è¿­·Î ÀúÀå(2Â÷ ¹è¿­·Î ÀúÀåµÈ´Ù.)
+				console.log("í¸ì§‘ ì™„ë£Œ : "+type);				
+				//ì‚¬ê°í˜• ê²½ë¡œì˜ ì ì„ ë°°ì—´ë¡œ ì €ì¥(2ì°¨ ë°°ì—´ë¡œ ì €ì¥ëœë‹¤.)
 				var rect = layer.getLatLngs();
-				console.log("ÁÂÇ¥°ª : "+rect);
-				//°¡·Î ±æÀÌ °è»ê
+				console.log("ì¢Œí‘œê°’ : "+rect);
+				//ê°€ë¡œ ê¸¸ì´ ê³„ì‚°
 				var width = map.distance(rect[0][1], rect[0][2]);
-				//¼¼·Î ±æÀÌ °è»ê
+				//ì„¸ë¡œ ê¸¸ì´ ê³„ì‚°
 				var height = map.distance(rect[0][2], rect[0][3]);
-				console.log("°¡·Î : "+width+", ¼¼·Î : "+height);
-				//³ĞÀÌ °è»ê
+				console.log("ê°€ë¡œ : "+width+", ì„¸ë¡œ : "+height);
+				//ë„“ì´ ê³„ì‚°
 				var area = width * height;
-				console.log("³ĞÀÌ : "+area);
-				//»ç°¢Çü ³»ºÎ Å¬¸¯ ½Ã ³ĞÀÌ¸¦ ÆË¾÷À¸·Î Ãâ·Â
-				layer.bindPopup("»ç°¢ÇüÀÇ ³ĞÀÌ´Â <br>"+area.toFixed(2)+"m<sup>2</sup> ÀÔ´Ï´Ù.").addTo(map); 
+				console.log("ë„“ì´ : "+area);
+				//ì‚¬ê°í˜• ë‚´ë¶€ í´ë¦­ ì‹œ ë„“ì´ë¥¼ íŒì—…ìœ¼ë¡œ ì¶œë ¥
+				layer.bindPopup("ì‚¬ê°í˜•ì˜ ë„“ì´ëŠ” <br>"+area.toFixed(2)+"m<sup>2</sup> ì…ë‹ˆë‹¤.").addTo(map); 
 			}
 			if(type === 'polygon'){
-				console.log("ÆíÁı ¿Ï·á : "+type);	
-				//Æú¸®°ïÀÇ ¸éÀû °è»êÇÏ¸ç, ¼Ò¼öÁ¡ 3¹øÂ° ÀÚ¸®±îÁö Ãâ·Â
+				console.log("í¸ì§‘ ì™„ë£Œ : "+type);	
+				//í´ë¦¬ê³¤ì˜ ë©´ì  ê³„ì‚°í•˜ë©°, ì†Œìˆ˜ì  3ë²ˆì§¸ ìë¦¬ê¹Œì§€ ì¶œë ¥
 				var area = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0]).toFixed(1);
 				console.log("area : "+area);
 				console.log(typeof area)
-				//¹ÌÅÍ Á¦°öÀ¸·Î ´ÜÀ§ ºÙ¿©ÁØ´Ù.
+				//ë¯¸í„° ì œê³±ìœ¼ë¡œ ë‹¨ìœ„ ë¶™ì—¬ì¤€ë‹¤.
 				area += " m<sup>2</sup>";
 
-				layer.bindTooltip("¸éÀû " + area, {permanent: true, direction: 'center'}).openTooltip();
+				layer.bindTooltip("ë©´ì  " + area, {permanent: true, direction: 'center'}).openTooltip();
 			}
 		})
 	
-		//·¹ÀÌ¾î°¡ »èÁ¦µÈ °æ¿ì
+		//ë ˆì´ì–´ê°€ ì‚­ì œëœ ê²½ìš°
 		map.on('draw:deleted', function(e){
 			if(type === 'polyline'){
 				for(var i=0; i<polylineMarkers.length;i++){
@@ -501,7 +501,7 @@
         function updateAreaTooltip(layer) {
             var area = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0]);
             var readableArea = L.GeometryUtil.readableArea(area, true);
-//             readableArea = readableArea.split(" ")[0]+"§³";
+//             readableArea = readableArea.split(" ")[0]+"ã¡";
             var latlng = layer.getCenter();
 
             layer.areaTooltip
@@ -519,63 +519,63 @@
 		
 		
 		<!--
-		//¼± ±×¸®¸ç °Å¸®Àç±â(±×¸®±â µµ±¸ »ç¿ë x)
+		//ì„  ê·¸ë¦¬ë©° ê±°ë¦¬ì¬ê¸°(ê·¸ë¦¬ê¸° ë„êµ¬ ì‚¬ìš© x)
 		function lineDraw(){
-			//Å¬¸¯ÇÑ °÷ÀÇ ÁÂÇ¥°ªµéÀÌ µé¾î°¥ ¹è¿­
+			//í´ë¦­í•œ ê³³ì˜ ì¢Œí‘œê°’ë“¤ì´ ë“¤ì–´ê°ˆ ë°°ì—´
 			var clicks = [];
-			//ÃÑ °Å¸®
+			//ì´ ê±°ë¦¬
 			var totalDistance = 0;
-			//¸¶Ä¿
+			//ë§ˆì»¤
 			var distanceMarker;
-			//¸¶Ä¿µé
+			//ë§ˆì»¤ë“¤
 			var distanceMarkers = [];
-			//Áöµµ Å¬¸¯ÇÏ¸é Æ÷ÀÎÆ® »çÀÌÀÇ °Å¸®¸¦ ¹ÙÀÎµå ÆË¾÷À¸·Î »ı¼º
+			//ì§€ë„ í´ë¦­í•˜ë©´ í¬ì¸íŠ¸ ì‚¬ì´ì˜ ê±°ë¦¬ë¥¼ ë°”ì¸ë“œ íŒì—…ìœ¼ë¡œ ìƒì„±
 			map.on('click', function(e){
 				clicks.push(e.latlng);
-				console.log("¸¶Ä¿ÀÇ ÁÂÇ¥ °ª : "+clicks);
-				//Áöµµ¿¡ ¸¶Ä¿ Ãß°¡
+				console.log("ë§ˆì»¤ì˜ ì¢Œí‘œ ê°’ : "+clicks);
+				//ì§€ë„ì— ë§ˆì»¤ ì¶”ê°€
 				distanceMarker = L.marker(e.latlng).addTo(map);
-				//¸¶Ä¿Á¤º¸¸¦ ¹è¿­¿¡ Ãß°¡
+				//ë§ˆì»¤ì •ë³´ë¥¼ ë°°ì—´ì— ì¶”ê°€
 				distanceMarkers.push(distanceMarker);
 				console.log(distanceMarkers);
-				//¸¸¾à clicksÀÇ ±æÀÌ°¡ 2ÀÌ»óÀÌ¸é
+				//ë§Œì•½ clicksì˜ ê¸¸ì´ê°€ 2ì´ìƒì´ë©´
 				if(clicks.length >= 2){
 					var i = clicks.length;
-					//ÀÌÀü ¸¶Ä¿ÀÇ ÁÂÇ¥
+					//ì´ì „ ë§ˆì»¤ì˜ ì¢Œí‘œ
 					var distance1 = clicks[i-2];
-					//ÀÌÈÄ ¸¶Ä¿ÀÇ ÁÂÇ¥
+					//ì´í›„ ë§ˆì»¤ì˜ ì¢Œí‘œ
 					var distance2 = clicks[i-1];
-					//°Å¸® °è»ê
+					//ê±°ë¦¬ ê³„ì‚°
 					var measure = map.distance(distance1, distance2);
-					//¼± ±×¸®±â
+					//ì„  ê·¸ë¦¬ê¸°
 					var polyline = L.polyline([distance1, distance2], {
 						color: 'red'
 					}).addTo(map);
-					//°Å¸® °ª
-					console.log("¸¶Ä¿ »çÀÌ °Å¸® : "+measure.toFixed(3));
-					//¸¶Ä¿ »çÀÌÀÇ °Å¸®¸¦ ÅøÆÁÀ¸·Î Ãâ·Â
-					distanceMarker.bindTooltip(("°Å¸® : "+measure.toFixed(3)+"m"),{
+					//ê±°ë¦¬ ê°’
+					console.log("ë§ˆì»¤ ì‚¬ì´ ê±°ë¦¬ : "+measure.toFixed(3));
+					//ë§ˆì»¤ ì‚¬ì´ì˜ ê±°ë¦¬ë¥¼ íˆ´íŒìœ¼ë¡œ ì¶œë ¥
+					distanceMarker.bindTooltip(("ê±°ë¦¬ : "+measure.toFixed(3)+"m"),{
 						permanent : true
 					}).addTo(map).openTooltip();
-					//ÃÑ °Å¸® °è»ê
+					//ì´ ê±°ë¦¬ ê³„ì‚°
 					totalDistance += measure;
-					console.log("ÇöÀç±îÁö ÃÑ °Å¸® : "+totalDistance.toFixed(3));
+					console.log("í˜„ì¬ê¹Œì§€ ì´ ê±°ë¦¬ : "+totalDistance.toFixed(3));
 				}
 			});
-			//¼± ±×¸®±â µµÁß ´õºí Å¬¸¯ ½Ã
+			//ì„  ê·¸ë¦¬ê¸° ë„ì¤‘ ë”ë¸” í´ë¦­ ì‹œ
 			map.on('dblclick', function(){
-				//Å¬¸¯ ÀÌº¥Æ® ÇØÁ¦
+				//í´ë¦­ ì´ë²¤íŠ¸ í•´ì œ
 				map.off('click');
 				map.off('dblclick');
-				//¸¶Ä¿ ¹è¿­ÀÇ ¸¶Áö¸· ÀÎµ¦½ºÀÇ ¸¶Ä¿ Á¤º¸¸¦ °¡Á®¿Í
+				//ë§ˆì»¤ ë°°ì—´ì˜ ë§ˆì§€ë§‰ ì¸ë±ìŠ¤ì˜ ë§ˆì»¤ ì •ë³´ë¥¼ ê°€ì ¸ì™€
 				var lastMarker = distanceMarkers[distanceMarkers.length-1];
-				//¸¶Áö¸· ÀÎµ¦½º °ªÀÇ ¸¶Ä¿ Á¤º¸ »èÁ¦
+				//ë§ˆì§€ë§‰ ì¸ë±ìŠ¤ ê°’ì˜ ë§ˆì»¤ ì •ë³´ ì‚­ì œ
 				lastMarker.remove();
-				//¸¶Áö¸· ÀÎµ¦½º °ª Á¦°Å
+				//ë§ˆì§€ë§‰ ì¸ë±ìŠ¤ ê°’ ì œê±°
 				distanceMarkers.pop();
-				//¸¶Áö¸· ¸¶Ä¿¿¡ ÃÑ °Å¸® Ãâ·Â(À§¿¡ ÁÙ¿¡¼­ »èÁ¦ÇÑ ¸¶Áö¸· ¸¶Ä¿¿Í ´Ù¸¥ ¸¶Ä¿ÀÓ => ¸¶Áö¸· Áö¿î ÈÄÀÇ ¸¶Áö¸· ¸¶Ä¿)
-				distanceMarkers[distanceMarkers.length-1].bindPopup("ÃÑ °Å¸® : "+totalDistance.toFixed(3)+"m").openPopup();
-				console.log("ÃÑ °Å¸® : "+totalDistance.toFixed(3));
+				//ë§ˆì§€ë§‰ ë§ˆì»¤ì— ì´ ê±°ë¦¬ ì¶œë ¥(ìœ„ì— ì¤„ì—ì„œ ì‚­ì œí•œ ë§ˆì§€ë§‰ ë§ˆì»¤ì™€ ë‹¤ë¥¸ ë§ˆì»¤ì„ => ë§ˆì§€ë§‰ ì§€ìš´ í›„ì˜ ë§ˆì§€ë§‰ ë§ˆì»¤)
+				distanceMarkers[distanceMarkers.length-1].bindPopup("ì´ ê±°ë¦¬ : "+totalDistance.toFixed(3)+"m").openPopup();
+				console.log("ì´ ê±°ë¦¬ : "+totalDistance.toFixed(3));
 			});
 		};
 		 -->
@@ -584,7 +584,7 @@
 	
 	
 	<script>
-	//Áöµµ¿¡ ¿ìÅ¬¸¯ ½Ã ÆË¾÷
+	//ì§€ë„ì— ìš°í´ë¦­ ì‹œ íŒì—…
 	var startMarker = "";
 	var stopMarker = "";
 	var rightClick = "";
@@ -594,8 +594,8 @@
 		
 		var latlng = e.latlng;
 		rightClick = L.popup(e.latlng,{
-// 			content : "<div id='btn'><button class='rightBtn' id='start' onclick='startBtn("+mouseLat+", "+mouseLng+")'>Ãâ¹ß</button><button class='rightBtn' id='stop' onclick='stopBtn("+mouseLat+", "+mouseLng+")'>µµÂø</button></div>",
-			content : "<div id='btn'><button class='rightBtn' id='start' onclick='startBtn(this)' data-lat="+mouseLat+" data-lng="+mouseLng+">Ãâ¹ß</button><button class='rightBtn' id='stop' onclick='stopBtn(this)' data-lat="+mouseLat+" data-lng="+mouseLng+">µµÂø</button></div>",
+// 			content : "<div id='btn'><button class='rightBtn' id='start' onclick='startBtn("+mouseLat+", "+mouseLng+")'>ì¶œë°œ</button><button class='rightBtn' id='stop' onclick='stopBtn("+mouseLat+", "+mouseLng+")'>ë„ì°©</button></div>",
+			content : "<div id='btn'><button class='rightBtn' id='start' onclick='startBtn(this)' data-lat="+mouseLat+" data-lng="+mouseLng+">ì¶œë°œ</button><button class='rightBtn' id='stop' onclick='stopBtn(this)' data-lat="+mouseLat+" data-lng="+mouseLng+">ë„ì°©</button></div>",
 			className : 'rightMenu'
 		}).openOn(map);
 		
@@ -627,7 +627,7 @@
 			}).addTo(map);
 			map.closePopup();
 			
-			startMarker.bindTooltip("²ø¾î¼­ ÀÌµ¿", {
+			startMarker.bindTooltip("ëŒì–´ì„œ ì´ë™", {
 				direction : 'top',
 				offset : [0,-35]
 			}).openTooptip();
@@ -653,7 +653,7 @@
 			}).addTo(map);
 			map.closePopup();
 			
-			stopMarker.bindTooltip("²ø¾î¼­ ÀÌµ¿", {
+			stopMarker.bindTooltip("ëŒì–´ì„œ ì´ë™", {
 				direction : 'top',
 				offset : [0,-35]
 			}).openTooptip();
@@ -663,13 +663,13 @@
 
 	<!-- 
 	<script>
-		//³» À§Ä¡ Ã£±â
+		//ë‚´ ìœ„ì¹˜ ì°¾ê¸°
 		function me() {
 			map.on('locationfound', function(e) {
 				console.log(e);
 				var radius = e.accuracy / 2;
 				var locationMarker = L.marker(e.latlng).addTo(map).bindPopup(
-						'´ç½ÅÀÇ ¹İ°æ ' + radius.toFixed(6) * 50 + '¹ÌÅÍ ¾È¿¡ °è½Ã°Ú±º¿ä.')
+						'ë‹¹ì‹ ì˜ ë°˜ê²½ ' + radius.toFixed(6) * 50 + 'ë¯¸í„° ì•ˆì— ê³„ì‹œê² êµ°ìš”.')
 						.openPopup();
 				var locationCircle = L.circle(e.latlng, radius * 50).addTo(map);
 				console.log(radius.toFixed(6));
@@ -684,7 +684,7 @@
 			});
 		}
 
-		//¼­¿ï¿ª ÀÌµ¿
+		//ì„œìš¸ì—­ ì´ë™
 		function move() {
 			map.panTo(new L.LatLng(seoulstationLat, seoulstationLng));
 		}
@@ -692,10 +692,10 @@
 
 
 	<script>
-		//½ÃÃ»¿ª, ¼­¿ï¿ª, ¿ÀÇÂ¸ŞÀÌÆ® ÇÉ Ç¥Çö
+		//ì‹œì²­ì—­, ì„œìš¸ì—­, ì˜¤í”ˆë©”ì´íŠ¸ í•€ í‘œí˜„
 		function pinchk() {
-			console.log("ÇÉ »ı¼º");
-			//ÇÉ Å¬¸¯ ½Ã ÇØ´ç ÁÂÇ¥·Î ÀÌµ¿ ¹× ÁÜ·¹º§ 15
+			console.log("í•€ ìƒì„±");
+			//í•€ í´ë¦­ ì‹œ í•´ë‹¹ ì¢Œí‘œë¡œ ì´ë™ ë° ì¤Œë ˆë²¨ 15
 			map.panTo(new L.LatLng(moveToPinCenterLat, moveToPinCenterLng))
 					.locate({
 						setView : true,
@@ -703,30 +703,30 @@
 					});
 
 			cityhall = L.marker([ cityhallLat, cityhallLng ], {
-				//ÇÉ µå·¡±× »ç¿ë °¡´É ¿©ºÎ
+				//í•€ ë“œë˜ê·¸ ì‚¬ìš© ê°€ëŠ¥ ì—¬ë¶€
 				draggable : true
 			}).addTo(map);
 			NH = L.marker([ NHLat, NHLng ]).addTo(map);
 			seoulstation = L.marker([ seoulstationLat, seoulstationLng ])
 					.addTo(map);
 
-			cityhall.bindPopup("<b>½Ã½ÃÃ»Ã»¿ª¿ª</b>");
-			NH.bindPopup("<b>³óÇù»ı¸í</b>");
-			seoulstation.bindPopup("<b>¼­¼­¿ï¿ï¿ª¿ª</b>");
+			cityhall.bindPopup("<b>ì‹œì‹œì²­ì²­ì—­ì—­</b>");
+			NH.bindPopup("<b>ë†í˜‘ìƒëª…</b>");
+			seoulstation.bindPopup("<b>ì„œì„œìš¸ìš¸ì—­ì—­</b>");
 
-			//»èÁ¦¹öÆ° show
+			//ì‚­ì œë²„íŠ¼ show
 			$("#pindel").removeAttr("disabled");
-			//Æú¸®°ï ¹öÆ° show 
+			//í´ë¦¬ê³¤ ë²„íŠ¼ show 
 			$("#polygon").removeAttr("disabled");
-			//¼­Å¬ ¹öÆ° show
+			//ì„œí´ ë²„íŠ¼ show
 			$("#circle").removeAttr("disabled");
-			//ÇÈ È®ÀÎ ¹öÆ° none
+			//í”½ í™•ì¸ ë²„íŠ¼ none
 			$("#pinchk").attr("disabled", "disabled");
 		}
 
-		//ÇÉ»èÁ¦
+		//í•€ì‚­ì œ
 		function pindel() {
-			console.log("ÆÇ »èÁ¦");
+			console.log("íŒ ì‚­ì œ");
 			map.removeLayer(cityhall);
 			map.removeLayer(NH);
 			map.removeLayer(seoulstation);
@@ -736,77 +736,77 @@
 			$("#pinchk").removeAttr("disabled");
 		}
 
-		//Æú¸®°ï ¿¬°á
+		//í´ë¦¬ê³¤ ì—°ê²°
 		function polygon() {
-			console.log("Æú¸®°ï »ı¼º");
+			console.log("í´ë¦¬ê³¤ ìƒì„±");
 			var latlngs = [ [ cityhallLat, cityhallLng ],
 					[ NHLat, NHLng ],
 					[ seoulstationLat, seoulstationLng ] ];
 			var polygon = L.polygon(latlngs, {
 				color : 'yellow'
 			}).addTo(map);
-			//Æú¸®°ï Áß½É
+			//í´ë¦¬ê³¤ ì¤‘ì‹¬
 			map.fitBounds(polygon.getBounds());
 
-			polygon.bindPopup("Æú¸®°ï");
+			polygon.bindPopup("í´ë¦¬ê³¤");
 			$("#polygon").attr("disabled", "disabled")
 		}
 
-		//µ¿±×¶ó¹Ì µµÇü¸Ê Ç¥Çö
+		//ë™ê·¸ë¼ë¯¸ ë„í˜•ë§µ í‘œí˜„
 		function circle() {
-			console.log("¿ø »ı¼º");
+			console.log("ì› ìƒì„±");
 			var circle = L.circle([ NHLat, NHLng ], {
-				//¼±
+				//ì„ 
 				color : 'red',
-				//Ã¤¿ì±â
+				//ì±„ìš°ê¸°
 				fillColor : 'blue',
 				fillOpacity : 0.5,
 				radius : 500
 			}).addTo(map);
 
-			circle.bindPopup("³óÇù»ı¸í ¹İ°æ 500m");
+			circle.bindPopup("ë†í˜‘ìƒëª… ë°˜ê²½ 500m");
 			$("#circle").attr("disabled", "disabled")
 		}
 
-		// ¸Ê »ó ¾È³» & ¸¶Ä¿ Ãß°¡
-		//ÆË¾÷ Ãß°¡
+		// ë§µ ìƒ ì•ˆë‚´ & ë§ˆì»¤ ì¶”ê°€
+		//íŒì—… ì¶”ê°€
 		var popup = L.popup();
-		//ÁÂÇ¥°ªµé ÀúÀåÇÒ ¹è¿­
+		//ì¢Œí‘œê°’ë“¤ ì €ì¥í•  ë°°ì—´
 		var polyLatlng = [];
 
 		function addPin() {
-			//¸Ê Å¬¸¯ ½Ã ÇØ´ç À§µµ°æµµ °ª Ãâ·Â
+			//ë§µ í´ë¦­ ì‹œ í•´ë‹¹ ìœ„ë„ê²½ë„ ê°’ ì¶œë ¥
 			map.on('click', onMapClick);
 			function onMapClick(e) {
-				popup.setLatLng(e.latlng).setContent("Å¬¸¯ÇÑ °÷<br>" + e.latlng.toString()
-								+ "<br><button id='addMarker'>¸¶Ä¿Ãß°¡</button>")
+				popup.setLatLng(e.latlng).setContent("í´ë¦­í•œ ê³³<br>" + e.latlng.toString()
+								+ "<br><button id='addMarker'>ë§ˆì»¤ì¶”ê°€</button>")
 						.openOn(map);
 
-				//¸¶Ä¿Ãß°¡ ¹öÆ° Å¬¸¯ ½Ã ÇØ´ç À§µµ°æµµ °ªÀ¸·Î ¸¶Ä¿ Ãß°¡
+				//ë§ˆì»¤ì¶”ê°€ ë²„íŠ¼ í´ë¦­ ì‹œ í•´ë‹¹ ìœ„ë„ê²½ë„ ê°’ìœ¼ë¡œ ë§ˆì»¤ ì¶”ê°€
 				$('#addMarker').click(function() {
-					//¹öÆ° Å¬¸¯ ½Ã ÇØ´ç ÁÂÇ¥¿¡ ¸¶Ä¿ Ãß°¡
+					//ë²„íŠ¼ í´ë¦­ ì‹œ í•´ë‹¹ ì¢Œí‘œì— ë§ˆì»¤ ì¶”ê°€
 					var marker = L.marker(e.latlng).addTo(map);
-					//¹è¿­¿¡ ÁÂÇ¥ Ãß°¡
+					//ë°°ì—´ì— ì¢Œí‘œ ì¶”ê°€
 					polyLatlng.push(e.latlng);
-					console.log("ÁÂÇ¥ : " + e.latlng);
-					console.log("ÁÂÇ¥°ªµé : " + polyLatlng);
-					//¸Ê Å¬¸¯ ²ô±â
+					console.log("ì¢Œí‘œ : " + e.latlng);
+					console.log("ì¢Œí‘œê°’ë“¤ : " + polyLatlng);
+					//ë§µ í´ë¦­ ë„ê¸°
 					map.off('click', onMapClick);
 				});
 			}
 		};
 
-		//Ãß°¡µÈ ¸¶Ä¿³¢¸® Æú¸®°ï »ı¼º
+		//ì¶”ê°€ëœ ë§ˆì»¤ë¼ë¦¬ í´ë¦¬ê³¤ ìƒì„±
 		function addpolygon() {
-			//optionÅÂ±×ÀÇ ¼±ÅÃ °ª
-			var colorsel = document.getElementById("colorsel").value; //»ö±ò
-			var polygonW = document.getElementById("polygonW").value; //¼± µÎ²²
+			//optioníƒœê·¸ì˜ ì„ íƒ ê°’
+			var colorsel = document.getElementById("colorsel").value; //ìƒ‰ê¹”
+			var polygonW = document.getElementById("polygonW").value; //ì„  ë‘ê»˜
 			console.log(colorsel + " / " + polygonW);
 
-			//¸¶Ä¿°¡ 3°³ ÀÌ»óÀÏ ¶§ Æú¸®°ï »ı¼º °¡´É
+			//ë§ˆì»¤ê°€ 3ê°œ ì´ìƒì¼ ë•Œ í´ë¦¬ê³¤ ìƒì„± ê°€ëŠ¥
 			if(polyLatlng.length >= 3){
 				console.log(polyLatlng.length);
-				//Ãß°¡ÇÑ ¸¶Ä¿µéÀÇ ÁÂÇ¥°ªµéÀ» ÅëÇØ Æú¸®°ï »ı¼º
+				//ì¶”ê°€í•œ ë§ˆì»¤ë“¤ì˜ ì¢Œí‘œê°’ë“¤ì„ í†µí•´ í´ë¦¬ê³¤ ìƒì„±
 				var addpoly = L.polygon(polyLatlng, {
 					color : colorsel,
 					weight : polygonW,
@@ -815,16 +815,16 @@
 				map.fitBounds(addpoly.getBounds());
 				console.log(addpoly.getBounds());
 
-				//Ãß°¡ Æú¸®°ï bindpopup »ı¼º ½Ã Æú¸®°ï À§ Å¬¸¯ÀÌ ¾ÈµÊ
-				//addpoly.bindPopup("Ãß°¡µÈ Æú¸®°ï");
+				//ì¶”ê°€ í´ë¦¬ê³¤ bindpopup ìƒì„± ì‹œ í´ë¦¬ê³¤ ìœ„ í´ë¦­ì´ ì•ˆë¨
+				//addpoly.bindPopup("ì¶”ê°€ëœ í´ë¦¬ê³¤");
 
-				//»õ·Î¿î Æú¸®°ïÀ» ¸¸µé±â À§ÇØ À§°æµµ °ª ÃÊ±âÈ­
+				//ìƒˆë¡œìš´ í´ë¦¬ê³¤ì„ ë§Œë“¤ê¸° ìœ„í•´ ìœ„ê²½ë„ ê°’ ì´ˆê¸°í™”
 				polyLatlng = [];
 			} else {
-				alert("¸¶Ä¿¸¦ 3°³ ÀÌ»ó Ãß°¡ÇØÁÖ¼¼¿ä.");
+				alert("ë§ˆì»¤ë¥¼ 3ê°œ ì´ìƒ ì¶”ê°€í•´ì£¼ì„¸ìš”.");
 			}
 		}
-		//alert ¾È³»
+		//alert ì•ˆë‚´
 		// function onMapClick(e) {
 		// alert("You clicked the map at " + e.latlng);
 		// }
@@ -842,7 +842,7 @@
 				.click(
 						function() {
 
-							//ÀÌÀü¿¡ Âï¾ú´ø ¸¶Ä¿ »èÁ¦
+							//ì´ì „ì— ì°ì—ˆë˜ ë§ˆì»¤ ì‚­ì œ
 							for (var i = 0; i < markers.length; i++) {
 								map.removeLayer(markers[i]);
 							}
@@ -874,11 +874,11 @@
 
 											var status = result.response.status;
 											console.log(status);
-											//Á¶È¸ ¼º°øÀÏ °æ¿ì¸¸
+											//ì¡°íšŒ ì„±ê³µì¼ ê²½ìš°ë§Œ
 											if (status == "OK") {
 												console.log(result);
 
-												//leaflet Áöµµ ¶ç¿ì±â (EPSG : 4326)
+												//leaflet ì§€ë„ ë„ìš°ê¸° (EPSG : 4326)
 												//			 				leafletMap.panTo(new L.LatLng(y, x), 10);
 
 												var flyX = "";
@@ -891,7 +891,7 @@
 													var title = result.response.result.items[i].title;
 													var address = result.response.result.items[i].address.road;
 
-													//ÇÉ¸¶Ä¿ Âï±â
+													//í•€ë§ˆì»¤ ì°ê¸°
 													leafletAddMarker(y, x,
 															title, address);
 
@@ -902,7 +902,7 @@
 											}
 
 											else {
-												alert("ÇØ´ç Àå¼Ò¸¦ Ã£À»¼ö ¾ø½À´Ï´Ù.");
+												alert("í•´ë‹¹ ì¥ì†Œë¥¼ ì°¾ì„ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
 											}
 
 										},
@@ -913,12 +913,12 @@
 
 						})
 
-		//¸¶Ä¿ Ãß°¡
+		//ë§ˆì»¤ ì¶”ê°€
 		function leafletAddMarker(lon, lat, title, address) {
-			//ÇÉ¸¶Ä¿
+			//í•€ë§ˆì»¤
 			var marker = L.marker([ lon, lat ]).addTo(map);
 
-			//ÆË¾÷ Å¬¸¯½Ã
+			//íŒì—… í´ë¦­ì‹œ
 			marker.bindPopup("<b>" + address + "</b><br><b>" + title + "</b>");
 			markers.push(marker);
 
