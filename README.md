@@ -21,7 +21,7 @@ Sql : oracle
 
 Framwork : SpringBoot, Mybatis
 
-IDE : Spring Tool Suite
+IDE : Spring Tool Suite -> Intellij
 
 Git : Github
 
