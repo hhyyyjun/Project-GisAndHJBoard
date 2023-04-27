@@ -1,9 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>openlayers</title>
 
 <link rel="stylesheet" href="css/style.css">
@@ -88,14 +88,14 @@
 		<div>
 			<div id="search">
 				<div id="searchmap">
-					ÁÖ¼Ò °Ë»ö : <input type="text" name="query" id="searchadd"> <input
-						id="searchBtn" type="button" value="°Ë»ö">
+					ì£¼ì†Œ ê²€ìƒ‰ : <input type="text" name="query" id="searchadd"> <input
+						id="searchBtn" type="button" value="ê²€ìƒ‰">
 				</div>
 			</div>
 		</div>
 		<div id="buttons">
-			<button onClick="me()">³» À§Ä¡ Ã£±â</button>
-			<button onclick="move()">¼­¿ï¿ª</button>
+			<button onClick="me()">ë‚´ ìœ„ì¹˜ ì°¾ê¸°</button>
+			<button onclick="move()">ì„œìš¸ì—­</button>
 		</div>
 		<select id="type">
 			<option value="None">None</option>
@@ -103,7 +103,7 @@
 			<option value="LineString">LineString</option>
 			<option value="Polygon">Polygon</option>
 			<option value="Circle">Circle</option>
-		</select> <span>shift Å¬¸¯ ½Ã ÀÚÀ¯ ±×¸®±â</span>
+		</select> <span>shift í´ë¦­ ì‹œ ììœ  ê·¸ë¦¬ê¸°</span>
 		<select id="colorsel">
 					<option value='rgba(255, 255, 255, 0.5)'>None</option>
 					<option value='red'>red</option>
@@ -113,7 +113,7 @@
 					<option value='pink'>pink</option>
 					<option value='yellow'>yellow</option>
 					<option value='purple'>purple</option>
-		</select>Ã¤¿ì±â »ö 
+		</select>ì±„ìš°ê¸° ìƒ‰ 
 		<select id="stroke">
 					<option value="3">3</option>
 					<option value="4">4</option>
@@ -122,7 +122,7 @@
 					<option value="7">7</option>
 					<option value="8">8</option>
 					<option value="9">9</option>
-		</select> ¼± µÎ²²
+		</select> ì„  ë‘ê»˜
 		<select id="strokeColor">
 					<option value='black'>None</option>
 					<option value='red'>red</option>
@@ -132,13 +132,13 @@
 					<option value='pink'>pink</option>
 					<option value='yellow'>yellow</option>
 					<option value='purple'>purple</option>
-		</select> ¼± »ö±ò
+		</select> ì„  ìƒ‰ê¹”
 	</div>
 	<script src="js/common.js"></script>
 
 	<script>
 	
-		//·¹½ºÅÍ ·¹ÀÌ¾î ¼³Á¤
+		//ë ˆìŠ¤í„° ë ˆì´ì–´ ì„¤ì •
 		var raster = new ol.layer.Tile({
 			    source : new ol.source.OSM({
 					url : 'https://{a-c}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png'
@@ -146,12 +146,12 @@
 				visible : true
 		});
 
-		//ÁÂÇ¥¸¦ ÀúÀåÇÒ °ø°£ »ı¼º
+		//ì¢Œí‘œë¥¼ ì €ì¥í•  ê³µê°„ ìƒì„±
 		var source = new ol.source.Vector();
-		//¹éÅÍ ·¹ÀÌ¾î ¼³Á¤
+		//ë°±í„° ë ˆì´ì–´ ì„¤ì •
 		var vector = new ol.layer.Vector({
 			source : source,
-			//º¤ÅÍ ·¹ÀÌ¾îÀÇ ½ºÅ¸ÀÏ ¼³Á¤
+			//ë²¡í„° ë ˆì´ì–´ì˜ ìŠ¤íƒ€ì¼ ì„¤ì •
 			style: new ol.style.Style({
 	            fill: new ol.style.Fill({
 	                color: "rgba(255, 255, 255, 0.5)"
@@ -163,25 +163,25 @@
 	        })
 		});
 		
-		//Ã³À½ ·£´õ¸µ ½Ã ³ª¿À´Â Áöµµ ¼³Á¤
+		//ì²˜ìŒ ëœë”ë§ ì‹œ ë‚˜ì˜¤ëŠ” ì§€ë„ ì„¤ì •
 		var mapView = new ol.View({
-			//¿ÀÇÂ·¹ÀÌ¾î½º´Â À§°æµµ¸¦ ´Ù¸¥ api¿Í ¹İ´ë·Î ³Ö¾î¾ß ÇÔ
+			//ì˜¤í”ˆë ˆì´ì–´ìŠ¤ëŠ” ìœ„ê²½ë„ë¥¼ ë‹¤ë¥¸ apiì™€ ë°˜ëŒ€ë¡œ ë„£ì–´ì•¼ í•¨
 			center : new ol.geom.Point([ NHLng, NHLat ]).transform('EPSG:4326',
 					'EPSG:3857').getCoordinates(),
 			maxZoon : 20,
 			minZoon : 3,
 			zoom : 15
 			})
-		//Áöµµ ¼³Á¤
+		//ì§€ë„ ì„¤ì •
 		var map = new ol.Map({
-					//ºä °ü¸® ¼³Á¤
+					//ë·° ê´€ë¦¬ ì„¤ì •
 					layers : [raster, vector ],
-					//Áöµµ¸¦ Ç¥½ÃÇÒ ´ë»óÀÇ id
+					//ì§€ë„ë¥¼ í‘œì‹œí•  ëŒ€ìƒì˜ id
 					target : 'map',
 					controls : ol.control.defaults({
-						//¿ìÃøÇÏ´Ü Á¤º¸ Ç¥½Ã
+						//ìš°ì¸¡í•˜ë‹¨ ì •ë³´ í‘œì‹œ
 						attributionOptions : {
-							//»ı·« ¹öÆ° »ı¼ºÇÒÁö ¸»Áö
+							//ìƒëµ ë²„íŠ¼ ìƒì„±í• ì§€ ë§ì§€
 							collapsible : false
 						}
 					}),
@@ -190,37 +190,37 @@
 	</script>
 
 	<script>
-		//ÇöÀç ±×·ÁÁø µµÇü
+		//í˜„ì¬ ê·¸ë ¤ì§„ ë„í˜•
 		var sketch;
-		//¾È³» ÅøÆÁ ¿ä¼Ò
+		//ì•ˆë‚´ íˆ´íŒ ìš”ì†Œ
 		var helpTooltipElement;
-		//¸¶¿ì½º ÅøÆÁ ¸Ş¼¼Áö
+		//ë§ˆìš°ìŠ¤ íˆ´íŒ ë©”ì„¸ì§€
 		var helpTooltip;
-		//ÃøÁ¤°ª ÅøÆÁ ¿ä¼Ò
+		//ì¸¡ì •ê°’ íˆ´íŒ ìš”ì†Œ
 		var measureTooltipElement;
-		//¿À¹ö·¹ÀÌÇÒ ÃøÁ¤°ª ÅøÆÁ
+		//ì˜¤ë²„ë ˆì´í•  ì¸¡ì •ê°’ íˆ´íŒ
 		var measureTooltip;
-		//Æú¸®°ï ±×¸± ¶§ ³ª¿Ã ¼³¸í
+		//í´ë¦¬ê³¤ ê·¸ë¦´ ë•Œ ë‚˜ì˜¬ ì„¤ëª…
 		var continuePolygonMsg = 'Click to continue drawing the polygon';
-		//¶óÀÎ ±×¸± ¶§ ³ª¿Ã ¼³¸í
+		//ë¼ì¸ ê·¸ë¦´ ë•Œ ë‚˜ì˜¬ ì„¤ëª…
 		var continueLineMsg = 'Click to continue drawing the line';
-		//¿ø ±×¸± ¶§ ³ª¿Ã ¼³¸í
+		//ì› ê·¸ë¦´ ë•Œ ë‚˜ì˜¬ ì„¤ëª…
 		var continueCircle = 'Drag to continue drawing circle';
 	
 		
-		////////////////////////////////////////ÇÚµé Æ÷ÀÎÅÍ
+		////////////////////////////////////////í•¸ë“¤ í¬ì¸í„°
 		var pointerMoveHandler = function(e) {
 	        if (e.dragging) {
 	          return;
 	        }
-	        //±×¸®±â µµ±¸ ¼±ÅÃ ½Ã ¾È³» ¹®±¸
+	        //ê·¸ë¦¬ê¸° ë„êµ¬ ì„ íƒ ì‹œ ì•ˆë‚´ ë¬¸êµ¬
 	        var helpMsg = 'Click to start drawing';
 			if(typeSelect == 'none'){
 	        	helpMsg = '';
 			}
 			
 	        if (sketch) {
-	          //ÇöÀç µµÇüÀÇ ¿ä¼Ò ÆÇº°
+	          //í˜„ì¬ ë„í˜•ì˜ ìš”ì†Œ íŒë³„
 	          var geom = (sketch.getGeometry());
 	          if (geom instanceof ol.geom.Polygon) {
 	            helpMsg = continuePolygonMsg;
@@ -230,27 +230,27 @@
 	        	helpMsg = continueCircle;
 	          }
 	        }
-	        //HTML »ğÀÔ
+	        //HTML ì‚½ì…
 	        helpTooltipElement.innerHTML = helpMsg;
-	        //helpMsg¸¦ ¸¶¿ì½º Æ÷ÀÎÅÍ¿¡ µû¶ó »ı¼º
+	        //helpMsgë¥¼ ë§ˆìš°ìŠ¤ í¬ì¸í„°ì— ë”°ë¼ ìƒì„±
 	        helpTooltip.setPosition(e.coordinate);
 	        helpTooltipElement.classList.remove('hidden');
 	      };
 	
-		///////////////////////////////////////µµÇü ±×¸®±â ¹× ÆíÁı ±â´É
+		///////////////////////////////////////ë„í˜• ê·¸ë¦¬ê¸° ë° í¸ì§‘ ê¸°ëŠ¥
 		var modify = new ol.interaction.Modify({
 			source : source
 		});
 		map.addInteraction(modify);
 
-		///////////////////////////////////////¼± ±æÀÌ ÃøÁ¤
+		///////////////////////////////////////ì„  ê¸¸ì´ ì¸¡ì •
 		var formatLength = function(line) {
-			//¼± ±æÀÌ ÃøÁ¤
+			//ì„  ê¸¸ì´ ì¸¡ì •
 	        var length = ol.Sphere.getLength(line);
 	        var output;
-	        // m±âÁØ ±æÀÌ°¡ 100ÀÌ ÃÊ°úÇÏ¸é
+	        // mê¸°ì¤€ ê¸¸ì´ê°€ 100ì´ ì´ˆê³¼í•˜ë©´
 	        if (length > 1000) {
-	        	//km ´ÜÀ§·Î º¯°æ, math.round ¹İ¿Ã¸² ÇÔ¼ö
+	        	//km ë‹¨ìœ„ë¡œ ë³€ê²½, math.round ë°˜ì˜¬ë¦¼ í•¨ìˆ˜
 	          output = (Math.round(length / 1000 * 100) / 100) +
 	              ' ' + 'km';
 	        } else {
@@ -259,9 +259,9 @@
 	        }
 	        return output;
 	      };
-	    ////////////////////////////////////Æú¸®°ïÀÇ ¸éÀû ÃøÁ¤
+	    ////////////////////////////////////í´ë¦¬ê³¤ì˜ ë©´ì  ì¸¡ì •
 	    var formatArea = function(polygon) {
-	    	//Æú¸®°ï ¸éÀû ÃøÁ¤
+	    	//í´ë¦¬ê³¤ ë©´ì  ì¸¡ì •
 	        var area = ol.Sphere.getArea(polygon);
 	        var output;
 	        if (area > 10000) {
@@ -273,36 +273,36 @@
 	        }
 	        return output;
 	      };
-	    ///////////////////////////////////////¿øÀÇ ¹İ°æ ÃøÁ¤
+	    ///////////////////////////////////////ì›ì˜ ë°˜ê²½ ì¸¡ì •
 	    var formatCircle = function(circle){
-	    	//¿øÀÇ ¹İ°æ
+	    	//ì›ì˜ ë°˜ê²½
 	    	var radius = circle.getRadius();
-	    	console.log("¹İ°æ"+radius);
+	    	console.log("ë°˜ê²½"+radius);
 	    	var output;
-	        // m±âÁØ ±æÀÌ°¡ 100ÀÌ ÃÊ°úÇÏ¸é
+	        // mê¸°ì¤€ ê¸¸ì´ê°€ 100ì´ ì´ˆê³¼í•˜ë©´
 	        if (radius > 1000) {
-	        	//km ´ÜÀ§·Î º¯°æ, math.round ¹İ¿Ã¸² ÇÔ¼ö
-	          output = '¹İ°æ ' + (Math.round(radius / 1000 * 100) / 100) +
+	        	//km ë‹¨ìœ„ë¡œ ë³€ê²½, math.round ë°˜ì˜¬ë¦¼ í•¨ìˆ˜
+	          output = 'ë°˜ê²½ ' + (Math.round(radius / 1000 * 100) / 100) +
 	              ' ' + 'km';
 	        } else {
-	          output = '¹İ°æ ' + (Math.round(radius * 100) / 100) +
+	          output = 'ë°˜ê²½ ' + (Math.round(radius * 100) / 100) +
 	              ' ' + 'm';
 	        }
 	        return output;
 	    }
 	    
 	    var draw, snap;
-		//id¸íÀÌ typeÀÎ ¿ä¼Ò
+		//idëª…ì´ typeì¸ ìš”ì†Œ
 		var typeSelect = document.getElementById('type');
-		//»ö º¯°æ ¿ä¼Ò
+		//ìƒ‰ ë³€ê²½ ìš”ì†Œ
 		var fillSelect = document.getElementById('colorsel');
-		//¼± µÎ²²
+		//ì„  ë‘ê»˜
 		var stroke = document.getElementById('stroke');
-		//¼± »ö±ò
+		//ì„  ìƒ‰ê¹”
 		var strokeColor = document.getElementById('strokeColor');
-		//Å¬¸¯ÇÑ ºÎºĞÀÇ ÁÂÇ¥°ª ¹è¿­
+		//í´ë¦­í•œ ë¶€ë¶„ì˜ ì¢Œí‘œê°’ ë°°ì—´
 		var point = [];
-		////////////////////////////////////////±×¸®±â µµ±¸ ½ÃÀÛ
+		////////////////////////////////////////ê·¸ë¦¬ê¸° ë„êµ¬ ì‹œì‘
 		function addInteractions() {
 			draw = new ol.interaction.Draw({
 				source : source,
@@ -328,12 +328,12 @@
 		            }),
 				}),
 			});
-			//¸Ê¿¡ ±×¸®±â ±â´É ½ÃÀÛ
+			//ë§µì— ê·¸ë¦¬ê¸° ê¸°ëŠ¥ ì‹œì‘
 			map.addInteraction(draw);
 			createMeasureTooltip();
 	        createHelpTooltip();
 			
-			//////////////////////////////////////¶óÀÎ¿¡ °¡±îÀÌ °¡¸é ¸¶¿ì½º Æ÷ÀÎÅÍ°¡ ºÙ´Â´Ù.
+			//////////////////////////////////////ë¼ì¸ì— ê°€ê¹Œì´ ê°€ë©´ ë§ˆìš°ìŠ¤ í¬ì¸í„°ê°€ ë¶™ëŠ”ë‹¤.
 			snap = new ol.interaction.Snap({
 				source : source
 			});
@@ -341,14 +341,14 @@
 			
 			
 			var listener;
-			//////////////////////////////////////////////±×¸®±â ½ÃÀÛÇÏ¸é
+			//////////////////////////////////////////////ê·¸ë¦¬ê¸° ì‹œì‘í•˜ë©´
 	        draw.on('drawstart',function(e) {
-	              //ÇöÀç ±×¸° µµÇüÀÇ ¿ä¼Ò
+	              //í˜„ì¬ ê·¸ë¦° ë„í˜•ì˜ ìš”ì†Œ
 	              sketch = e.feature;
 
 	              /** @type {ol.Coordinate|undefined} */
 	              var tooltipCoord = e.coordinate;
-				  //ÇöÀç ±×¸° µµÇüÀÌ º¯°æµÇ¸é
+				  //í˜„ì¬ ê·¸ë¦° ë„í˜•ì´ ë³€ê²½ë˜ë©´
 	              listener = sketch.getGeometry().on('change', function(e) {
 	                var geom = e.target;
 	                var output;
@@ -361,13 +361,13 @@
 		              
 	                  point.push(tooltipCoord);
 	                  if(point.length >=2){
-		                //¹è¿­ÀÇ ±æÀÌ
+		                //ë°°ì—´ì˜ ê¸¸ì´
 						var i = point.length;
-						//ÀÌÀü ¸¶Ä¿ÀÇ ÁÂÇ¥
+						//ì´ì „ ë§ˆì»¤ì˜ ì¢Œí‘œ
 						var distance1 = point[i-2];
-						//ÀÌÈÄ ¸¶Ä¿ÀÇ ÁÂÇ¥
+						//ì´í›„ ë§ˆì»¤ì˜ ì¢Œí‘œ
 						var distance2 = point[i-1];
-						//°Å¸® °è»ê
+						//ê±°ë¦¬ ê³„ì‚°
 						var measure = geom.getLength(distance1, distance2);
 	                  }
 	                } else if (geom instanceof ol.geom.Circle){
@@ -379,13 +379,13 @@
 	              });
 	            }, this);
 			
-			/////////////////////////////////////////±×¸®±â ¿Ï·á ½Ã
+			/////////////////////////////////////////ê·¸ë¦¬ê¸° ì™„ë£Œ ì‹œ
 			draw.on('drawend', function(e){
-				//¹æ±İ ±×¸° µµÇü Á¤º¸
+				//ë°©ê¸ˆ ê·¸ë¦° ë„í˜• ì •ë³´
 	 			var feature = e.feature;
-				//¹æ±İ ±×¸° µµÇüÀ» Á¦¿ÜÇÑ µµÇüµé Á¤º¸
+				//ë°©ê¸ˆ ê·¸ë¦° ë„í˜•ì„ ì œì™¸í•œ ë„í˜•ë“¤ ì •ë³´
 	 			var features = source.getFeatures();
-				//¸ğµç µµÇüÀÇ Á¤º¸
+				//ëª¨ë“  ë„í˜•ì˜ ì •ë³´
 	 			var allFeats = features.concat(feature);
 // 	 			console.log(feature);
 // 	 			console.log(features);
@@ -400,7 +400,7 @@
 	            createMeasureTooltip();
 	            ol.Observable.unByKey(listener);
 	            
-	            //»ı¼º ½Ã »ç¿ëÀÚÀÇ ¼±ÅÃ ¿É¼Ç¿¡ µû¶ó »ö, ¼± ¼³Á¤
+	            //ìƒì„± ì‹œ ì‚¬ìš©ìì˜ ì„ íƒ ì˜µì…˜ì— ë”°ë¼ ìƒ‰, ì„  ì„¤ì •
 	            feature.setStyle([
 	            	new ol.style.Style({
 	        			fill: new ol.style.Fill({
@@ -418,18 +418,18 @@
 	        	
 			}, this);
 		}
-		///////////////////////////////////ÅøÆÁ »ı¼º
+		///////////////////////////////////íˆ´íŒ ìƒì„±
 		function createHelpTooltip() {
-			//ÅøÆÁ ¿ä¼Ò°¡ Á¸ÀçÇÏ¸é
+			//íˆ´íŒ ìš”ì†Œê°€ ì¡´ì¬í•˜ë©´
 	        if (helpTooltipElement) {
-	          //ÇØ´ç ¿ä¼Ò »èÁ¦
+	          //í•´ë‹¹ ìš”ì†Œ ì‚­ì œ
 	          helpTooltipElement.parentNode.removeChild(helpTooltipElement);
 	        }
-			//ÅøÆÁ ¿ä¼Ò¿¡ div html ÅÂ±× Ãß°¡
+			//íˆ´íŒ ìš”ì†Œì— div html íƒœê·¸ ì¶”ê°€
 	        helpTooltipElement = document.createElement('div');
-			//Ãß°¡ÇÑ ÅÂ±×¿¡ Å¬·¡½º¸í Ãß°¡
+			//ì¶”ê°€í•œ íƒœê·¸ì— í´ë˜ìŠ¤ëª… ì¶”ê°€
 	        helpTooltipElement.className = 'tooltip hidden';
-			//À§¿¡¼­ ¼Â¾÷ÇÑ ¿ä¼ÒÀÇ ¿É¼Ç ¼³Á¤
+			//ìœ„ì—ì„œ ì…‹ì—…í•œ ìš”ì†Œì˜ ì˜µì…˜ ì„¤ì •
 	        helpTooltip = new ol.Overlay({
 	          element: helpTooltipElement,
 	          offset: [15, 0],
@@ -437,7 +437,7 @@
 	        });
 	        map.addOverlay(helpTooltip);
 	      }
-		////////////////////////////////////ÃøÁ¤°ª ÅøÆÁ »ı¼º
+		////////////////////////////////////ì¸¡ì •ê°’ íˆ´íŒ ìƒì„±
 		function createMeasureTooltip() {
 	        if (measureTooltipElement) {
 	          measureTooltipElement.parentNode.removeChild(measureTooltipElement);
@@ -452,15 +452,15 @@
 	        map.addOverlay(measureTooltip);
 	      }
 
-		///////////////////////////////////±×¸®±â µµÇü º¯°æ
+		///////////////////////////////////ê·¸ë¦¬ê¸° ë„í˜• ë³€ê²½
 		typeSelect.onchange = function() {
 			map.removeInteraction(draw);
 			map.removeInteraction(snap);
-			//±×¸®±â Å¸ÀÔÀÌ noneÀÎ °æ¿ì
+			//ê·¸ë¦¬ê¸° íƒ€ì…ì´ noneì¸ ê²½ìš°
 			if(typeSelect.value === 'None'){
-				//±â´É ÇØÁ¦
+				//ê¸°ëŠ¥ í•´ì œ
 				map.un('pointermove', pointerMoveHandler);
-				//ÅøÆÁ »èÁ¦
+				//íˆ´íŒ ì‚­ì œ
 				map.removeOverlay(helpTooltip);
 				return;
 			}
@@ -471,7 +471,7 @@
 	</script>
 
 	<script>
-	//Å¬¸¯ ½Ã À§°æµµ°ª ¹Ş´Â´Ù.
+	//í´ë¦­ ì‹œ ìœ„ê²½ë„ê°’ ë°›ëŠ”ë‹¤.
 		map.on('click', function(e){
 			var coordinate = ol.proj.transform(e.coordinate, 'EPSG:3857', 'EPSG:4326');
 		    console.log(coordinate);
@@ -484,16 +484,16 @@
 
 	<script>
 		/*
-			//select ÅÂ±×ÀÇ option µ¥ÀÌÅÍµé
+			//select íƒœê·¸ì˜ option ë°ì´í„°ë“¤
 			var drawObject = $("#type");
 			var drawControl;
 			
 			var updateDrawControl = function () {
-				//¼±ÅÃÇÑ option ÀÇ °ª ÀúÀå
+				//ì„ íƒí•œ option ì˜ ê°’ ì €ì¥
 				var geometryType = drawObject.val();
 				console.log(geometryType);
 				
-				//±×¸®±â µµ±¸ ¼±ÅÃ »èÁ¦
+				//ê·¸ë¦¬ê¸° ë„êµ¬ ì„ íƒ ì‚­ì œ
 				map.removeInteraction(drawControl);
 				if(geometryType === 'None') return;
 				
@@ -504,14 +504,14 @@
 				
 				map.addInteraction(drawControl);
 			}
-			//Å¬¸¯ ½Ã updateDrawControl function ½ÇÇà
+			//í´ë¦­ ì‹œ updateDrawControl function ì‹¤í–‰
 			drawObject.on('click', updateDrawControl);
 		 */
 	</script>
 
 	<script>
 
-		//¸Ê »ó Å¬¸¯ ½Ã ÆË¾÷ Ãâ·Â
+		//ë§µ ìƒ í´ë¦­ ì‹œ íŒì—… ì¶œë ¥
 		/*
 		 * Elements that make up the popup.
 		 */
@@ -553,19 +553,19 @@
 	</script>
 
 	<script>
-	//ÁÜ ¾Æ¿ô
+	//ì¤Œ ì•„ì›ƒ
 	document.getElementById('zoom-out').onclick = function() {
 		var view = map.getView();
 		var zoom = view.getZoom();
 		view.setZoom(zoom - 1);
 	};
-	//ÁÜ ÀÎ
+	//ì¤Œ ì¸
 	document.getElementById('zoom-in').onclick = function() {
 		var view = map.getView();
 		var zoom = view.getZoom();
 		view.setZoom(zoom + 1);
 	};
-	// ¼­¿ï¿ª ÀÌµ¿
+	// ì„œìš¸ì—­ ì´ë™
 	function move() {
 		var view = map.getView();
 		view.setZoom(15);
